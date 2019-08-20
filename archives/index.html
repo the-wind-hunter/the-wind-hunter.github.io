@@ -346,6 +346,37 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/08/21/第三周：数据库系统表相关学习/" >
+            
+                <span>第三周：数据库系统表相关学习</span>
+        </a>
+        <div class="abstract-content">
+            一、如何利用数据库的功能读写文件，需要什么样的条件才可以读写1、load_file在数据库注入中使用load_file函数只有满足两个条件就可以使用：
+1231、文件权限：chmod a+x pathtofile2、文件大小: 必须小于max_allowed_packet
+
+例子：
+123select load_file(&apos;D:\xampp\htdocs\www\wanju\htaccess.txt&apos;)select load_file(&apos;/etc/hosts&apos;)
+
+例如上面的例子是有条件限制的：
+1、必须有权限读取并且文件必须完全可读。
+12345...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/21</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/08/16/第一周：环境准备/" >
             
                 <span>第一周：环境准备</span>
@@ -510,9 +541,18 @@ c.关系型数据库缺点123...
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 2
+        Total : 3
         </div>
         <!-- search  -->
         
@@ -525,6 +565,11 @@ c.关系型数据库缺点123...
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/21</span><a class="archive-post-title" href= "/2019/08/21/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
+        </li>
     
     
         <li class="archive-post-item">
