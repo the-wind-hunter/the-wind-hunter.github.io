@@ -396,18 +396,18 @@ height:50vh;
             <main class="main post-page">
     <article class="article-entry">
         <h2 id="1-安装CentOS-7"><a href="#1-安装CentOS-7" class="headerlink" title="1.安装CentOS 7"></a>1.安装CentOS 7</h2><p>(1)  因为是用来做服务器的Linux操作系统，在这里我选择了CentOS 7。首先进入CentOS的官方网站 <a href="https://www.centos.org/download/然后点击DVD" target="_blank" rel="noopener">https://www.centos.org/download/然后点击DVD</a> ISO下载你想要的版本,我选的是第一个。</p>
-<p>​     <img src="C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564159146863.png" alt="1564159146863">                                                                               </p>
+<p>​     <img src="/2019/08/16/第一周：环境准备/C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564159146863.png" alt="1564159146863">                                                                               </p>
 <p>下载完成后用虚拟机进行安装，我用的是VMware。VMware的具体安装过程就省略了，很简单。安装完成后点击 文件–&gt;新建虚拟机–&gt;典型–&gt;下一步–&gt;稍后安装操作系统–&gt;下一步–&gt;客户机操作系统选择Linux–&gt;版本选择CentOS 7 64位–&gt;名字和位置自行选择–&gt;下一步–&gt;完成–&gt;然后点击编辑虚拟机设置–&gt;点击CD/DVD –&gt;使用ISO映像文件–&gt;选择你下载的ISO文件</p>
-<p><img src="C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564159073871.png" alt="1564159073871"></p>
+<p><img src="/2019/08/16/第一周：环境准备/C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564159073871.png" alt="1564159073871"></p>
 <p>点击确定然后开启虚拟机。接下来还有一些简单的配置就不一一去写了。</p>
 <p>开机之后，我们来安装一下VMware-Tools </p>
 <p>（2）点击虚拟机–&gt;选择安装Vmware-Tools–&gt;此时桌面会出现一个光盘，把里面的VMware-Tools压缩文件复制到桌面–&gt;打开终端–&gt;<code>tar -zxvf VMwareTools-10.2.5-8068393.tar.gz</code>来解压文件–&gt;<code>cd vmware-tools-distrib</code> 进入文件夹–&gt;sudo ./vmware-install.pl–&gt;接下来按提示点击就行了–&gt;安装完成后重启虚拟机–&gt;最后别忘了拍摄一个快照</p>
-<p><img src="C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564159263678.png" alt="1564159263678"></p>
+<p><img src="/2019/08/16/第一周：环境准备/C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564159263678.png" alt="1564159263678"></p>
 <p>刚安装完的时候，打开终端发现字体包括登录名全是白色的，代码多的时候难以区分。</p>
 <p>输入下面命令:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo &apos;PS1=&quot;\[\e[37;40m\][\[\e[36;40m\]\u@\h \[\e[36;40m\]\w\[\e[0m\]]\\$ &quot;&apos; &gt;&gt; ~/.bashrc</span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
 
-<p>效果:<img src="C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564159430861.png" alt="1564159430861"></p>
+<p>效果:<img src="/2019/08/16/第一周：环境准备/C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564159430861.png" alt="1564159430861"></p>
 <p>当然背景颜色那些可以自己调，右键打开配置就可以设置背景以及字体颜色了。</p>
 <h2 id="2、镜像源切换"><a href="#2、镜像源切换" class="headerlink" title="2、镜像源切换"></a>2、镜像源切换</h2><p>先把YUM源切换成国内阿里云的镜像源</p>
 <p><strong>先备份一下原来的源镜像文件</strong></p>
@@ -438,7 +438,7 @@ height:50vh;
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start nginx</span><br></pre></td></tr></table></figure>
 
 <p>可以浏览器查看是否安装成功，如果安装成功的话，就会看到：</p>
-<p><img src="C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564164349971.png" alt="1564164349971"></p>
+<p><img src="/2019/08/16/第一周：环境准备/C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564164349971.png" alt="1564164349971"></p>
 <p><strong>开机启动设置</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable nginx</span><br></pre></td></tr></table></figure>
 
@@ -480,7 +480,7 @@ height:50vh;
 <p><strong>如果没有启用的话，我们可以修改源文件</strong><br><code>vim /etc/yum.repos.d/mysql-community.repo</code></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[mysql57-community]</span><br><span class="line"></span><br><span class="line">name=MySQL 5.7 Community Server</span><br><span class="line">baseurl=http://repo.mysql.com/yum/mysql-5.7-community/el/7/$basearch/</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql</span><br></pre></td></tr></table></figure>
 
-<p><img src="C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564206384583.png" alt="1564206384583"></p>
+<p><img src="/2019/08/16/第一周：环境准备/C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564206384583.png" alt="1564206384583"></p>
 <p><strong>修改完成之后查看可用的版本</strong><br><code>yum repolist enabled | grep mysql</code></p>
 <p><strong>如果看到5.7版本启用了之后就可以安装MySql了</strong></p>
 <p><code>yum -y install mysql-community-server</code></p>
@@ -489,9 +489,9 @@ height:50vh;
 <p><strong>查看MySql的启动状态</strong><br><code>systemctl status mysqld</code></p>
 <p><strong>开机启动设置</strong><br><code>systemctl enable mysqld</code></p>
 <p><strong>MySql安装完成之后会在LOG文件(/var/log/mysqld.log)中生成一个root的默认密码</strong><br><code>grep ‘temporary password’ /var/log/mysqld.log</code></p>
-<p><img src="C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564207989956.png" alt="1564207989956"></p>
+<p><img src="/2019/08/16/第一周：环境准备/C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564207989956.png" alt="1564207989956"></p>
 <p>2019-07-27T06:04:00.709790Z 1 [Note] A temporary password is generated for root@localhost: sill3ur?JAgi</p>
-<p><img src="C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564207885076.png" alt="1564207885076"></p>
+<p><img src="/2019/08/16/第一周：环境准备/C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564207885076.png" alt="1564207885076"></p>
 <p><strong>最后执行一键安全设置：更改密码与关闭匿名登录等</strong><br><code>mysql_secure_installation</code></p>
 <p>记住这里的密码就是上面找出来的那个</p>
 <h3 id="（3）登录mysql并创建数据库"><a href="#（3）登录mysql并创建数据库" class="headerlink" title="（3）登录mysql并创建数据库"></a>（3）登录mysql并创建数据库</h3><p><strong>登录mysql</strong><br><code>mysql -u root -p</code><br><strong>创建数据库与用户并赋权</strong></p>
@@ -523,17 +523,17 @@ height:50vh;
 <p><strong>最后查看下进程端口是否都正常。</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -ntlp</span><br></pre></td></tr></table></figure>
 
-<p><img src="C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564227859244.png" alt="1564227859244"></p>
+<p><img src="/2019/08/16/第一周：环境准备/C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564227859244.png" alt="1564227859244"></p>
 <p>注：Nginx和php-fpm的启动用户建议都统一修改成统一用户与组，如www；并给予相关权限。</p>
 <p><strong>最后，可以写一个index.php文件测试一下是否成功</strong></p>
 <p><strong>文件要存放到<code>/etc/nginx/html</code> 我做的时候找这个网页根目录找了很久，最后用find命令找默认的index.html 一个个去修改才找到这路径！！！</strong></p>
 <h2 id="6-php-连接-mysql并执行语句"><a href="#6-php-连接-mysql并执行语句" class="headerlink" title="6.php 连接 mysql并执行语句"></a>6.php 连接 mysql并执行语句</h2><p><strong>搭建成功后，尝试用PHP连接MySQL 并且执行MySQL语句</strong></p>
 <h3 id="（1）前提条件"><a href="#（1）前提条件" class="headerlink" title="（1）前提条件"></a>（1）前提条件</h3><p><strong>前提：</strong>本地已经建立数据库用户root，密码为***，用户root中有一个数据库TEST_DATABASE，数据库TEST_DATABASE中有一个数据库表TEST_TABLE，数据库表中有三列，分别为id、name、age</p>
-<p><img src="C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564403480033.png" alt="1564403480033"></p>
+<p><img src="/2019/08/16/第一周：环境准备/C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564403480033.png" alt="1564403480033"></p>
 <h3 id="（2）新建一个PHP文件"><a href="#（2）新建一个PHP文件" class="headerlink" title="（2）新建一个PHP文件"></a>（2）新建一个PHP文件</h3><p><strong>在/etc/nginx/html下新建一个PHP文件，代码如下：</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">$servername = &quot;localhost&quot;;</span><br><span class="line">$username = &quot;root&quot;;</span><br><span class="line">$password = &quot;password&quot;;</span><br><span class="line"></span><br><span class="line">// 创建连接</span><br><span class="line">$conn = mysqli_connect($servername, $username, $password);</span><br><span class="line"></span><br><span class="line">// 检测连接</span><br><span class="line">if (!$conn) &#123;</span><br><span class="line">    die(&quot;Connection failed:\n &quot; . mysqli_connect_error());</span><br><span class="line">&#125;</span><br><span class="line">echo &quot;Connection succeed!\n&quot;;</span><br><span class="line"> </span><br><span class="line">$sql=&quot;insert into TEST_TABLE&quot;.</span><br><span class="line">     &quot;(id,name,age)&quot;.</span><br><span class="line">     &quot; values(5,&apos;ds&apos;,22)&quot;;</span><br><span class="line"></span><br><span class="line">mysqli_select_db($conn,&apos;TEST_DATABASE&apos;); //链接数据库</span><br><span class="line">$retval = mysqli_query( $conn, $sql );</span><br><span class="line">if(! $retval )</span><br><span class="line">&#123;</span><br><span class="line">  die(&apos;failed to insert: &apos; . mysqli_error($conn));</span><br><span class="line">&#125;</span><br><span class="line">echo &quot;insert succeed!\n&quot;;</span><br><span class="line">mysqli_close($conn)</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 
-<h3 id="（3）连接并执行语句成功"><a href="#（3）连接并执行语句成功" class="headerlink" title="（3）连接并执行语句成功"></a>（3）连接并执行语句成功</h3><p><img src="C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564405509012.png" alt="1564405509012"></p>
+<h3 id="（3）连接并执行语句成功"><a href="#（3）连接并执行语句成功" class="headerlink" title="（3）连接并执行语句成功"></a>（3）连接并执行语句成功</h3><p><img src="/2019/08/16/第一周：环境准备/C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564405509012.png" alt="1564405509012"></p>
 <p><strong>如上图所示，PHP连接MySQL成功，输出connection succeed!(当然这是自己设置的检测语句)</strong></p>
 <p><strong>除此之外，对比上下两个数据表发现插入了一行新的数据。</strong></p>
 <h1 id="三、服务器加固"><a href="#三、服务器加固" class="headerlink" title="三、服务器加固"></a>三、服务器加固</h1><h2 id="1-PHP安全配置"><a href="#1-PHP安全配置" class="headerlink" title="1.PHP安全配置"></a>1.PHP安全配置</h2><h3 id="（1）启动密码策略"><a href="#（1）启动密码策略" class="headerlink" title="（1）启动密码策略"></a>（1）启动密码策略</h3><p><strong>修改 /etc/login.defs来实现</strong></p>
@@ -543,7 +543,7 @@ PASS_MIN_DAYS 1   #修改密码最小间隔为1天
 
 PASS_MIN_LEN 8    #最短密码要求8位
 
-PASS_WARN_AGE 7   #密码过期前7天内通知用户</code></pre><p><img src="C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564475495662.png" alt="1564475495662"></p>
+PASS_WARN_AGE 7   #密码过期前7天内通知用户</code></pre><p><img src="/2019/08/16/第一周：环境准备/C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564475495662.png" alt="1564475495662"></p>
 <h3 id="（2）php-ini参数设置"><a href="#（2）php-ini参数设置" class="headerlink" title="（2）php.ini参数设置"></a><strong>（2）php.ini参数设置</strong></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">disable_functions = passthru,exec,system,chroot,chgrp,chown,shell_exec,proc_open,proc_get_status,ini_alter,ini_restore,dl,openlog,syslog,readlink,symlink,popepassthru,stream_socket_server,fsocket,phpinfo #禁用的函数</span><br><span class="line">expose_php = off  #避免暴露PHP信息</span><br><span class="line">display_errors = off</span><br><span class="line">enable_dl = off</span><br><span class="line">allow_url_include = off</span><br><span class="line"></span><br><span class="line">session.cookie_lifetime=0</span><br><span class="line"># 表示特殊含义，它告知浏览器不要持久化存储 cookie 数据。 也即，关闭浏览器的时候，会话 ID cookie 会被立</span><br><span class="line">#即删除。如果将此项设置为非 0 的值，可能会导致会话 ID 被其他用户使用。大部分应用应该把此项设置为 &quot;0&quot;。</span><br><span class="line"></span><br><span class="line">session.cookie_httponly = 1</span><br><span class="line">#禁止 JavaScript 访问会话 cookie。 此设置项可以保护 cookie 不被 JavaScript 窃取。</span><br><span class="line">#虽然可以使用会话 ID 来作为防范跨站请求伪造（CSRF）的关键数据， 但是不建议你这么做。例如，攻击者可以把 #HTML 源代码保存下来并且发送给其他用户。 为了安全起见，开发者不应该在 web 页面中显示会话 ID。 几乎所有的#应用都应该对会话 ID cookie 设置 httponly 为 On。</span><br><span class="line"></span><br><span class="line">session.hash_function=&quot;sha256&quot;</span><br><span class="line">#（PHP 7.1.0 及更高版本）高强度的哈希算法可以生成更高安全性的会话 ID。 虽然说，即使是采用 MD5 哈希算</span><br><span class="line">#法，要想生成完全一致的哈希结果都是不太现实的， 但是还是建议开发者使用 SHA-2 或者更高强度的哈希算法。比</span><br><span class="line">#如，可以考虑使用 sha384 和 sha512 哈希算法。请确保 entropy 配置项的设置可以满足你所用的哈希算法对种子#长度要求。</span><br><span class="line"></span><br><span class="line">upload_tmp_dir = /tmp</span><br><span class="line">open_basedir = ./:/tmp:/home/wwwroot/</span><br></pre></td></tr></table></figure>
 
 <p><strong>注意：</strong></p>
@@ -560,7 +560,7 @@ PASS_WARN_AGE 7   #密码过期前7天内通知用户</code></pre><p><img src="C
 <p><strong>（4）开启mysql二进制日志，在误删除数据的情况下，可以通过二进制日志恢复到某个时间点</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/my.cnf</span><br><span class="line"></span><br><span class="line">log_bin = mysql-bin</span><br><span class="line"></span><br><span class="line">expire_logs_days = 7</span><br></pre></td></tr></table></figure>
 
-<p><img src="C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564556607206.png" alt="1564556607206"></p>
+<p><img src="/2019/08/16/第一周：环境准备/C:%5CUsers%5C%E9%9F%A6%E6%96%87%E6%9D%B0%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564556607206.png" alt="1564556607206"></p>
 <p><strong>（5）认证和授权</strong></p>
 <p>1) 禁止root账号从网络访问数据库，root账号只允许来自本地主机的登陆。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt;grant all privileges on *.*  to root @localhost identified by &apos;password&apos; with grant option;</span><br><span class="line"></span><br><span class="line">mysql&gt;flush privileges;</span><br></pre></td></tr></table></figure>
@@ -789,17 +789,12 @@ top:50vh;
     
     
     
-    <div class="archive-year"> 2019 </div>
+    <div class="archive-year"> Invalid date </div>
     <ul class="year-list">
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/22</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/第二周：认识sql并学习数据库的基础操作/" >第二周：认识SQL并学习数据库的基础操作</a>
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
         </li>
     
     
@@ -814,6 +809,20 @@ top:50vh;
     
         <li class="archive-post-item">
             <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/16/第一周：环境准备/" >第一周：环境准备</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/第二周：认识sql并学习数据库的基础操作/" >第二周：认识SQL并学习数据库的基础操作</a>
         </li>
     
     </div>
