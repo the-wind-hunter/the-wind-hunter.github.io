@@ -470,13 +470,12 @@ DOM型XSS其实是一种特殊类型的反射型XSS，它是基于DOM文档对�
     <article class="index-post">
         <a class="abstract-title" href = "/2019/10/16/web安全学习之基于dvwa的SQL注入演练(low)/" >
             
-                <span>[Untitled Post]</span>
+                <span>SQL注入练习：基于DVWA的SQL注入演练(low)</span>
         </a>
         <div class="abstract-content">
-            
- title： SQL注入练习：基于DVWA的SQL注入演练(low)1、设置把安全等级先调整为low，让自己获得点信心。
+            1、设置把安全等级先调整为low，让自己获得点信心。
 2、测试和分析页面的功能根据上面的提示，输入用户的id。然后我们输入之后，发现它返回了关于这个user的信息！这里我们输入了“1”。它返回三行数据，一行是我们输入的用户ID。一行是用户名，另外一行是用户别名。同时，看一下浏览器的地址栏那里，发现url成这样了这里有个id=1，是不是就是我们输入的user id呢？再输入“2”，发现url变成了我们发现这里传进去的id的值是我们可以控制的。我们在输入框中输入什么，就会通过id传进去什么！
-3、对参数进行测试对id这个...
+3、对参数进行测试对id这个参数进行测试，查看一下它是否存在sql注入漏洞。我们在输入框里面输入“1...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -1145,7 +1144,7 @@ C...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/10/16/web安全学习之基于dvwa的SQL注入演练(low)/" >[Untitled Post]</a>
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/10/16/web安全学习之基于dvwa的SQL注入演练(low)/" >SQL注入练习：基于DVWA的SQL注入演练(low)</a>
         </li>
     
     
