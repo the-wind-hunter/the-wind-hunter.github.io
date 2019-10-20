@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="jax">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="jax">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content>
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>第十周：各种注入类型的环境搭建和代码编写 · jax&#39;s Studio</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >jax&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">第十周：各种注入类型的环境搭建和代码编写</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>jax's Studio.</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            第十周：各种注入类型的环境搭建和代码编写
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                
+                    <div class="post-intro-read">
+                        <span>Word count: <span class="post-count word-count">2.4k</span>Reading time: <span class="post-count reading-time">10 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/10/20</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h1 id="第十周：各种注入类型的环境搭建和代码编写"><a href="#第十周：各种注入类型的环境搭建和代码编写" class="headerlink" title="第十周：各种注入类型的环境搭建和代码编写"></a>第十周：各种注入类型的环境搭建和代码编写</h1><blockquote>
+<p>日期：2019-10-17</p>
+<p>作者：无风</p>
+</blockquote>
+<h2 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h2><p>​        由于我是个小白，PHP语言处于只看的懂一点点，会写一点点的水平，因此我用一个<strong>html页面+php页面</strong>搭建了一个简陋的sql注入环境。</p>
+<p>麻雀虽小五脏俱全，尽管页面很简陋，但核心的php内容才是重点。这里一共搭建了：</p>
+<p><strong>经典sql注入、盲注、报错注入、宽字节注入</strong></p>
+<p>先在此给出一个通用的html页面：login2.html</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;zh-CN&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;h1&gt; 带回显的注入&lt;/h1&gt;</span><br><span class="line">&lt;form action=&quot;login2.php&quot; method=&quot;post&quot;&gt;</span><br><span class="line">    Please input username &lt;input type=&quot;text&quot; name=&quot;user&quot;&gt;&lt;br&gt;</span><br><span class="line">    Please input password &lt;input type=&quot;password&quot; name=&quot;password&quot;&gt;&lt;br&gt;</span><br><span class="line">    &lt;input type=&quot;submit&quot;&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>数据库用phpstudy的，简单设置了一张表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show tables;</span><br><span class="line">+-----------------+</span><br><span class="line">| Tables_in_login |</span><br><span class="line">+-----------------+</span><br><span class="line">| users           |</span><br><span class="line">+-----------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;  select * from users;</span><br><span class="line">+------+------+----------+-------+</span><br><span class="line">| id   | name | password | grade |</span><br><span class="line">+------+------+----------+-------+</span><br><span class="line">|    1 | root | root     |   100 |</span><br><span class="line">+------+------+----------+-------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x01-经典SQL注入漏洞"><a href="#0x01-经典SQL注入漏洞" class="headerlink" title="0x01 经典SQL注入漏洞"></a>0x01 经典SQL注入漏洞</h2><p>例子是没有任何SQL注入防护措施的PHP程序，它存在SQL注入漏洞。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$userName=<span class="string">'root'</span>;</span><br><span class="line">$passWord=<span class="string">'root'</span>;</span><br><span class="line">$host=<span class="string">'127.0.0.1'</span>;</span><br><span class="line">$dataBase=<span class="string">'login'</span>;</span><br><span class="line"><span class="comment">//创建连接</span></span><br><span class="line">$conn=mysqli_connect($host,$userName,$passWord,$dataBase);</span><br><span class="line"></span><br><span class="line"><span class="comment">//从登录页接受来的数据</span></span><br><span class="line">$name=$_POST[<span class="string">'user'</span>];</span><br><span class="line">$pwd=$_POST[<span class="string">'password'</span>];</span><br><span class="line">$sql=<span class="string">"select id,name,grade from users where name='$name' AND password='$pwd';"</span>;</span><br><span class="line">$result=mysqli_query($conn,$sql);</span><br><span class="line">$row=mysqli_num_rows($result);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (mysqli_num_rows($result) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">while</span>( $row = mysqli_fetch_assoc( $result ) ) &#123;   </span><br><span class="line">        <span class="comment">//mysqli_fetch_assoc()从结果集中取得一行作为关联数组：</span></span><br><span class="line">        $user = $row[<span class="string">"name"</span>];</span><br><span class="line">        $grade= $row[<span class="string">"grade"</span>];</span><br><span class="line">        <span class="keyword">echo</span>  <span class="string">"username: "</span>.$user.<span class="string">"&lt;br /&gt;grade: "</span>.$grade.<span class="string">"&lt;br /&gt;"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"0 result"</span>;</span><br><span class="line">    <span class="keyword">echo</span> mysqli_error($conn);</span><br><span class="line">&#125;</span><br><span class="line">mysqli_close($conn);</span><br></pre></td></tr></table></figure>
+
+<p><strong>注入语句：</strong><code>1&#39; or 1=1 union select null,null,database()#</code></p>
+<h2 id="0x02-不带回显的SQL注入–盲注"><a href="#0x02-不带回显的SQL注入–盲注" class="headerlink" title="0x02 不带回显的SQL注入–盲注"></a>0x02 不带回显的SQL注入–盲注</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$userName=&apos;root&apos;;</span><br><span class="line">$passWord=&apos;root&apos;;</span><br><span class="line">$dataBase=&apos;login&apos;;</span><br><span class="line">$host=&apos;127.0.0.1&apos;;</span><br><span class="line"></span><br><span class="line">//创建连接</span><br><span class="line">$conn=mysqli_connect($host,$userName,$passWord,$dataBase);</span><br><span class="line"></span><br><span class="line">//从登录页接收来的数据</span><br><span class="line">$name=$_POST[&apos;user&apos;];</span><br><span class="line">$passwd=$_POST[&apos;password&apos;];</span><br><span class="line">$sql=&quot;SELECT id,name, grade FROM users WHERE name=&apos;$name&apos; and password=&apos;$passwd&apos; LIMIT 0,1;&quot;;</span><br><span class="line">$result=mysqli_query($conn,$sql);</span><br><span class="line">$row=mysqli_num_rows($result);</span><br><span class="line"></span><br><span class="line">    if($row)</span><br><span class="line">    &#123;</span><br><span class="line">        echo  &quot;TRUE&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123;</span><br><span class="line">        echo &quot;FALSE&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">mysqli_close($conn);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>看到上面的这段php代码，可以看到上面sql语句是存在SQL注入的，但是页面只能返回TRUE和FALSE，TRUE说明我们注入是正确。<strong>在sql注入过程中，sql语句执行的选择后，选择的数据不能回显到前端页面。此时，我们需要利用一些方法进行判断或者尝试，这个过程称之为盲注。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1&apos; or length(database())=4#   返回ERROR</span><br><span class="line">1&apos; or length(database())=5#   返回TRUE</span><br><span class="line">可以得知数据库名字长度为5</span><br><span class="line">1&apos; or ascii(substr(database(),1,1))&gt;97# 返回TRUE</span><br><span class="line">1&apos; or ascii(substr(database(),1,1))&gt;100# 返回TRUE</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">1&apos; or ascii(substr(database(),1,1))&gt;107# 返回TRUE</span><br><span class="line">1&apos; or ascii(substr(database(),1,1))&gt;108# 返回ERROR</span><br><span class="line">得知第一个字母的ascii的值为108</span><br></pre></td></tr></table></figure>
+
+<p>盲注分为三类：</p>
+<p>•基于布尔SQL盲注</p>
+<p>•基于时间的SQL盲注</p>
+<p>•基于报错的SQL盲注</p>
+<p> <a href="https://blog.csdn.net/weixin_41657031/article/details/95671855" target="_blank" rel="noopener">sql盲注参考文章</a></p>
+<h2 id="0x03-报错注入"><a href="#0x03-报错注入" class="headerlink" title="0x03 报错注入"></a>0x03 报错注入</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$userName=&apos;root&apos;;</span><br><span class="line">$passWord=&apos;root&apos;;</span><br><span class="line">$dataBase=&apos;login&apos;;</span><br><span class="line">$host=&apos;127.0.0.1&apos;;</span><br><span class="line"></span><br><span class="line">//创建连接</span><br><span class="line">$conn=mysqli_connect($host,$userName,$passWord,$dataBase);</span><br><span class="line"></span><br><span class="line">//从登录页接收来的数据</span><br><span class="line">$name=$_POST[&apos;user&apos;];</span><br><span class="line">$passwd=$_POST[&apos;password&apos;];</span><br><span class="line">$sql=&quot;SELECT id,name, grade FROM users WHERE name=&apos;$name&apos; and password=&apos;$passwd&apos; LIMIT 0,1;&quot;;</span><br><span class="line">$result=mysqli_query($conn,$sql);</span><br><span class="line">$row = mysqli_fetch_array($result);</span><br><span class="line"></span><br><span class="line">    if($row)</span><br><span class="line">    &#123;</span><br><span class="line">            echo  &quot; &quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123;</span><br><span class="line">        print_r(mysqli_error($conn));</span><br><span class="line">    &#125;</span><br><span class="line">mysqli_close($conn);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1&apos; and updatexml(1,concat(0x7e,version(),0x7e),1)#</span><br><span class="line">返回XPATH syntax error: &apos;~5.5.53~&apos;</span><br></pre></td></tr></table></figure>
+
+<p><strong>报错注入：</strong>编写报错注入的代码，并对响应服务器配置来满足条件，并测试代码是否正常。</p>
+<p><strong>形成原因：</strong>报错注入的原因是<code>mysql_error</code>这个函数导致的，作用是返回上一个mysql操作产生的文本错误信息。</p>
+<p> <strong>报错注入的前提：</strong>页面上没有显示位，但是有sql语句执行错误信息输出 </p>
+<p><img src="/2019/10/20/第十周-各种注入类型的环境搭建和代码编写/E:%5CTypora%5Cten%5C201903031729047.png" alt="img"></p>
+<p><a href="https://www.cnblogs.com/laoxiajiadeyun/p/10488731.html" target="_blank" rel="noopener">sql报错注入：extractvalue、updatexml报错原理</a></p>
+<p><a href="https://blog.csdn.net/weixin_41657031/article/details/102616062" target="_blank" rel="noopener">报错注入参考（在Less-5)</a></p>
+<h2 id="0x04-宽字节注入"><a href="#0x04-宽字节注入" class="headerlink" title="0x04 宽字节注入"></a>0x04 宽字节注入</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$userName=&apos;root&apos;;</span><br><span class="line">$passWord=&apos;root&apos;;</span><br><span class="line">$dataBase=&apos;login&apos;;</span><br><span class="line">$host=&apos;127.0.0.1&apos;;</span><br><span class="line"></span><br><span class="line">//创建连接</span><br><span class="line">$conn=mysqli_connect($host,$userName,$passWord,$dataBase);</span><br><span class="line"></span><br><span class="line">//从登录页接收来的数据</span><br><span class="line">if(isset($_GET[&apos;name&apos;])) &#123;</span><br><span class="line">    $name= addslashes($_GET[&apos;name&apos;]);//过滤敏感字符</span><br><span class="line">    $sql = &quot;SELECT id,name, grade FROM users WHERE name=&apos;$name&apos;&quot;;</span><br><span class="line">    echo &quot;SELECT id,name, grade FROM users WHERE name=&apos;$name&apos;&lt;br/&gt;&quot;;</span><br><span class="line">    mysqli_query($conn, &quot;SET NAMES &apos;gbk&apos;&quot;);</span><br><span class="line">    $result = mysqli_query($conn, $sql);</span><br><span class="line">    $row = mysqli_fetch_array($result);</span><br><span class="line"></span><br><span class="line">    if ($row) &#123;</span><br><span class="line">        echo &apos;Your Login name:&apos; . $row[&apos;name&apos;];</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        echo &apos;ERROR&lt;br/&gt;&apos;;</span><br><span class="line">        print_r(mysqli_error($conn));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">else</span><br><span class="line">    echo &quot;please input the ID as parameter with numeric value&quot;;</span><br><span class="line"></span><br><span class="line">mysqli_close($conn);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>由于宽字节注入的一些细节我还是没搞明白，在这里只做了一个最简陋的宽字节注入。</strong></p>
+<p>本来想把页面设计成前面几个那样，但好像要用GET方法，才能对payload进行URLcode编码（但这好像与gbk无关），还有很多不懂的地方需要继续学习。</p>
+<p><strong>payload：</strong></p>
+<p><code>http://127.0.0.1/project1/login2/login_wide.php?name=1%df&#39; or 1=1%23</code></p>
+<p>addslashes函数将<code>&#39;</code>转义成<code>\&#39;</code>,即<code>%5c%27</code>  加入<code>%df</code>后成<code>%df%5c%27</code>,其中为一个汉字，使得<code>&#39;</code>逃逸出来。</p>
+<h3 id="宽字节注入漏洞原理"><a href="#宽字节注入漏洞原理" class="headerlink" title="宽字节注入漏洞原理"></a>宽字节注入漏洞原理</h3><p>（以下内容参考自<a href="https://msd.misuland.com/pd/2884250068896974820）" target="_blank" rel="noopener">https://msd.misuland.com/pd/2884250068896974820）</a></p>
+<p><strong>字符集</strong></p>
+<p>在了解宽字节注入之前，我们先来看一看字符集是什么。字符集也叫字符编码，是一种将符号转换为二进制数的映射关系。 几种常见的字符集：</p>
+<ul>
+<li><code>ASCII</code>编码：单字节编码</li>
+<li><code>latin1</code>编码：单字节编码</li>
+<li><code>gbk</code>编码：使用一字节和双字节编码，<code>0x00-0x7F</code>范围内是一位，和 ASCII 保持一致。双字节的第一字节范围是<code>0x81-0xFE</code></li>
+<li><code>UTF-8</code>编码：使用一至四字节编码，<code>0x00–0x7F</code>范围内是一位，和 ASCII 保持一致。其它字符用二至四个字节变长表示。</li>
+</ul>
+<p>宽字节就是两个以上的字节，宽字节注入产生的原因就是各种字符编码的不当操作，使得攻击者可以通过宽字节编码绕过SQL注入防御。</p>
+<p><strong>MySQL字符转换</strong></p>
+<p>数据提交到MySQL<a href="http://msd.misuland.com/pd/3181438578597040352" target="_blank" rel="noopener">数据库</a>，需要进行字符集的转换，使得MySQL数据库可以对数据进行处理，这一过程一般有以下三个步骤：</p>
+<ol>
+<li>收到请求，将请求数据从 <code>character_set_client</code> -&gt;<code>character_set_connection</code>。</li>
+<li>内部操作，将数据从<code>character_set_connection</code>-&gt; <code>表创建的字符集</code>。</li>
+<li>结果输出，将数据从<code>表创建的字符集</code> -&gt; <code>character_set_results</code>。</li>
+</ol>
+<p>当执行<code>set names &quot;charset&quot;</code>，相当于执行<code>set character_set_client = charset``set character_set_connection = charset``set character_set_results = charset</code></p>
+<p>client 指的是PHP程序 connection 指的是PHP客户端与MySQL<a href="http://msd.misuland.com/pd/3181438578597040162" target="_blank" rel="noopener">服务器</a>之间连接层 results 指的是MySQL服务器返回给PHP客户端的结果</p>
+<p>MySQL常见的乱码问题就是这三个字符集的设置不当所引起的。</p>
+<h3 id="普通注入"><a href="#普通注入" class="headerlink" title="普通注入"></a>普通注入</h3><p>当用户提交<code>http://127.0.0.1/Less-32/?id=1&#39;</code> 此时，发生如下转换 </p>
+<p><strong>第一步</strong>：<code>&#39;</code>被 <code>check_addslashes</code> 函数转义为 <code>\&#39;</code></p>
+<p><strong>第二步</strong>：在执行sql查询之前，也即<code>\&#39;</code>代入MySQL服务器之前，<code>mysql_query(&quot;SET NAMES gbk&quot;);</code>将MySQL的三个字符集设置为 gbk 编码</p>
+<p><strong>第三步</strong>：<code>character_set_client</code>告诉<code>MySQL Server</code>，传入的是gbk编码，也就是<code>\&#39;</code>被当做了<code>%5C%27</code>传入</p>
+<p><strong>第四步</strong>：<code>character_set_client</code> -&gt; <code>character_set_connection</code>编码完全一致，数据没有做任何转换，所以输入是<code>%5C%27</code>，输出的是<code>%5C%27</code></p>
+<p><strong>第五步</strong>：<code>character_set_connection</code>-&gt; <code>table charset</code></p>
+<p>可以看到<code>id</code>参数没有设置编码方式，不会对<code>%5C%27</code>进行处理。在这里MySQL服务器将查询语句执行，并返回结果。 执行的SQL语句为：<code>$sql=&quot;SELECT * FROM users WHERE id=&#39;1\&#39;&#39; LIMIT 0,1&quot;;``&#39;</code>被转义无法进行注入</p>
+<p><strong>第六步：</strong><code>table charset</code> -&gt; <code>character_set_results</code>由于<code>character_set_results</code>字符集也设定为 gbk ，保证了输出内容没有乱码。</p>
+<p>通过上面的分析，我们发现用户提交的数据实际上只被处理了两次，一次是<code>check_addslashes</code>对危险字符的处理，另一次是<code>gbk</code>编码。所以，我们可以将以上步骤简化为：</p>
+<p>数据 ==== (check_addslashes)====XXX====(GBK)====代入数据库执行的内容</p>
+<h3 id="宽字节注入"><a href="#宽字节注入" class="headerlink" title="宽字节注入"></a>宽字节注入</h3><p>提交：<code>http://127.0.0.1/Less-32/?id=1%df&#39;</code>(<code>&#39;</code><a href="http://msd.misuland.com/pd/3181438578597038824" target="_blank" rel="noopener">浏览器</a>自动进行url编码<code>%27</code>) 根据以上分析，发生如下转换：<code>%df%27</code>====&gt;(check_addslashes)====&gt;<code>%df%5c%27</code>====&gt;(GBK)====&gt;<code>運&#39;</code> MySQL执行的语句为：<code>$sql=&quot;SELECT * FROM users WHERE id=&#39;1運&#39;&#39; LIMIT 0,1&quot;;</code>成功将单引号闭合，可以进行SQL注入。</p>
+<h3 id="宽字节注入2-0"><a href="#宽字节注入2-0" class="headerlink" title="宽字节注入2.0"></a>宽字节注入2.0</h3><p>为了避免漏洞，网站一般会设置UTF-8编码，然后进行转义过滤。但是由于一些不经意的字符集转换，又会导致漏洞。 使用<code>set names UTF-8</code>指定了UTF-8字符集，并且也使用转义函数进行转义。有时候，为了避免乱码，会将一些用户提交的GBK字符使用<code>iconv</code>函数先转为UTF-8，然后再拼接入SQL语句。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql_query(“set names UTF-8”) ;  </span><br><span class="line">$bar =iconv(“GBK”,”UTF-8”, addslashes($_GET[‘’bar])) ;</span><br></pre></td></tr></table></figure>
+
+<p>提交：<code>http://127.0.0.1/Less-32/?id=1%e5%5c%27</code> 转换：（<code>%e5%5c</code>转为UTF-8为<code>e9%8c%a6</code>）<code>%e5%5c%27</code>====&gt;(addslashes)====&gt;<code>%e5%5c%5c%5c%27</code>====(iconv)====&gt;<code>%e9%8c%a6%5c%5c%27</code> 可以看到，多出了一个<code>%5c</code>，将转义符（反斜杠）本身转义，使得后面的<code>%27</code>单引号发挥了作用</p>
+<p><a href="https://www.jianshu.com/p/e3c5233a3c42" target="_blank" rel="noopener">php宽字节注入</a></p>
+<p><a href="https://blog.csdn.net/weixin_41657031/article/details/102616062" target="_blank" rel="noopener">宽字节注入参考 （在Less-5）</a></p>
+<p><a href="https://msd.misuland.com/pd/2884250068896974820" target="_blank" rel="noopener">参考文章</a></p>
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>Author：<a href="https://the-wind-hunter.github.io">jax</a>
+            <p>原文链接：<a href="https://the-wind-hunter.github.io/2019/10/20/第十周-各种注入类型的环境搭建和代码编写/">https://the-wind-hunter.github.io/2019/10/20/第十周-各种注入类型的环境搭建和代码编写/</a>
+            <p>发表日期：<a href="https://the-wind-hunter.github.io/2019/10/20/第十周-各种注入类型的环境搭建和代码编写/">October 20th 2019, 7:16:32 pm</a>
+            <p>更新日期：<a href="https://the-wind-hunter.github.io/2019/10/20/第十周-各种注入类型的环境搭建和代码编写/">October 20th 2019, 7:30:37 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2019/10/17/sqlmap使用的简单介绍（基于dvwa讲解）/" title= "sqlmap使用的简单介绍（基于dvwa讲解）">
+                    <div class="prevTitle">sqlmap使用的简单介绍（基于dvwa讲解）</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:2509594439@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/the-wind-hunter" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#第十周：各种注入类型的环境搭建和代码编写"><span class="toc-number">1.</span> <span class="toc-text">第十周：各种注入类型的环境搭建和代码编写</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-前言"><span class="toc-number">1.1.</span> <span class="toc-text">0x00 前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-经典SQL注入漏洞"><span class="toc-number">1.2.</span> <span class="toc-text">0x01 经典SQL注入漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-不带回显的SQL注入–盲注"><span class="toc-number">1.3.</span> <span class="toc-text">0x02 不带回显的SQL注入–盲注</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-报错注入"><span class="toc-number">1.4.</span> <span class="toc-text">0x03 报错注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x04-宽字节注入"><span class="toc-number">1.5.</span> <span class="toc-text">0x04 宽字节注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#宽字节注入漏洞原理"><span class="toc-number">1.5.1.</span> <span class="toc-text">宽字节注入漏洞原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#普通注入"><span class="toc-number">1.5.2.</span> <span class="toc-text">普通注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#宽字节注入"><span class="toc-number">1.5.3.</span> <span class="toc-text">宽字节注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#宽字节注入2-0"><span class="toc-number">1.5.4.</span> <span class="toc-text">宽字节注入2.0</span></a></li></ol></li></ol></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 18
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/20</span><a class="archive-post-title" href= "/2019/10/20/第十周-各种注入类型的环境搭建和代码编写/" >第十周：各种注入类型的环境搭建和代码编写</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/17</span><a class="archive-post-title" href= "/2019/10/17/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/Web安全学习之——基于dvwa的XSS Reflecte）学习教程/" >Web安全学习之——基于dvwa的XSS (Reflecte）学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/oneinstack-建站/" >oneinstack 建站</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/Web安全学习之——基于dvwa的XSS (DOM）学习教程/" >Web安全学习之——基于dvwa的XSS (DOM）学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/Web配置本地yum源-Linux安全/" >We配置本地yum源-Linux安全</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/29</span><a class="archive-post-title" href= "/2019/09/29/第九周：web-页面解析的流程学习/" >第九周：web 页面解析的流程学习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/第二周：认识sql并学习数据库的基础操作/" >第二周：认识SQL并学习数据库的基础操作</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/29/MySQL用户管理：添加用户、授权、删除用户/" >MySQL用户管理：添加用户、授权、删除用户</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/16/第一周：环境准备/" >第一周：环境准备</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/10/17/sqlmap使用的简单介绍（基于dvwa讲解）/" >sqlmap使用的简单介绍（基于dvwa讲解）</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/10/16/web安全学习之基于dvwa的SQL注入演练(low)/" >SQL注入练习：基于DVWA的SQL注入演练(low)</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/10/16/Web安全学习之——基于dvwa的XSS Stored）学习教程/" >Web安全学习之——基于dvwa的XSS (Stored）学习教程</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/19</span><a class="archive-post-title" href= "/2019/09/19/第六周：数据库相关注入语句的收集和学习/" >第六周：数据库相关注入语句的收集和学习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/05</span><a class="archive-post-title" href= "/2019/09/05/第四周-数据库系统功能相关学习/" >第四周-数据库系统功能相关学习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/Windows 上安装 MySQL/" >Windows 上安装 MySQL</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/hexo-github博客搭建/" >hexo+github博客搭建</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "jax"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+
