@@ -346,21 +346,38 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/10/web安全学习之基于dvwa的SQL注入演练(low)/" >
+        <a class="abstract-title" href = "/2019/08/11/Web安全学习之——基于dvwa的XSS Stored）学习教程/" >
             
-                <span>SQL注入练习：基于DVWA的SQL注入演练(low)</span>
+                <span>Web安全学习之——基于dvwa的XSS (Stored）学习教程</span>
         </a>
         <div class="abstract-content">
-            1、设置把安全等级先调整为low，让自己获得点信心。
-2、测试和分析页面的功能根据上面的提示，输入用户的id。然后我们输入之后，发现它返回了关于这个user的信息！这里我们输入了“1”。它返回三行数据，一行是我们输入的用户ID。一行是用户名，另外一行是用户别名。同时，看一下浏览器的地址栏那里，发现url成这样了这里有个id=1，是不是就是我们输入的user id呢？再输入“2”，发现url变成了我们发现这里传进去的id的值是我们可以控制的。我们在输入框中输入什么，就会通过id传进去什么！
-3、对参数进行测试对id这个参数进行测试，查看一下它是否存在sql注入漏洞。我们在输入框里面输入“1...
+            1.什么是XSS(stored)?  存储型XSS，持久化，代码是存储在服务器中的，如在个人信息或发表文章等地方，加入代码，如果没有过滤或过滤不严，那么这些代码将储存到服务器中，用户访问该页面的时候触发代码执行。这种XSS比较危险，容易造成蠕虫，盗窃cookie等
+例子：
+
+发一篇文章，里面包含了恶意脚本
+
+1今天和女朋友出去约会了，心情不错&lt;script&gt;alert(&apos;handsome boy&apos;)&lt;/script&gt;
+
+
+后端没有对文章进行过滤，直接保存文章内容到数据库。
+
+当其他人看这篇文章的时候，包含的恶意脚本就会执行。
+
+
+注：因为大部分...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/10</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/11</span>
             </div>
             <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "XSS学习">XSS学习</a>
+    
+</div>
             
         </div>
     </article>
@@ -821,16 +838,6 @@
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     <div class="total-and-search">
         <div class="total-archive">
         Total : 23
@@ -864,6 +871,11 @@
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/第十三周-web安全之手工测试之前编写的注入环境/" >web安全之手工测试之前编写的注入环境</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/20</span><a class="archive-post-title" href= "/2019/10/20/第十周-各种注入类型的环境搭建和代码编写/" >第十周：各种注入类型的环境搭建和代码编写</a>
         </li>
     
@@ -874,12 +886,12 @@
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/233/" >just a test23333333</a>
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/Web配置本地yum源-Linux安全/" >We配置本地yum源-Linux安全</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/Web配置本地yum源-Linux安全/" >We配置本地yum源-Linux安全</a>
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/233/" >just a test23333333</a>
         </li>
     
     
@@ -908,33 +920,31 @@
         </li>
     
     
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/16/第一周：环境准备/" >第一周：环境准备</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
         <li class="archive-post-item">
             <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/Windows 上安装 MySQL/" >Windows 上安装 MySQL</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/hexo-github博客搭建/" >hexo+github博客搭建</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/17</span><a class="archive-post-title" href= "/2019/08/17/sqlmap使用的简单介绍（基于dvwa讲解）/" >sqlmap使用的简单介绍（基于dvwa讲解）</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/第二周：认识sql并学习数据库的基础操作/" >第二周：认识SQL并学习数据库的基础操作</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/11</span><a class="archive-post-title" href= "/2019/08/11/Web安全学习之——基于dvwa的XSS Stored）学习教程/" >Web安全学习之——基于dvwa的XSS (Stored）学习教程</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/web安全学习之——基于dvwa的SQL注入演练(low)/" >SQL注入练习：基于DVWA的SQL注入演练(low)</a>
         </li>
     
     
@@ -971,26 +981,32 @@
     
         </ul>
     
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/16/第一周：环境准备/" >第一周：环境准备</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/web安全学习之基于dvwa的SQL注入演练(low)/" >SQL注入练习：基于DVWA的SQL注入演练(low)</a>
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/hexo-github博客搭建/" >hexo+github博客搭建</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/17</span><a class="archive-post-title" href= "/2019/08/17/sqlmap使用的简单介绍（基于dvwa讲解）/" >sqlmap使用的简单介绍（基于dvwa讲解）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/第二周：认识sql并学习数据库的基础操作/" >第二周：认识SQL并学习数据库的基础操作</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/11</span><a class="archive-post-title" href= "/2019/08/11/Web安全学习之——基于dvwa的XSS Stored）学习教程/" >Web安全学习之——基于dvwa的XSS (Stored）学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/web安全学习之——基于dvwa的SQL注入演练(low)/" >SQL注入练习：基于DVWA的SQL注入演练(low)</a>
         </li>
     
     
@@ -1010,6 +1026,8 @@
         <span class="sidebar-tag-name" data-tags="CSRF"><span class="iconfont-archer">&#xe606;</span>CSRF</span>
     
         <span class="sidebar-tag-name" data-tags="SQL注入"><span class="iconfont-archer">&#xe606;</span>SQL注入</span>
+    
+        <span class="sidebar-tag-name" data-tags="Web安全"><span class="iconfont-archer">&#xe606;</span>Web安全</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
