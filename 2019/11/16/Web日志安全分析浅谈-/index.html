@@ -264,6 +264,12 @@ height:50vh;
             <div class="post-intros">
                 <!-- 文章页标签  -->
                 
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "日志分析">日志分析</a>
+    
+</div>
+                
                 
                     <div class="post-intro-read">
                         <span>字数统计: <span class="post-count word-count">9.3k</span>阅读时长: <span class="post-count reading-time">32 min</span></span>
@@ -400,12 +406,12 @@ height:50vh;
 <p><strong>简而言之日志分析最直接明显的两个目的，一为网站安全自检查，了解服务器上正在发生的安全事件，二为应急事件中的分析取证。</strong></p>
 <h1 id="0x01-如何进行日志分析"><a href="#0x01-如何进行日志分析" class="headerlink" title="0x01  如何进行日志分析"></a>0x01  如何进行日志分析</h1><h2 id="了解Web服务器中产生的日志"><a href="#了解Web服务器中产生的日志" class="headerlink" title="了解Web服务器中产生的日志"></a>了解Web服务器中产生的日志</h2><p>在说如何进行分析之前，我们先来了解一下Web服务器中产生的日志是什么样子</p>
 <p><strong>以Nginx容器为例：</strong></p>
-<p><img src="/2019/11/16/Web日志安全分析浅谈/fxmkhuydtj.jpeg" alt="img"></p>
+<p><img src="/2019/11/16/Web日志安全分析浅谈-/fxmkhuydtj.jpeg" alt="img"></p>
 <p><strong>随机抽取一条日志：</strong></p>
 <p>61.144.119.65 - - [29/May/2017:22:01:32 +0800] “GET /page/1 HTTP/1.1” 200 6403 “<a href="http://www.baidu.com&quot;" target="_blank" rel="noopener">http://www.baidu.com&quot;</a> “Scrapy/1.1.2 (+<a href="http://scrapy.org)&quot;" target="_blank" rel="noopener">http://scrapy.org)&quot;</a></p>
 <p>作为Web开发或者运维人员，可能对图中的日志信息比较熟悉，如果对日志不那么熟悉也没关系，我们可以查看Nginx中关于日志格式的配置</p>
 <p><strong>查看nginx.conf配置文件：</strong></p>
-<p><img src="/2019/11/16/Web日志安全分析浅谈/tom073pogd.jpeg" alt="img"></p>
+<p><img src="/2019/11/16/Web日志安全分析浅谈-/tom073pogd.jpeg" alt="img"></p>
 <p><strong>可以看到日志格式为：</strong></p>
 <p>$remote_addr - $remote_user [$time_local] “$request” ‘</p>
 <p>$status $body_bytes_sent “$http_referer” ‘</p>
@@ -416,7 +422,7 @@ height:50vh;
 <p>客户端信息 客户端代理IP</p>
 <p>通过以上信息，我们可以得知服务器会记录来自客户端的每一个请求，其中有大量来自正常用户的请求，当然也包括来自恶意攻击者的请求，那么我们如何区分正常请求和恶意攻击请求呢？</p>
 <h2 id="区分正常请求和恶意攻击"><a href="#区分正常请求和恶意攻击" class="headerlink" title="区分正常请求和恶意攻击"></a>区分正常请求和恶意攻击</h2><p>站在攻击者的角度，攻击者对网站进行渗透时，其中包含大量的<strong>扫描请求</strong>和<strong>执行恶意操作</strong>的请求，而这两者在日志中都有各自的特征，如扫描请求会访问大量不存在的地址，在日志中体现则为大量的响应状态码为404，而不同的恶意请求都有各自相应的特征，如当有人对服务器进行SQL注入漏洞探测时：</p>
-<p><img src="/2019/11/16/Web日志安全分析浅谈/0bujiqlqj1.jpeg" alt="img"></p>
+<p><img src="/2019/11/16/Web日志安全分析浅谈-/0bujiqlqj1.jpeg" alt="img"></p>
 <p>(图中以”select”为关键字进行过滤)</p>
 <p>聪明的你肯定想到了，如果此时加上时间条件，状态码等条件就能查询到最近可能成功的SQL注入攻击了，当然实际情况中，仅仅只依靠状态码来判断攻击是否成功是不可行的，因为很多时候请求的确成功了，但并不能代表攻击也成功了，如请求一个静态页面或者图片，会产生这样一个请求:</p>
 <p><code>/logo.png?attack=test&#39;;select/**/1/**/from/**/1</code></p>
@@ -452,9 +458,9 @@ height:50vh;
 <p><strong>…</strong></p>
 <h1 id="0x03-日志分析工程化之路（实践篇）"><a href="#0x03-日志分析工程化之路（实践篇）" class="headerlink" title="0x03  日志分析工程化之路（实践篇）"></a>0x03  日志分析工程化之路（实践篇）</h1><h2 id="1-首先确认日志结构"><a href="#1-首先确认日志结构" class="headerlink" title="1.首先确认日志结构"></a>1.首先确认日志结构</h2><p>我在Mysql中建立了如下结构的一张表来存储日志：</p>
 <p><strong>日志字段    请求时间    服务器名称    客户端IP    请求方法    请求资源    服务器端口    服务器IP    浏览器信息    响应状态码    请求来源    响应长度    请求协议</strong></p>
-<p><img src="/2019/11/16/Web日志安全分析浅谈/c01ftbphb0-1573908020593.jpeg" alt="img"></p>
+<p><img src="/2019/11/16/Web日志安全分析浅谈-/c01ftbphb0-1573908020593.jpeg" alt="img"></p>
 <h2 id="2-给Web攻击进行分类"><a href="#2-给Web攻击进行分类" class="headerlink" title="2.给Web攻击进行分类"></a>2.给Web攻击进行分类</h2><p><strong>攻击类型表    攻击类型名称    危险等级    攻击/扫描</strong></p>
-<p><img src="/2019/11/16/Web日志安全分析浅谈/02v09f0051.jpeg" alt="img"></p>
+<p><img src="/2019/11/16/Web日志安全分析浅谈-/02v09f0051.jpeg" alt="img"></p>
 <h2 id="3-建立攻击规则表对应不同的攻击类型"><a href="#3-建立攻击规则表对应不同的攻击类型" class="headerlink" title="3.建立攻击规则表对应不同的攻击类型"></a>3.建立攻击规则表对应不同的攻击类型</h2><p><strong>攻击规则表    攻击规则正则表达式    攻击发生的位置    攻击规则对应的攻击类型ID</strong></p>
 <p>此时不得不说一下当时日志是怎么入库的，不知道大家是否知道awk命令</p>
 <p>echo “aa bb cc”  awk -F ‘’</p>
@@ -463,18 +469,18 @@ height:50vh;
 <p>扯回正题，当我们入库完毕后有了这么三张数据表，聪明的童鞋可能已经知道下一步要干什么的，那就是拿着安全规则正则表达式去逐条匹配日志表里面的日志</p>
 <p><strong>然后得到结果：</strong></p>
 <p><strong>攻击日志ID    攻击类型ID    攻击规则ID</strong></p>
-<p><img src="/2019/11/16/Web日志安全分析浅谈/qbwed4t325.jpeg" alt="img"></p>
+<p><img src="/2019/11/16/Web日志安全分析浅谈-/qbwed4t325.jpeg" alt="img"></p>
 <p>最后我们只需要写SQL语句，就能轻松统计各个攻击类型都分别有多少攻击请求了</p>
 <p>如图：</p>
-<p><img src="/2019/11/16/Web日志安全分析浅谈/t5fswcuyhu.jpeg" alt="img"></p>
+<p><img src="/2019/11/16/Web日志安全分析浅谈-/t5fswcuyhu.jpeg" alt="img"></p>
 <p>最后我们思考了从各个角度来进行查询，得到了如下以下列表中的结果：<br><strong>网站受攻击次数排名    网站高危请求排名    网站攻击者数量排名    网站受攻击页面排名    可疑文件排行    被攻击时间统计    攻击来源分布    高危攻击者排行    攻击者攻击次数排行    网站危险系数排行    攻击者数量统计    各站点攻击者数量统计    各扫描器占比    使用扫描器攻击者统计</strong></p>
 <p>由于这是一次针对多个(70+)站点的分析，所以只需突显安全趋势即可，在此次日志分析中，还并未涉及到溯源取证</p>
 <p>记得当时我们是用SQL语句查询出结果，然后将数据填入Execl，然后进行图标生成，整个日志分析的过程，从日志原文件到入库到匹配到统计到出数据最后到Execl出统计图表基本都需要人工参与</p>
 <p>对了，上几张图瞧瞧吧</p>
-<p><img src="/2019/11/16/Web日志安全分析浅谈/gs8aa260mz.jpeg" alt="img"></p>
-<p><img src="/2019/11/16/Web日志安全分析浅谈/f7vvddhmus.jpeg" alt="img"></p>
-<p><img src="/2019/11/16/Web日志安全分析浅谈/2ivg9vn4lh.jpeg" alt="img"></p>
-<p><img src="/2019/11/16/Web日志安全分析浅谈/dbktujc6a2.jpeg" alt="img"></p>
+<p><img src="/2019/11/16/Web日志安全分析浅谈-/gs8aa260mz.jpeg" alt="img"></p>
+<p><img src="/2019/11/16/Web日志安全分析浅谈-/f7vvddhmus.jpeg" alt="img"></p>
+<p><img src="/2019/11/16/Web日志安全分析浅谈-/2ivg9vn4lh.jpeg" alt="img"></p>
+<p><img src="/2019/11/16/Web日志安全分析浅谈-/dbktujc6a2.jpeg" alt="img"></p>
 <p>（篇幅原因，其他统计图不贴上来了）</p>
 <p>可以看出，我们仅仅只是采用了一些安全攻击规则来对日志进行匹配就已经得到了不错的结果，虽然整个过程有点漫长，但是得到的<strong>这一份日志分析报告是具有实际意义和价值的，它可以帮我们发现哪些站点受到的攻击行为最多，那一类攻击最为频繁，哪些站点风险系数较高，网站管理和运维人员可以通过这份报告，来着重检查危险系数较高的请求和危险系数较高的站点，从而大大提高效率。</strong></p>
 <p>但是日志分析工(lan)程(duo)化(hua)之路到此结束了吗？不，远远没有</p>
@@ -485,21 +491,21 @@ height:50vh;
 <p>因为它开源、免费、高可配，所以是很多初创企业作为日志分析使用率最高的日志分析平台</p>
 <p>当理清楚ELK的搭建方式和使用流程后，我们用ELK实现了一遍第五节中的日志分析</p>
 <h2 id="用ELK实现了一遍第五节中的日志分析"><a href="#用ELK实现了一遍第五节中的日志分析" class="headerlink" title="用ELK实现了一遍第五节中的日志分析"></a>用ELK实现了一遍第五节中的日志分析</h2><p>流程大概如下：</p>
-<h3 id="1-编写Logstash配置文件"><a href="#1-编写Logstash配置文件" class="headerlink" title="1.编写Logstash配置文件"></a>1.编写Logstash配置文件</h3><p><img src="/2019/11/16/Web日志安全分析浅谈/mzxboibunn.jpeg" alt="img"></p>
-<h3 id="2-将攻击规则应用于logstash的filter插件"><a href="#2-将攻击规则应用于logstash的filter插件" class="headerlink" title="2.将攻击规则应用于logstash的filter插件"></a>2.将攻击规则应用于logstash的filter插件</h3><p><img src="/2019/11/16/Web日志安全分析浅谈/8hekp3cskp.jpeg" alt="img"></p>
-<h3 id="3-利用载入了安全分析插件后的logstash进行日志导入"><a href="#3-利用载入了安全分析插件后的logstash进行日志导入" class="headerlink" title="3.利用载入了安全分析插件后的logstash进行日志导入"></a>3.利用载入了安全分析插件后的logstash进行日志导入</h3><p><img src="/2019/11/16/Web日志安全分析浅谈/j7i2il4dx4.jpeg" alt="img"></p>
-<h3 id="4-查询分析结果"><a href="#4-查询分析结果" class="headerlink" title="4.查询分析结果"></a>4.查询分析结果</h3><p><img src="/2019/11/16/Web日志安全分析浅谈/3s88l1y89a.jpeg" alt="img"></p>
-<p><img src="/2019/11/16/Web日志安全分析浅谈/dji8v1jx9u.jpeg" alt="img"></p>
-<h3 id="5-利用Kibana进行统计、可视化"><a href="#5-利用Kibana进行统计、可视化" class="headerlink" title="5.利用Kibana进行统计、可视化"></a>5.利用Kibana进行统计、可视化</h3><p><img src="/2019/11/16/Web日志安全分析浅谈/tzs6n1gg5p.jpeg" alt="img"></p>
-<p><img src="/2019/11/16/Web日志安全分析浅谈/m80m8oz3wv.jpeg" alt="img"></p>
-<p><img src="/2019/11/16/Web日志安全分析浅谈/3klwkp6qfq.jpeg" alt="img"></p>
+<h3 id="1-编写Logstash配置文件"><a href="#1-编写Logstash配置文件" class="headerlink" title="1.编写Logstash配置文件"></a>1.编写Logstash配置文件</h3><p><img src="/2019/11/16/Web日志安全分析浅谈-/mzxboibunn.jpeg" alt="img"></p>
+<h3 id="2-将攻击规则应用于logstash的filter插件"><a href="#2-将攻击规则应用于logstash的filter插件" class="headerlink" title="2.将攻击规则应用于logstash的filter插件"></a>2.将攻击规则应用于logstash的filter插件</h3><p><img src="/2019/11/16/Web日志安全分析浅谈-/8hekp3cskp.jpeg" alt="img"></p>
+<h3 id="3-利用载入了安全分析插件后的logstash进行日志导入"><a href="#3-利用载入了安全分析插件后的logstash进行日志导入" class="headerlink" title="3.利用载入了安全分析插件后的logstash进行日志导入"></a>3.利用载入了安全分析插件后的logstash进行日志导入</h3><p><img src="/2019/11/16/Web日志安全分析浅谈-/j7i2il4dx4.jpeg" alt="img"></p>
+<h3 id="4-查询分析结果"><a href="#4-查询分析结果" class="headerlink" title="4.查询分析结果"></a>4.查询分析结果</h3><p><img src="/2019/11/16/Web日志安全分析浅谈-/3s88l1y89a.jpeg" alt="img"></p>
+<p><img src="/2019/11/16/Web日志安全分析浅谈-/dji8v1jx9u.jpeg" alt="img"></p>
+<h3 id="5-利用Kibana进行统计、可视化"><a href="#5-利用Kibana进行统计、可视化" class="headerlink" title="5.利用Kibana进行统计、可视化"></a>5.利用Kibana进行统计、可视化</h3><p><img src="/2019/11/16/Web日志安全分析浅谈-/tzs6n1gg5p.jpeg" alt="img"></p>
+<p><img src="/2019/11/16/Web日志安全分析浅谈-/m80m8oz3wv.jpeg" alt="img"></p>
+<p><img src="/2019/11/16/Web日志安全分析浅谈-/3klwkp6qfq.jpeg" alt="img"></p>
 <h1 id="0x05-日志安全分析攻击溯源之路（探索篇）"><a href="#0x05-日志安全分析攻击溯源之路（探索篇）" class="headerlink" title="0x05  日志安全分析攻击溯源之路（探索篇）"></a>0x05  日志安全分析攻击溯源之路（探索篇）</h1><p>故技重施，我搜寻了和攻击溯源有关的相关信息，发现国内基本寥寥无几</p>
 <p>最后发现其实现难度较大，倒是听说过某些甲方内部安全团队有尝试实现过，但至今未要到产品实现的效果图，不过最后倒是被我找到某安全公司有一个类似的产品，虽然是以硬件方式实现的流量监控，从而获取到日志进行分析。这里提一句，通过硬件方式获取流量从而可以记录并分析整个请求包和响应包，这可比从日志文件中拿到的信息全面多了，从而将日志溯源分析降低了一个难度，不过某些优秀的分析思路还是值得学习的，先上几张产品效果图：</p>
-<p><img src="/2019/11/16/Web日志安全分析浅谈/8hvslwjget.jpeg" alt="img"></p>
+<p><img src="/2019/11/16/Web日志安全分析浅谈-/8hvslwjget.jpeg" alt="img"></p>
 <p>图（1）</p>
-<p><img src="/2019/11/16/Web日志安全分析浅谈/renehcynhx.jpeg" alt="img"></p>
+<p><img src="/2019/11/16/Web日志安全分析浅谈-/renehcynhx.jpeg" alt="img"></p>
 <p>（图2）</p>
-<p><img src="/2019/11/16/Web日志安全分析浅谈/80fzq956n2.jpeg" alt="img"></p>
+<p><img src="/2019/11/16/Web日志安全分析浅谈-/80fzq956n2.jpeg" alt="img"></p>
 <p>（图3）</p>
 <p>由于图1中的分析已经实现，这里暂且不谈。我们看图2中的攻击溯源，这好像正是我们需要的效果。</p>
 <p>​      <strong>第一个信息不难理解，三个中国的IP发起了含有攻击特征的请求，他们的客户端信息(userAgent)分别为Linux/Win7/MacOs</strong></p>
@@ -586,9 +592,9 @@ height:50vh;
     
         <div class="license-wrapper">
             <p>原文作者：<a href="https://the-wind-hunter.github.io">jax</a>
-            <p>原文链接：<a href="https://the-wind-hunter.github.io/2019/11/16/Web日志安全分析浅谈/">https://the-wind-hunter.github.io/2019/11/16/Web日志安全分析浅谈/</a>
-            <p>发表日期：<a href="https://the-wind-hunter.github.io/2019/11/16/Web日志安全分析浅谈/">November 16th 2019, 7:02:39 pm</a>
-            <p>更新日期：<a href="https://the-wind-hunter.github.io/2019/11/16/Web日志安全分析浅谈/">November 16th 2019, 9:46:29 pm</a>
+            <p>原文链接：<a href="https://the-wind-hunter.github.io/2019/11/16/Web日志安全分析浅谈-/">https://the-wind-hunter.github.io/2019/11/16/Web日志安全分析浅谈-/</a>
+            <p>发表日期：<a href="https://the-wind-hunter.github.io/2019/11/16/Web日志安全分析浅谈-/">十一月 16日 2019, 7:02:39 晚上</a>
+            <p>更新日期：<a href="https://the-wind-hunter.github.io/2019/11/16/Web日志安全分析浅谈-/">November 16th 2019, 9:46:29 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
        
@@ -597,17 +603,12 @@ height:50vh;
     <ul class="post-paginator">
         <li class="next">
             
-                <div class="nextSlogan">Next Post</div>
-                <a href= "/2019/11/16/Web日志安全分析浅谈-/" title= "Web日志安全分析浅谈">
-                    <div class="nextTitle">Web日志安全分析浅谈</div>
-                </a>
-            
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2019/11/07/pikachu之SQL注入/" title= "pikachu之SQL注入">
-                    <div class="prevTitle">pikachu之SQL注入</div>
+                <a href= "/2019/11/16/Web日志安全分析浅谈/" title= "Web日志安全分析浅谈">
+                    <div class="prevTitle">Web日志安全分析浅谈</div>
                 </a>
             
         </li>
