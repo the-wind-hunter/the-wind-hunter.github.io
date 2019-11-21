@@ -78,8 +78,6 @@
     <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
     
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    
     <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
 /* This file is meant as a standalone workflow for
 - testing support for link[rel=preload]
@@ -203,8 +201,10 @@
 </head>
 
     
+        <body class="home-body">
     
-<header class="header">
+    
+<header class="header index-header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
@@ -220,21 +220,34 @@
 
 
 
+
+height:50vh;
 ">
     
     <!-- 主页  -->
+    
+    
+    <!-- 文章页  -->
             
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/index-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
             
+            jax's Studio.
+            <!-- 文章页  -->
+            
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
+            
+            
+                it's better to burn out than to fade away
+            
+            <!-- 文章页  -->
             
         </p>
         <!-- 文章页meta -->
@@ -346,140 +359,6 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/17/sqlmap使用的简单介绍（基于dvwa讲解）/" >
-            
-                <span>sqlmap使用的简单介绍（基于dvwa讲解）</span>
-        </a>
-        <div class="abstract-content">
-            前言：写这篇文章主要是给自己做个笔记，也方便刚入门的新手快速上手。至于详细原理和基础，各位还得自己动手搜索其他文章或者看书学习。
-本教程基于dvwa来测试，首先我们直接以SQL Injection (Blind)的medium level为例：
-1.首先，我们先准备好burpsuite进行抓包 ，然后在输入框里输入一个数字：#补丁1：（我后来发现不用burpsuite也可以了，火狐浏览器的还可以编辑重发）#点击提交，在burpsuite里抓到包2.我们把里面的代码全部复制下来，在你的sqlmap安装目录下新建一个txt文件，把代码全复制进去，保存。（这是个偷懒的方法，你也可以按其他教程一...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/17</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SQL注入">SQL注入</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/16/第一周：环境准备/" >
-            
-                <span>第一周：环境准备</span>
-        </a>
-        <div class="abstract-content">
-            1.安装CentOS 7(1)  因为是用来做服务器的Linux操作系统，在这里我选择了CentOS 7。首先进入CentOS的官方网站 https://www.centos.org/download/然后点击DVD ISO下载你想要的版本,我选的是第一个。
-​                                                                                    
-下载完成后用虚拟机进行安装，我用的是VMware。VMware的具体安装过程就省略了，很简单。安装完成后点击 文件–&gt;新建虚拟机–&gt;典型–&gt;下一...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/16</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/16/第二周：认识sql并学习数据库的基础操作/" >
-            
-                <span>第二周：认识SQL并学习数据库的基础操作</span>
-        </a>
-        <div class="abstract-content">
-            [TOC]
-一、关系型数据库和非关系型数据库（1）关系型数据库关系型数据库，是指采用了关系模型来组织数据的数据库。
-简单来说，关系模型指的就是二维表格模型，而一个关系型数据库就是由二维表及其之间的联系所组成的一个数据组织。
-a.常见的关系型数据库：
- Oracle、DB2、PostgreSQL、Microsoft SQL Server、Microsoft Access、MySQL
-b.关系型数据库优点1231、易于维护：都是使用表结构，格式一致；2、使用方便：SQL语言通用，可用于复杂查询；3、复杂操作：支持SQL，可用于一个表以及多个表之间非常复杂的查询。
-
-c.关系型数据库缺点123...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/16</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SQL注入">SQL注入</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/11/Web安全学习之——基于dvwa的XSS Stored）学习教程/" >
-            
-                <span>Web安全学习之——基于dvwa的XSS (Stored）学习教程</span>
-        </a>
-        <div class="abstract-content">
-            1.什么是XSS(stored)?  存储型XSS，持久化，代码是存储在服务器中的，如在个人信息或发表文章等地方，加入代码，如果没有过滤或过滤不严，那么这些代码将储存到服务器中，用户访问该页面的时候触发代码执行。这种XSS比较危险，容易造成蠕虫，盗窃cookie等
-例子：
-
-发一篇文章，里面包含了恶意脚本
-
-1今天和女朋友出去约会了，心情不错&lt;script&gt;alert(&apos;handsome boy&apos;)&lt;/script&gt;
-
-
-后端没有对文章进行过滤，直接保存文章内容到数据库。
-
-当其他人看这篇文章的时候，包含的恶意脚本就会执行。
-
-
-注：因为大部分...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/11</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "XSS学习">XSS学习</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
         <a class="abstract-title" href = "/2019/08/10/web安全学习之——基于dvwa的SQL注入演练(low)/" >
             
                 <span>SQL注入练习：基于DVWA的SQL注入演练(low)</span>
@@ -538,11 +417,101 @@ c.关系型数据库缺点123...
     <!-- paginator  -->
     
     <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/archives/page/2/">&#60; PREV</a><a class="page-number" href="/archives/">1</a><a class="page-number" href="/archives/page/2/">2</a><span class="page-number current">3</span>
+        <a class="extend prev" rel="prev" href="/page/2/">&#60; PREV</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
     </nav>
     
 </main>
             <!-- profile -->
+            
+            <div class="profile">
+    <img class="profile-avatar" alt="avatar" src= /avatar/miao.jpg >
+    <div class="profile-name">jax</div>
+    
+    <div class="profile-signature">
+        我们找个阳光灿烂的日子去海边怎么样~
+    </div>
+    
+    
+    <div class="profile-social">
+        
+    
+        
+            
+                <a href="mailto:2509594439@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/the-wind-hunter" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    
+        <div class="friends">
+            <div>FRIENDS</div>
+            
+                
+                    <span>
+                        <a href= www.baidu.com target="_black">百度</a>
+                    </span>
+                
+            
+                
+                    <span>
+                        <a href= www.google.com target="_black">谷歌</a>
+                    </span>
+                
+            
+                
+            
+        </div>
+    
+    
+        <div class="about-me">
+            <a href = "/about" >ABOUT ME</a>
+        </div>
+    
+</div>
             
         </div>
         <footer class="footer footer-unloaded">
