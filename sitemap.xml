@@ -2,16 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://the-wind-hunter.github.io/2019/11/20/XSS%E6%BC%94%E7%BB%83%E5%B9%B3%E5%8F%B0/</loc>
+    <loc>https://the-wind-hunter.github.io/2019/08/11/Web%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8Edvwa%E7%9A%84XSS%20(Stored)%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B/Web%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8Edvwa%E7%9A%84XSS%20(Stored)%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B/</loc>
     
-    <lastmod>2019-11-21T03:37:38.115Z</lastmod>
+    <lastmod>2019-11-21T05:12:23.117Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://the-wind-hunter.github.io/2019/10/03/Web%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8Edvwa%E7%9A%84XSS%20Reflect%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B/</loc>
+    <loc>https://the-wind-hunter.github.io/2019/08/20/Web%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8Edvwa%E7%9A%84XSS%20Reflect%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B/Web%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8Edvwa%E7%9A%84XSS%20Reflect%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B/</loc>
     
-    <lastmod>2019-11-20T14:28:46.895Z</lastmod>
+    <lastmod>2019-11-21T05:11:42.363Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://the-wind-hunter.github.io/2019/08/15/Web%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8Edvwa%E7%9A%84XSS%20(DOM%EF%BC%89%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B/Web%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8Edvwa%E7%9A%84XSS%20(DOM%EF%BC%89%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B/</loc>
+    
+    <lastmod>2019-11-21T05:11:07.028Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://the-wind-hunter.github.io/2019/11/20/XSS%E6%BC%94%E7%BB%83%E5%B9%B3%E5%8F%B0/</loc>
+    
+    <lastmod>2019-11-21T03:37:38.115Z</lastmod>
     
   </url>
   
@@ -72,23 +86,9 @@
   </url>
   
   <url>
-    <loc>https://the-wind-hunter.github.io/2019/09/01/Web%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8Edvwa%E7%9A%84XSS%20(DOM%EF%BC%89%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B/</loc>
-    
-    <lastmod>2019-11-08T12:32:26.262Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://the-wind-hunter.github.io/2019/08/17/sqlmap%E4%BD%BF%E7%94%A8%E7%9A%84%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D%EF%BC%88%E5%9F%BA%E4%BA%8Edvwa%E8%AE%B2%E8%A7%A3%EF%BC%89/</loc>
     
     <lastmod>2019-11-08T12:31:04.540Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://the-wind-hunter.github.io/2019/08/11/Web%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8Edvwa%E7%9A%84XSS%20Stored%EF%BC%89%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B/</loc>
-    
-    <lastmod>2019-11-08T12:30:14.913Z</lastmod>
     
   </url>
   
