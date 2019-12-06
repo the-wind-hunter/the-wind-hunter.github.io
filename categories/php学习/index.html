@@ -346,82 +346,18 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/29/第九周：web-页面解析的流程学习/" >
+        <a class="abstract-title" href = "/2019/11/18/注册-登录-跳转网页源码（原xss注入用）/" >
             
-                <span>第九周：web 页面解析的流程学习</span>
+                <span>注册-登陆-跳转网页源码（原xss注入用）</span>
         </a>
         <div class="abstract-content">
-            第九周：web 页面解析的流程学习0x00 本周学习内容1、理解域名解析的整个过程
-2、理解 web 页面请求的整个流程，绘制流程图（nginx 处理的 11 个过程）
-3、学习 http 协议中的字段及含义
-4、学习 http 请求方法以及返回状态码的类型和含义
-0x01 网站域名解析的详细过程1.1 DNS简介–DNS是什么？域名系统（英文：Domain Name System，缩写：DNS）是互联网的一项服务。它作为将域名和IP地址相互映射的一个分布式数据库，能够使人更方便地访问互联网。
-每个网站都有一个域名和一个以上的IP地址，当我们想浏览某个网站的时候，只需要在浏览 器输入该网...
+            2
+login.php12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091&lt;!DOCTYPE html&gt;&lt;html lang=&quot;zh-CN&quot;&gt;&lt;head&gt;    &lt;meta charset=&quot;utf-8&quot;/&gt;  ...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/29</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/19/第六周：数据库相关注入语句的收集和学习/" >
-            
-                <span>第六周：数据库相关注入语句的收集和学习</span>
-        </a>
-        <div class="abstract-content">
-            第六周：数据库相关注入语句的收集和学习
-日期：2019-09-09
-作者：无风
-简介：数据库相关注入语句的收集和学习
-
-0x01 任务要求1、收集网络上各种 sql 注入时使用的 payload 并理解其适用的环境（检测注入、利用注入）
-2、记录 sqlmap 的检测和利用过程中使用的 payload（也算一种 payload 收集方式）
-3、理解以上涉及的 sql 语句的意思，其中会涉及不同的数据库、不同注入场景，可以将学习的过程和收集的方式进行整理形成报告，关于 payload 的理解，其中会涉及之前学习的基础。
-扩展学习：理解 sqlmap 自带 tamper 的原理，这里通常包含...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/19</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/18/通过DVWA学习XSS/通过DVWA学习XSS/" >
-            
-                <span>通过DVWA学习XSS</span>
-        </a>
-        <div class="abstract-content">
-            通过DVWA学习XSS简介这篇文章通过 dvwa 简单研究了三种类型的 xss，并且讲述了如何利用 xss 获取目标网站用户的 cookie。
-dvwa反射型xss测试环境
-一台 win2003 虚拟机，ip 为 192.168.50.128，用wamp集成环境将dvwa搭在8080端口。
-一台 win7 虚拟机，ip 为 192.168.50.150，用来接受漏洞网站的cookie，web由phpstudy搭建。
-
-low级别为了便于理解，代码如下：
-123456789&lt;?php// Is there any input?if( array_key_exists( &quot;n...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/18</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/18</span>
             </div>
             <!-- tags  -->
             
@@ -430,45 +366,6 @@ low级别为了便于理解，代码如下：
         <a class="post-tag" href="javascript:void(0);" data-tags = "XSS学习">XSS学习</a>
     
 </div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/05/第四周-数据库系统功能相关学习/" >
-            
-                <span>第四周-数据库系统功能相关学习</span>
-        </a>
-        <div class="abstract-content">
-            
-日期：2019-08-21
-作者：无风
-简介：学习MySQL自带的函数
-
-0x01 任务要求
-学习数据库自带函数的功能和用法
-进行udf提权的实验
-
-0x02 MySQL自带函数学习菜鸟教程MySQL函数学习
-本文参考资料大多来自于菜鸟教程，从中筛选出部分函数进行学习
-字符串函数ASCII：返回字符串s的第一个字符的 ASCII 码
-select ASCII(&#39;test&#39;);
-ASCII：返回字符串 s 的字符数
-SELECT CHAR_LENGTH(&#39;test&#39;); 
-SELECT CHARACTER_LENGTH(&#39;test&#39;);
-C...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/05</span>
-            </div>
-            <!-- tags  -->
             
         </div>
     </article>
