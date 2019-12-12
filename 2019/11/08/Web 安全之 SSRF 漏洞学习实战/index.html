@@ -272,7 +272,7 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">1.5k</span>阅读时长: <span class="post-count reading-time">6 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">1.4k</span>阅读时长: <span class="post-count reading-time">5 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -409,19 +409,19 @@ height:50vh;
 <h1 id="0x01-SSRF漏洞原理"><a href="#0x01-SSRF漏洞原理" class="headerlink" title="0x01 SSRF漏洞原理"></a>0x01 SSRF漏洞原理</h1><h2 id="漏洞原理"><a href="#漏洞原理" class="headerlink" title="漏洞原理"></a>漏洞原理</h2><p><strong>SSRF</strong>(Server-Side Request Forgery，服务器端请求伪造)漏洞，是一种由攻击者构造请求，由服务器端发起请求的安全漏洞，本质上是属于信息泄露漏洞。</p>
 <p>​        很多web应用都提供了从其他的服务器上获取数据的功能。使用用户指定的URL，web应用可以获取图片，下载文件，读取文件内容等。这个功能如果被恶意使用，可以利用存在缺陷的web应用作为代理攻击远程和本地的服务器。<strong>一般情况下， SSRF攻击的目标是外网无法访问的内部系统，黑客可以利用SSRF漏洞获取内部系统的一些信息 。（ 正是因为它是由服务端发起的，所以它能够请求到与它相连而与外网隔离的内部系统 ）</strong>。</p>
 <p>​      SSRF 形成的原因大都是由于服务端提供了从其他服务器应用获取数据的功能，且没有对目标地址做过滤与限制 。比如从指定URL地址获取网页文本内容，加载指定地址的图片，下载等等。<br>​       总而言之利用的是服务端的请求伪造。ssrf是<strong>利用存在缺陷的web应用作为代理攻击远程和本地的服务器。</strong></p>
-<h2 id="图示攻击方式"><a href="#图示攻击方式" class="headerlink" title="图示攻击方式"></a>图示攻击方式</h2><p>![1575726634369]( 安全之 SSRF 漏洞学习实战\1575726634369.png)</p>
+<h2 id="图示攻击方式"><a href="#图示攻击方式" class="headerlink" title="图示攻击方式"></a>图示攻击方式</h2><p><img src="/2019/11/08/Web 安全之 SSRF 漏洞学习实战/1575726634369.png" alt="1575726634369"></p>
 <p>​        攻击者想要访问主机B上的服务，但是由于存在防火墙或者主机B是属于内网主机等原因导致攻击者无法直接访问主机B。而主机A存在SSRF漏洞，这时攻击者可以借助主机A来发起SSRF攻击，通过主机A向主机B发起请求，从而获取主机B的一些信息。</p>
 <h1 id="0x02-漏洞页面的编写"><a href="#0x02-漏洞页面的编写" class="headerlink" title="0x02 漏洞页面的编写"></a>0x02 漏洞页面的编写</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#获取URL参数，然后将URL的内容显示到网页页面上</span><br><span class="line">&lt;?php</span><br><span class="line">function curl($url)&#123;</span><br><span class="line">	$ch=curl_init();// 创建一个新cURL资源</span><br><span class="line">	curl_setopt($ch,CURLOPT_URL,$url);// 设置URL和相应的选项</span><br><span class="line">	curl_setopt($ch,CURLOPT_HEADER,0);</span><br><span class="line">	curl_exec($ch);// 抓取URL并把它传递给浏览器</span><br><span class="line">	curl_close($ch);// 关闭cURL资源，并且释放系统资源</span><br><span class="line">&#125;</span><br><span class="line">$url=$_GET[&apos;url&apos;];</span><br><span class="line">curl($url);</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">#程序获取url参数，通过curl_init()初始化curl组件后，将参数URL带入curl_setopt($ch,CURLOPT_URL,$url),然后调用curl_exec请求该URL。由于服务器端会将banner信息返回给客户端，所以可根据banner判断主机是否存在某些服务。</span><br></pre></td></tr></table></figure>
 
 <h2 id="（1）通过file协议读取文件"><a href="#（1）通过file协议读取文件" class="headerlink" title="（1）通过file协议读取文件"></a>（1）通过file协议读取文件</h2><p>访问：<code>http://172.17.124.190/SSRF/ssrf.php?url=file:///C:/WINDOWS/win.ini</code></p>
-<p>![1575902641795]( 安全之 SSRF 漏洞学习实战\1575902641795.png)</p>
+<p><img src="/2019/11/08/Web 安全之 SSRF 漏洞学习实战/1575902641795.png" alt="1575902641795"></p>
 <h2 id="（2）泄露服务器内网信息"><a href="#（2）泄露服务器内网信息" class="headerlink" title="（2）泄露服务器内网信息"></a>（2）泄露服务器内网信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://172.17.124.190/SSRF/ssrf.php?url=10.10.10.128/index.php</span><br></pre></td></tr></table></figure>
 
-<p>![1575902844427]( 安全之 SSRF 漏洞学习实战\1575902844427.png)</p>
+<p><img src="/2019/11/08/Web 安全之 SSRF 漏洞学习实战/1575902844427.png" alt="1575902844427"></p>
 <p><strong>同样的，如果我们把url的参数换成 <code>http://www.baidu.com</code> ，页面则会返回百度的页面</strong></p>
-<p>![1575902821933]( 安全之 SSRF 漏洞学习实战\1575902821933.png)</p>
+<p><img src="/2019/11/08/Web 安全之 SSRF 漏洞学习实战/1575902821933.png" alt="1575902821933"></p>
 <h2 id="（3）-利用dict协议查看端口"><a href="#（3）-利用dict协议查看端口" class="headerlink" title="（3） 利用dict协议查看端口"></a>（3） 利用dict协议查看端口</h2><p>访问<code>172.17.124.190/SSRF/ssrf.php?url=http://172.17.124.190:3306</code></p>
-<p>![1575903013508]( 安全之 SSRF 漏洞学习实战\1575903013508.png)</p>
+<p><img src="/2019/11/08/Web 安全之 SSRF 漏洞学习实战/1575903013508.png" alt="1575903013508"></p>
 <h1 id="0x03-利用手段"><a href="#0x03-利用手段" class="headerlink" title="0x03 利用手段"></a>0x03 利用手段</h1><ol>
 <li><p>可以对外网、内网、本地进行端口扫描，某些情况下端口的Banner会回显出来（比如3306的）；</p>
 </li>
@@ -442,7 +442,7 @@ height:50vh;
 <p>5）图片、文章收藏功能</p>
 <p>6）未公开的api实现以及其他调用URL的功能</p>
 <p>7）从URL关键字中寻找</p>
-<p>![img]( 安全之 SSRF 漏洞学习实战\u=47624902,2788893782&amp;fm=173&amp;s=1C2275324B2267201855D0DA000010B2&amp;w=640&amp;h=239&amp;img.JPEG)</p>
+<p><img src="/2019/11/08/Web 安全之 SSRF 漏洞学习实战/u=47624902,2788893782&fm=173&s=1C2275324B2267201855D0DA000010B2&w=640&h=239&img.JPEG" alt="img"></p>
 <h1 id="0x04-防御方法"><a href="#0x04-防御方法" class="headerlink" title="0x04 防御方法"></a>0x04 防御方法</h1><p>1,过滤返回信息，验证远程服务器对请求的响应是比较容易的方法。如果web应用是去获取某一种类型的文件。那么在把返回结果展示给用户之前先验证返回的信息是否符合标准。</p>
 <p>2, 统一错误信息，避免用户可以根据错误信息来判断远端服务器的端口状态。</p>
 <p>3,限制请求的端口为http常用的端口，比如，80,443,8080,8090。</p>
@@ -473,8 +473,8 @@ height:50vh;
         <div class="license-wrapper">
             <p>原文作者：<a href="https://the-wind-hunter.github.io">jax</a>
             <p>原文链接：<a href="https://the-wind-hunter.github.io/2019/11/08/Web 安全之 SSRF 漏洞学习实战/">https://the-wind-hunter.github.io/2019/11/08/Web 安全之 SSRF 漏洞学习实战/</a>
-            <p>发表日期：<a href="https://the-wind-hunter.github.io/2019/11/08/Web 安全之 SSRF 漏洞学习实战/">十一月 8日 2019, 9:20:39 晚上</a>
-            <p>更新日期：<a href="https://the-wind-hunter.github.io/2019/11/08/Web 安全之 SSRF 漏洞学习实战/">December 12th 2019, 4:52:42 pm</a>
+            <p>发表日期：<a href="https://the-wind-hunter.github.io/2019/11/08/Web 安全之 SSRF 漏洞学习实战/">November 8th 2019, 9:20:39 pm</a>
+            <p>更新日期：<a href="https://the-wind-hunter.github.io/2019/11/08/Web 安全之 SSRF 漏洞学习实战/">December 12th 2019, 5:35:38 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
        
