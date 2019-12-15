@@ -520,28 +520,31 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/08/ubuntu搭建ftp服务器/" >
+        <a class="abstract-title" href = "/2019/11/07/pikachu之SQL注入/" >
             
-                <span>ubuntu搭建ftp服务器</span>
+                <span>pikachu之SQL注入</span>
         </a>
         <div class="abstract-content">
-            0x00 前言今天听了大佬的建议后准备加深网络和系统这方面的学习，所以准备学习搭建一系列的服务器。先从简单的ftp服务器搭建起吧。在Ubuntu上搭建一个ftp服务器。这样我们就可以随时在ftp服务器上下载或上传文件了。
-（本来想在docker上尝试的，毕竟小破电脑运行起虚拟机来有时卡得难受。但刚接触docker不久还不太熟悉，还是稳一点利用VMware上的虚拟机来实现吧）
-环境：18.04.1-Ubuntu
-0x01 ftp服务器搭建过程1.搭建前的一些准备工作（1）给服务器创建一个目录1mkdir /var/ftp
+            1.概述1.1发生原因SQL注入漏洞，主要是开发人员在构建代码时，没有对输入边界进行安全考虑，导致攻击者可以通过合法的输入点提交一些精心构造的语句，从而欺骗后台数据库对其进行执行，导致数据库信息泄漏的一种漏洞。
 
-（2）进入到ftp目录下在ftp目录下创建一个普通文件，用来做下载...
+比如我们期望用户输入整数的id，但是用户输入了上图中下面的语句，这是条能被正常执行的SQL语句，导致表中的数据都会输出。
+1.2 SQL注入攻击流程第一步：注入点探测
+·        自动方式：使用web漏洞扫描工具，自动进行注入点发现
+·        手动方式：手工构造SQL注入测试语句进行注入点发现
+第二步：信息获取
+  通过注入点取得期望得到的数据
+·        ...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/08</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/07</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "服务器">服务器</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "SQL注入">SQL注入</a>
     
 </div>
             
@@ -577,43 +580,6 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
             <div class= abstract-tags >
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "CSRF">CSRF</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/07/pikachu之SQL注入/" >
-            
-                <span>pikachu之SQL注入</span>
-        </a>
-        <div class="abstract-content">
-            1.概述1.1发生原因SQL注入漏洞，主要是开发人员在构建代码时，没有对输入边界进行安全考虑，导致攻击者可以通过合法的输入点提交一些精心构造的语句，从而欺骗后台数据库对其进行执行，导致数据库信息泄漏的一种漏洞。
-
-比如我们期望用户输入整数的id，但是用户输入了上图中下面的语句，这是条能被正常执行的SQL语句，导致表中的数据都会输出。
-1.2 SQL注入攻击流程第一步：注入点探测
-·        自动方式：使用web漏洞扫描工具，自动进行注入点发现
-·        手动方式：手工构造SQL注入测试语句进行注入点发现
-第二步：信息获取
-  通过注入点取得期望得到的数据
-·        ...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/07</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SQL注入">SQL注入</a>
     
 </div>
             
@@ -1198,6 +1164,20 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
         Total : 33
@@ -1216,7 +1196,7 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像/" >Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像 toolbox安装docker</a>
+            <span class="archive-post-date">12/12</span><a class="archive-post-title" href= "/2019/12/12/ubuntu搭建ftp服务器/" >ubuntu搭建ftp服务器</a>
         </li>
     
     
@@ -1227,6 +1207,11 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
         <li class="archive-post-item">
             <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （一）使用docker toolbox安装docker/" >Windows10下的docker安装与入门 （一）使用docker toolbox安装docker</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像/" >Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像 toolbox安装docker</a>
         </li>
     
     
@@ -1251,22 +1236,17 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/ubuntu搭建ftp服务器/" >ubuntu搭建ftp服务器</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web 安全之 SSRF 漏洞学习实战/" >Web安全之SSRF漏洞学习实战</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之SQL注入/" >pikachu之SQL注入</a>
+            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
+            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之SQL注入/" >pikachu之SQL注入</a>
         </li>
     
     

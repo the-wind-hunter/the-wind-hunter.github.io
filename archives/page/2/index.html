@@ -346,20 +346,18 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/07/pikachu之SQL注入/" >
+        <a class="abstract-title" href = "/2019/11/07/pikachu之CSRF练习/" >
             
-                <span>pikachu之SQL注入</span>
+                <span>pikachu之CSRF</span>
         </a>
         <div class="abstract-content">
-            1.概述1.1发生原因SQL注入漏洞，主要是开发人员在构建代码时，没有对输入边界进行安全考虑，导致攻击者可以通过合法的输入点提交一些精心构造的语句，从而欺骗后台数据库对其进行执行，导致数据库信息泄漏的一种漏洞。
+            0x00 实验环境​        本次实验的环境主要采用Pikachu漏洞练习平台，Pikachu是一个带有漏洞的Web应用系统，在这里包含了常见的web安全漏洞。如果你是一个Web渗透测试学习人员且正发愁没有合适的靶场进行练习，那么Pikachu可能正合你意。
+平台源码链接：https://github.com/zhuifengshaonianhanlu/pikachu
 
-比如我们期望用户输入整数的id，但是用户输入了上图中下面的语句，这是条能被正常执行的SQL语句，导致表中的数据都会输出。
-1.2 SQL注入攻击流程第一步：注入点探测
-·        自动方式：使用web漏洞扫描工具，自动进行注入点发现
-·        手动方式：手工构造SQL注入测试语句进行注入点发现
-第二步：信息获取
-  通过注入点取得期望得到的数据
-·        ...
+至于要怎么搭建安装这个平台我就不多说了，推荐使用pspstudy来安装（如果不懂的话那就得从安装phpstudy学起啦）
+还是简单说一下吧：就是把下载解压好的文件夹放到www/下
+
+然后根据实际情况修改inc/co...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -370,7 +368,7 @@
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SQL注入">SQL注入</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "CSRF">CSRF</a>
     
 </div>
             
@@ -1161,6 +1159,20 @@ low级别为了便于理解，代码如下：
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
         Total : 33
@@ -1179,7 +1191,7 @@ low级别为了便于理解，代码如下：
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像/" >Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像 toolbox安装docker</a>
+            <span class="archive-post-date">12/12</span><a class="archive-post-title" href= "/2019/12/12/ubuntu搭建ftp服务器/" >ubuntu搭建ftp服务器</a>
         </li>
     
     
@@ -1190,6 +1202,11 @@ low级别为了便于理解，代码如下：
     
         <li class="archive-post-item">
             <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （一）使用docker toolbox安装docker/" >Windows10下的docker安装与入门 （一）使用docker toolbox安装docker</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像/" >Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像 toolbox安装docker</a>
         </li>
     
     
@@ -1214,22 +1231,17 @@ low级别为了便于理解，代码如下：
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/ubuntu搭建ftp服务器/" >ubuntu搭建ftp服务器</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web 安全之 SSRF 漏洞学习实战/" >Web安全之SSRF漏洞学习实战</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之SQL注入/" >pikachu之SQL注入</a>
+            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
+            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之SQL注入/" >pikachu之SQL注入</a>
         </li>
     
     
