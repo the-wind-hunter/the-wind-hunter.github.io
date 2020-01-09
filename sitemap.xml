@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://the-wind-hunter.github.io/2019/11/08/Web%20%E5%AE%89%E5%85%A8%E4%B9%8B%20SSRF%20%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98/</loc>
+    
+    <lastmod>2020-01-09T13:04:46.282Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://the-wind-hunter.github.io/2019/10/10/php%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%ADpreg_match%E5%87%BD%E6%95%B0%E7%9A%84%E8%AF%A6%E8%A7%A3/</loc>
+    
+    <lastmod>2020-01-09T13:00:41.001Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://the-wind-hunter.github.io/2020/01/07/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E8%BF%9B%E8%A1%8CURL%E7%BC%96%E7%A0%81%EF%BC%88%E8%BD%AC%E8%BD%BD%EF%BC%89/</loc>
+    
+    <lastmod>2020-01-07T15:05:21.952Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://the-wind-hunter.github.io/2019/12/25/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E5%A4%8D%E4%B9%A0/</loc>
     
     <lastmod>2019-12-26T15:20:50.740Z</lastmod>
@@ -26,13 +47,6 @@
     <loc>https://the-wind-hunter.github.io/2019/12/12/ubuntu%E6%90%AD%E5%BB%BAftp%E6%9C%8D%E5%8A%A1%E5%99%A8/</loc>
     
     <lastmod>2019-12-15T15:09:50.945Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://the-wind-hunter.github.io/2019/11/08/Web%20%E5%AE%89%E5%85%A8%E4%B9%8B%20SSRF%20%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98/</loc>
-    
-    <lastmod>2019-12-12T09:35:38.971Z</lastmod>
     
   </url>
   
