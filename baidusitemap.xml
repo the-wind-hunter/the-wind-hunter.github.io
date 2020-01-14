@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://the-wind-hunter.github.io/2019/11/08/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E6%8B%BFshell/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E6%8B%BFshell/</loc>
+    <lastmod>2020-01-14</lastmod>
+  </url>  <url>
     <loc>https://the-wind-hunter.github.io/2019/11/08/Web%20%E5%AE%89%E5%85%A8%E4%B9%8B%20SSRF%20%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98/</loc>
-    <lastmod>2020-01-09</lastmod>
+    <lastmod>2020-01-12</lastmod>
   </url>  <url>
     <loc>https://the-wind-hunter.github.io/2019/10/10/php%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%ADpreg_match%E5%87%BD%E6%95%B0%E7%9A%84%E8%AF%A6%E8%A7%A3/</loc>
     <lastmod>2020-01-09</lastmod>
