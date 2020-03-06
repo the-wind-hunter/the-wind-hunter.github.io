@@ -417,6 +417,47 @@ xss通关小游戏：https://pan.baidu.com/s/1zS2GwTNbMBXEF2yNEBeLgA   密码：
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/11/08/SQLServer数据库及注入方法/" >
+            
+                <span>SQLServer数据库及注入方法</span>
+        </a>
+        <div class="abstract-content">
+            目录
+SQLServer数据库
+修改默认1433端口
+SQLServer数据库的管理
+SQLServer数据库的查询语句
+SA权限开启xp_cmdshell获取主机权限
+SA权限使用sp_oacreate执行系统命令
+DB_owner权限LOG备份Getshell
+DB_owner权限差异备份Getshell
+盲注SQLServer数据库
+SQLServer数据库SQL Server数据库是由Microsoft开发和推广的关系数据库管理系统(DBMS)，是一个比较大型的数据库。端口号为 1433。数据库后缀名 .mdf，注释符是 –
+
+sa权限：数据库操作，文件管理，命令执行，注册表读取...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/08</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "SQL注入">SQL注入</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/11/08/数据库备份拿shell(练习)/" >
             
                 <span>各种拿shell方法总结</span>
@@ -450,24 +491,19 @@ xss通关小游戏：https://pan.baidu.com/s/1zS2GwTNbMBXEF2yNEBeLgA   密码：
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/08/SQLServer数据库及注入方法/" >
+        <a class="abstract-title" href = "/2019/11/08/Web安全之命令执行漏洞学习实战/" >
             
-                <span>SQLServer数据库及注入方法</span>
+                <span>各种拿shell方法总结</span>
         </a>
         <div class="abstract-content">
-            目录
-SQLServer数据库
-修改默认1433端口
-SQLServer数据库的管理
-SQLServer数据库的查询语句
-SA权限开启xp_cmdshell获取主机权限
-SA权限使用sp_oacreate执行系统命令
-DB_owner权限LOG备份Getshell
-DB_owner权限差异备份Getshell
-盲注SQLServer数据库
-SQLServer数据库SQL Server数据库是由Microsoft开发和推广的关系数据库管理系统(DBMS)，是一个比较大型的数据库。端口号为 1433。数据库后缀名 .mdf，注释符是 –
+            [TOC]
+0x00 任务
+1、编写一个存在命令执行漏洞的页面（可以配置两套 win + linux）
+2、通过命令执行如何进行文件传输（尝试尽量多的方式：离线+在线，不同的系统区别）
+扩展学习：对于命令执行的输入口如何过滤，如何验证可以杜绝命令执行的问题
 
-sa权限：数据库操作，文件管理，命令执行，注册表读取...
+0x01 什么是命令执行漏洞命令执行漏洞概念：当应用需要调用一些外部程序去处理内容的情况下，就会用到一些执行系统命令的函数。如PHP中的system，exec，shell_exec等，当用户可以控制命令执行函数中的参数时，将可注入恶意系统命令到正常命令中，造成命令执行攻击。
+漏洞成因：脚本语言优点是简洁，方便，但也伴随着一些问题，如...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -478,7 +514,7 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SQL注入">SQL注入</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "get shell">get shell</a>
     
 </div>
             
@@ -647,37 +683,6 @@ DOM型的XSS由于其特殊性，常常被分为第三种，这是一...
             <div class= abstract-tags >
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "XSS学习">XSS学习</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/17/sqlmap使用的简单介绍（基于dvwa讲解）/" >
-            
-                <span>sqlmap使用的简单介绍（基于dvwa讲解）</span>
-        </a>
-        <div class="abstract-content">
-            前言：写这篇文章主要是给自己做个笔记，也方便刚入门的新手快速上手。至于详细原理和基础，各位还得自己动手搜索其他文章或者看书学习。
-本教程基于dvwa来测试，首先我们直接以SQL Injection (Blind)的medium level为例：
-1.首先，我们先准备好burpsuite进行抓包 ，然后在输入框里输入一个数字：#补丁1：（我后来发现不用burpsuite也可以了，火狐浏览器的还可以编辑重发）#点击提交，在burpsuite里抓到包2.我们把里面的代码全部复制下来，在你的sqlmap安装目录下新建一个txt文件，把代码全复制进去，保存。（这是个偷懒的方法，你也可以按其他教程一...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/17</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SQL注入">SQL注入</a>
     
 </div>
             
@@ -1404,51 +1409,9 @@ DOM型的XSS由于其特殊性，常常被分为第三种，这是一...
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 42
+        Total : 44
         </div>
         <!-- search  -->
         
@@ -1459,36 +1422,13 @@ DOM型的XSS由于其特殊性，常常被分为第三种，这是一...
     
     
     
-    <div class="archive-year"> 2019 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/第十三周-web安全之手工测试之前编写的注入环境/" >第十三周web安全之手工测试之前编写的注入环境</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/78599650/" >[Untitled Post]</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/06</span><a class="archive-post-title" href= "/2020/03/06/渗透测试常见开放端口及利用/" >为什么要进行URL编码</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1531,7 +1471,7 @@ DOM型的XSS由于其特殊性，常常被分为第三种，这是一...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （一）使用docker toolbox安装docker/" >Windows10下的docker安装与入门 （一）使用docker toolbox安装docker</a>
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它/" >Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它</a>
         </li>
     
     
@@ -1541,7 +1481,7 @@ DOM型的XSS由于其特殊性，常常被分为第三种，这是一...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它/" >Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它</a>
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （一）使用docker toolbox安装docker/" >Windows10下的docker安装与入门 （一）使用docker toolbox安装docker</a>
         </li>
     
     
@@ -1571,6 +1511,11 @@ DOM型的XSS由于其特殊性，常常被分为第三种，这是一...
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web安全之命令执行漏洞学习实战/" >各种拿shell方法总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/SQLServer数据库及注入方法/" >SQLServer数据库及注入方法</a>
         </li>
     
@@ -1581,12 +1526,17 @@ DOM型的XSS由于其特殊性，常常被分为第三种，这是一...
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之SQL注入/" >pikachu之SQL注入</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
+            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/第十三周-web安全之手工测试之前编写的注入环境/" >第十三周web安全之手工测试之前编写的注入环境</a>
         </li>
     
     
@@ -1633,6 +1583,29 @@ DOM型的XSS由于其特殊性，常常被分为第三种，这是一...
         <li class="archive-post-item">
             <span class="archive-post-date">09/18</span><a class="archive-post-title" href= "/2019/09/18/通过DVWA学习XSS/通过DVWA学习XSS/" >通过DVWA学习XSS</a>
         </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
     
     
         <li class="archive-post-item">
@@ -1690,21 +1663,7 @@ DOM型的XSS由于其特殊性，常常被分为第三种，这是一...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/29/MySQL用户管理：添加用户、授权、删除用户/" >MySQL用户管理：添加用户、授权、删除用户</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2019 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/78599650/" >[Untitled Post]</a>
         </li>
     
     
@@ -1718,7 +1677,7 @@ DOM型的XSS由于其特殊性，常常被分为第三种，这是一...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/29/MySQL用户管理：添加用户、授权、删除用户/" >MySQL用户管理：添加用户、授权、删除用户</a>
         </li>
     
     
@@ -1733,6 +1692,20 @@ DOM型的XSS由于其特殊性，常常被分为第三种，这是一...
     
         <li class="archive-post-item">
             <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/16/第一周：环境准备/" >第一周：环境准备</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
         </li>
     
     </div>
