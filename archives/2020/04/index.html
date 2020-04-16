@@ -346,139 +346,27 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/10/20/第十周-各种注入类型的环境搭建和代码编写/" >
+        <a class="abstract-title" href = "/2020/04/15/任意文件下载/任意文件下载/" >
             
-                <span>第十周：各种注入类型的环境搭建和代码编写</span>
+                <span>Web安全之任意文件下载</span>
         </a>
         <div class="abstract-content">
-            第十周：各种注入类型的环境搭建和代码编写
-日期：2019-10-17
-作者：无风
-
-0x00 前言​        由于我是个小白，PHP语言处于只看的懂一点点，会写一点点的水平，因此我用一个html页面+php页面搭建了一个简陋的sql注入环境。
-麻雀虽小五脏俱全，尽管页面很简陋，但核心的php内容才是重点。这里一共搭建了：
-经典sql注入、盲注、报错注入、宽字节注入
-先在此给出一个通用的html页面：login2.html
-1234567891011121314&lt;!DOCTYPE html&gt;&lt;html lang=&quot;zh-CN&quot;&gt;&lt;he...
+            最近在实习，疫情期间既要远程上班又要上课，太忙了，都没时间时间更新博客了。今天转载一下别人的文章。
+01 漏洞描述某些网站可能因为业务需要，提供文件查看或者下载的功能，如果对用户查看或者需要下载的文件不做限制，那么一些攻击者可能构造恶意代码下载网站的敏感文件（源代码，数据库文件，登录密码等）
+02 漏洞危害理论上只要代码构造的好可以下载服务器的任何文件（代码脚本，服务器配置文件，数据库文件等），用得到的代码进行审计，那么这个网站的漏洞就彻底暴露了。
+03 漏洞产生附上源代码~
+图是从别人那盗来的，不过这都不重要，现在来分析下。通过GET传值传进来一个file，然后是对file的定义，最后...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/20</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/10/16/oneinstack-建站/" >
-            
-                <span>oneinstack 建站</span>
-        </a>
-        <div class="abstract-content">
-            oneinstack 建站你所需要知道的一些东西和步骤（适合新手）1.买服务器和域名  首先需要买一个服务器和域名，学生党 可以在阿里云或者腾讯云上买（有优惠），但是国内的服务器需要备案，这有点麻烦，我选择的是国外的服务器。 Vultr官网在此注册和购买一个vps，我选择的是ubuntu 18.04X64域名的话可以在阿里云买阿里云官网传送门，因为是练习用，我买了一个便宜的，才9块钱。买完了域名后要对你的域名进行解析，即把你的服务器公网ip与域名对应起来，访问域名即等于访问ip地址
-2.使用xshell或者xftp连接到你的服务器新建，点开后是这样的一个窗口：随后填写如图所示内容：（名称...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/16</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/10/16/Web配置本地yum源-Linux安全/" >
-            
-                <span>We配置本地yum源-Linux安全</span>
-        </a>
-        <div class="abstract-content">
-            
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/16</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/10/16/233/" >
-            
-                <span>just a test23333333</span>
-        </a>
-        <div class="abstract-content">
-            233333333333333333333333333333
-
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/16</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/04/15</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "玩">玩</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/10/10/php正则表达式中preg_match函数的详解/" >
-            
-                <span>php正则表达式中preg_match函数的详解</span>
-        </a>
-        <div class="abstract-content">
-            php正则表达式中preg_match函数的详解官方解释：preg_match 函数用于执行一个正则表达式匹配。
-语法1int preg_match ( string $pattern , string $subject [, array &amp;$matches [, int $flags = 0 [, int $offset = 0 ]]] )
-
-搜索 subject 与 pattern 给定的正则表达式的一个匹配。
-参数说明：
-
-$pattern: 要搜索的模式，字符串形式。
-$subject: 输入字符串。
-$matches: 如果提供了参数matches，它将被填充为搜索结果...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/10</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SSRF学习">SSRF学习</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "文件上传漏洞">文件上传漏洞</a>
     
 </div>
             

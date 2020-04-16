@@ -22,7 +22,7 @@
     <meta name="description" content>
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>jax&#39;s Studio</title>
+    <title>Web安全之任意文件下载 · jax&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -203,12 +203,23 @@
 </head>
 
     
+        <body class="post-body">
+    
     
 <header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >jax&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">Web安全之任意文件下载</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>jax's Studio.</a>
 </header>
@@ -220,24 +231,74 @@
 
 
 
+
+height:50vh;
 ">
     
     <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
             
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
+            
+            Web安全之任意文件下载
+            <!-- 404 -->
             
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+            
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "文件上传漏洞">文件上传漏洞</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">469</span>阅读时长: <span class="post-count reading-time">1 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2020/04/15</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
         
     </div>
 </div>
@@ -338,155 +399,79 @@
 </script>        
         <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
         <div class="container container-unloaded">
-            <main class="main index-page">
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/10/20/第十周-各种注入类型的环境搭建和代码编写/" >
-            
-                <span>第十周：各种注入类型的环境搭建和代码编写</span>
-        </a>
-        <div class="abstract-content">
-            第十周：各种注入类型的环境搭建和代码编写
-日期：2019-10-17
-作者：无风
+            <main class="main post-page">
+    <article class="article-entry">
+        <p>最近在实习，疫情期间既要远程上班又要上课，太忙了，都没时间时间更新博客了。今天转载一下别人的文章。</p>
+<h1 id="01-漏洞描述"><a href="#01-漏洞描述" class="headerlink" title="01 漏洞描述"></a>01 漏洞描述</h1><p>某些网站可能因为业务需要，提供文件查看或者下载的功能，如果对用户查看或者需要下载的文件不做限制，那么一些攻击者可能构造恶意代码下载网站的敏感文件（源代码，数据库文件，登录密码等）</p>
+<h1 id="02-漏洞危害"><a href="#02-漏洞危害" class="headerlink" title="02 漏洞危害"></a>02 漏洞危害</h1><p>理论上只要代码构造的好可以下载服务器的任何文件（代码脚本，服务器配置文件，数据库文件等），用得到的代码进行审计，那么这个网站的漏洞就彻底暴露了。</p>
+<h1 id="03-漏洞产生"><a href="#03-漏洞产生" class="headerlink" title="03 漏洞产生"></a>03 漏洞产生</h1><p>附上源代码~</p>
+<p>图是从别人那盗来的，不过这都不重要，现在来分析下。通过GET传值传进来一个file，然后是对file的定义，最后直接readfile，这中间没有对传进来的file进行判断，所以导致漏洞的发生。</p>
+<p><img src="https:////upload-images.jianshu.io/upload_images/9160861-5d145328d72cfd4f.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/490" alt="img"></p>
+<h1 id="04-漏洞利用"><a href="#04-漏洞利用" class="headerlink" title="04 漏洞利用"></a>04 漏洞利用</h1><p><a href="http://www.test.cn/readfile.php?file=/etc/passwd" target="_blank" rel="noopener">http://www.test.cn/readfile.php?file=/etc/passwd</a>    //下载主机密码文件</p>
+<p>  <a href="http://www.test.cn/readfile.php?file=../index.php&amp;path=C:\Windows\System32\inetsrv\MetaBase.xml" target="_blank" rel="noopener">http://www.test.cn/readfile.php?file=../index.php&amp;path=C:\Windows\System32\inetsrv\MetaBase.xml</a>      //IIS配置文件</p>
+<p> <a href="http://www.test.cn/readfile.php?file=../../../readfile.php&amp;path=C:\Program20%Files\mysql\my.ini" target="_blank" rel="noopener">http://www.test.cn/readfile.php?file=../../../readfile.php&amp;path=C:\Program20%Files\mysql\my.ini</a>               //Mysql配置文件</p>
+<p> <a href="http://www.test.cn/readfile.php?file=" target="_blank" rel="noopener">http://www.test.cn/readfile.php?file=</a>  /root/.ssh/id_rsa                //SSH密钥</p>
+<h1 id="05-漏洞搜索"><a href="#05-漏洞搜索" class="headerlink" title="05 漏洞搜索"></a>05 漏洞搜索</h1><p>可以用Google Hack或者url采集器采集目标</p>
+<p>inurl : readfile.php?file=</p>
+<p>inurl : download.php?file=</p>
+<p>从参数名上看，大致是这些：</p>
+<p>&amp;RealPath=</p>
+<p>&amp;FilePath=</p>
+<p>&amp;filepath=</p>
+<p>&amp;Path=</p>
+<p>&amp;path=</p>
+<p>&amp;inputFile=</p>
+<p>&amp;url=</p>
+<p>&amp;Lang=</p>
+<p>&amp;dis=</p>
+<p>&amp;data=</p>
+<p>&amp;readfile=</p>
+<p>&amp;src</p>
+<hr>
+<h1 id="06-漏洞修复"><a href="#06-漏洞修复" class="headerlink" title="06 漏洞修复"></a>06 漏洞修复</h1><p>过滤”.”，使用户在url中不能回溯上级目录</p>
+<p>正则严格判断用户输入参数的格式</p>
+<p>php.ini配置open_basedir限定文件访问范围</p>
 
-0x00 前言​        由于我是个小白，PHP语言处于只看的懂一点点，会写一点点的水平，因此我用一个html页面+php页面搭建了一个简陋的sql注入环境。
-麻雀虽小五脏俱全，尽管页面很简陋，但核心的php内容才是重点。这里一共搭建了：
-经典sql注入、盲注、报错注入、宽字节注入
-先在此给出一个通用的html页面：login2.html
-1234567891011121314&lt;!DOCTYPE html&gt;&lt;html lang=&quot;zh-CN&quot;&gt;&lt;he...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/20</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
     </article>
+    <!-- license  -->
     
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/10/16/oneinstack-建站/" >
-            
-                <span>oneinstack 建站</span>
-        </a>
-        <div class="abstract-content">
-            oneinstack 建站你所需要知道的一些东西和步骤（适合新手）1.买服务器和域名  首先需要买一个服务器和域名，学生党 可以在阿里云或者腾讯云上买（有优惠），但是国内的服务器需要备案，这有点麻烦，我选择的是国外的服务器。 Vultr官网在此注册和购买一个vps，我选择的是ubuntu 18.04X64域名的话可以在阿里云买阿里云官网传送门，因为是练习用，我买了一个便宜的，才9块钱。买完了域名后要对你的域名进行解析，即把你的服务器公网ip与域名对应起来，访问域名即等于访问ip地址
-2.使用xshell或者xftp连接到你的服务器新建，点开后是这样的一个窗口：随后填写如图所示内容：（名称...
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://the-wind-hunter.github.io">jax</a>
+            <p>原文链接：<a href="https://the-wind-hunter.github.io/2020/04/15/任意文件下载/任意文件下载/">https://the-wind-hunter.github.io/2020/04/15/任意文件下载/任意文件下载/</a>
+            <p>发表日期：<a href="https://the-wind-hunter.github.io/2020/04/15/任意文件下载/任意文件下载/">四月 15日 2020, 10:20:31 晚上</a>
+            <p>更新日期：<a href="https://the-wind-hunter.github.io/2020/04/15/任意文件下载/任意文件下载/">April 16th 2020, 10:00:29 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/16</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/10/16/Web配置本地yum源-Linux安全/" >
-            
-                <span>We配置本地yum源-Linux安全</span>
-        </a>
-        <div class="abstract-content">
-            
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/16</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/10/16/233/" >
-            
-                <span>just a test23333333</span>
-        </a>
-        <div class="abstract-content">
-            233333333333333333333333333333
-
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/16</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "玩">玩</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/10/10/php正则表达式中preg_match函数的详解/" >
-            
-                <span>php正则表达式中preg_match函数的详解</span>
-        </a>
-        <div class="abstract-content">
-            php正则表达式中preg_match函数的详解官方解释：preg_match 函数用于执行一个正则表达式匹配。
-语法1int preg_match ( string $pattern , string $subject [, array &amp;$matches [, int $flags = 0 [, int $offset = 0 ]]] )
-
-搜索 subject 与 pattern 给定的正则表达式的一个匹配。
-参数说明：
-
-$pattern: 要搜索的模式，字符串形式。
-$subject: 输入字符串。
-$matches: 如果提供了参数matches，它将被填充为搜索结果...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/10</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SSRF学习">SSRF学习</a>
-    
-</div>
-            
-        </div>
-    </article>
+       
     
     <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2020/03/06/渗透测试常见开放端口及利用/" title= "渗透测试常见开放端口及利用">
+                    <div class="prevTitle">渗透测试常见开放端口及利用</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
     
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
 </main>
             <!-- profile -->
             
@@ -556,6 +541,24 @@ $matches: 如果提供了参数matches，它将被填充为搜索结果...
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#01-漏洞描述"><span class="toc-number">1.</span> <span class="toc-text">01 漏洞描述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#02-漏洞危害"><span class="toc-number">2.</span> <span class="toc-text">02 漏洞危害</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#03-漏洞产生"><span class="toc-number">3.</span> <span class="toc-text">03 漏洞产生</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#04-漏洞利用"><span class="toc-number">4.</span> <span class="toc-text">04 漏洞利用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#05-漏洞搜索"><span class="toc-number">5.</span> <span class="toc-text">05 漏洞搜索</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#06-漏洞修复"><span class="toc-number">6.</span> <span class="toc-text">06 漏洞修复</span></a></li></ol>
+    </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
     <div class="sidebar sidebar-hide">
@@ -1599,6 +1602,8 @@ jsonContent:
     
     </div>
     <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
      
     </body>
 </html>

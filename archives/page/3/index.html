@@ -381,6 +381,43 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/11/07/pikachu之SQL注入/" >
+            
+                <span>pikachu之SQL注入</span>
+        </a>
+        <div class="abstract-content">
+            1.概述1.1发生原因SQL注入漏洞，主要是开发人员在构建代码时，没有对输入边界进行安全考虑，导致攻击者可以通过合法的输入点提交一些精心构造的语句，从而欺骗后台数据库对其进行执行，导致数据库信息泄漏的一种漏洞。
+
+比如我们期望用户输入整数的id，但是用户输入了上图中下面的语句，这是条能被正常执行的SQL语句，导致表中的数据都会输出。
+1.2 SQL注入攻击流程第一步：注入点探测
+·        自动方式：使用web漏洞扫描工具，自动进行注入点发现
+·        手动方式：手工构造SQL注入测试语句进行注入点发现
+第二步：信息获取
+  通过注入点取得期望得到的数据
+·        ...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/07</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "SQL注入">SQL注入</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/11/06/第十三周-web安全之手工测试之前编写的注入环境/" >
             
                 <span>第十三周web安全之手工测试之前编写的注入环境</span>
@@ -499,6 +536,29 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/10/16/Web配置本地yum源-Linux安全/" >
+            
+                <span>We配置本地yum源-Linux安全</span>
+        </a>
+        <div class="abstract-content">
+            
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/16</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/10/16/233/" >
             
                 <span>just a test23333333</span>
@@ -519,29 +579,6 @@
         <a class="post-tag" href="javascript:void(0);" data-tags = "玩">玩</a>
     
 </div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/10/16/Web配置本地yum源-Linux安全/" >
-            
-                <span>We配置本地yum源-Linux安全</span>
-        </a>
-        <div class="abstract-content">
-            
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/16</span>
-            </div>
-            <!-- tags  -->
             
         </div>
     </article>
@@ -605,37 +642,6 @@ $matches: 如果提供了参数matches，它将被填充为搜索结果...
             <!-- date  -->
             <div class="abstract-date">
                 <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/29</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/19/第六周：数据库相关注入语句的收集和学习/" >
-            
-                <span>第六周：数据库相关注入语句的收集和学习</span>
-        </a>
-        <div class="abstract-content">
-            第六周：数据库相关注入语句的收集和学习
-日期：2019-09-09
-作者：无风
-简介：数据库相关注入语句的收集和学习
-
-0x01 任务要求1、收集网络上各种 sql 注入时使用的 payload 并理解其适用的环境（检测注入、利用注入）
-2、记录 sqlmap 的检测和利用过程中使用的 payload（也算一种 payload 收集方式）
-3、理解以上涉及的 sql 语句的意思，其中会涉及不同的数据库、不同注入场景，可以将学习的过程和收集的方式进行整理形成报告，关于 payload 的理解，其中会涉及之前学习的基础。
-扩展学习：理解 sqlmap 自带 tamper 的原理，这里通常包含...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/19</span>
             </div>
             <!-- tags  -->
             
@@ -1361,10 +1367,9 @@ $matches: 如果提供了参数matches，它将被填充为搜索结果...
     
     
     
-    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 44
+        Total : 45
         </div>
         <!-- search  -->
         
@@ -1377,6 +1382,11 @@ $matches: 如果提供了参数matches，它将被填充为搜索结果...
     
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2020/04/15/任意文件下载/任意文件下载/" >Web安全之任意文件下载</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1424,17 +1434,17 @@ $matches: 如果提供了参数matches，它将被填充为搜索结果...
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （一）使用docker toolbox安装docker/" >Windows10下的docker安装与入门 （一）使用docker toolbox安装docker</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它/" >Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像/" >Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像 toolbox安装docker</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （一）使用docker toolbox安装docker/" >Windows10下的docker安装与入门 （一）使用docker toolbox安装docker</a>
         </li>
     
     
@@ -1464,7 +1474,7 @@ $matches: 如果提供了参数matches，它将被填充为搜索结果...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web安全之命令执行漏洞学习实战/" >各种拿shell方法总结</a>
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/数据库备份拿shell(练习)/" >各种拿shell方法总结</a>
         </li>
     
     
@@ -1474,17 +1484,17 @@ $matches: 如果提供了参数matches，它将被填充为搜索结果...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/数据库备份拿shell(练习)/" >各种拿shell方法总结</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web安全之命令执行漏洞学习实战/" >各种拿shell方法总结</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之SQL注入/" >pikachu之SQL注入</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
         </li>
     
     
@@ -1538,29 +1548,6 @@ $matches: 如果提供了参数matches，它将被填充为搜索结果...
         </li>
     
     
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2019 </div>
-    <ul class="year-list">
-    
-    
         <li class="archive-post-item">
             <span class="archive-post-date">09/05</span><a class="archive-post-title" href= "/2019/09/05/第四周-数据库系统功能相关学习/" >第四周-数据库系统功能相关学习</a>
         </li>
@@ -1601,8 +1588,31 @@ $matches: 如果提供了参数matches，它将被填充为搜索结果...
         </li>
     
     
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
         <li class="archive-post-item">
-            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/web安全学习之——基于dvwa的SQL注入演练(low)/" >SQL注入练习：基于DVWA的SQL注入演练(low)</a>
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/16/第一周：环境准备/" >第一周：环境准备</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
         </li>
     
     
@@ -1625,40 +1635,31 @@ $matches: 如果提供了参数matches，它将被填充为搜索结果...
     
         </ul>
     
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/web安全学习之——基于dvwa的SQL注入演练(low)/" >SQL注入练习：基于DVWA的SQL注入演练(low)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
     <div class="archive-year"> Invalid date </div>
     <ul class="year-list">
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/29/MySQL用户管理：添加用户、授权、删除用户/" >MySQL用户管理：添加用户、授权、删除用户</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/16/第一周：环境准备/" >第一周：环境准备</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2019 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
         </li>
     
     </div>
