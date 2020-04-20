@@ -346,6 +346,41 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2020/04/20/端口渗透总结/" >
+            
+                <span>端口渗透总结</span>
+        </a>
+        <div class="abstract-content">
+            服务默认端口公认端口(Well Known Ports)：0-1023，他们紧密绑定了一些服务；
+注册端口(Registered Ports)：1024-49151，他们松散的绑定了一些服务；
+动态/私有：49152-65535，不为服务分配这些端口；
+文件共享服务端口渗透FTP服务FTP服务：ftp服务我分为两种情况，第一种是使用系统软件来配置，比如IIS中的FTP文件共享或Linux中的默认服务软件；第二种是通过第三方软件来配置，比如Serv-U还有一些网上写的简易ftp服务器等；
+默认端口：20（数据端口）；21（控制端口）；69（tftp小型文件传输协议）
+攻击方式：
+爆破：ft...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/04/20</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "渗透测试，端口渗透">渗透测试，端口渗透</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2020/04/16/反弹shell原理和实现/" >
             
                 <span>反弹shell原理和实现</span>
@@ -365,6 +400,8 @@
             <div class= abstract-tags >
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "get shell">get shell</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "渗透测试">渗透测试</a>
     
 </div>
             
@@ -647,40 +684,6 @@ wait(s)    //用于申请资源，整形信号量值&lt;=0时循环执行空操�
                 <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/22</span>
             </div>
             <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/12/12/ubuntu搭建ftp服务器/" >
-            
-                <span>ubuntu搭建ftp服务器</span>
-        </a>
-        <div class="abstract-content">
-            0x00 前言今天听了大佬的建议后准备加深网络和系统这方面的学习，所以准备学习搭建一系列的服务器。先从简单的ftp服务器搭建起吧。在Ubuntu上搭建一个ftp服务器。这样我们就可以随时在ftp服务器上下载或上传文件了。
-（本来想在docker上尝试的，毕竟小破电脑运行起虚拟机来有时卡得难受。但刚接触docker不久还不太熟悉，还是稳一点利用VMware上的虚拟机来实现吧）
-环境：18.04.1-Ubuntu
-0x01 ftp服务器搭建过程1.搭建前的一些准备工作（1）给服务器创建一个目录1mkdir /var/ftp
-
-（2）进入到ftp目录下在ftp目录下创建一个普通文件，用来做下载...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/12</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "服务器">服务器</a>
-    
-</div>
             
         </div>
     </article>
@@ -1471,9 +1474,14 @@ wait(s)    //用于申请资源，整形信号量值&lt;=0时循环执行空操�
     
     
     
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 46
+        Total : 47
         </div>
         <!-- search  -->
         
@@ -1486,6 +1494,11 @@ wait(s)    //用于申请资源，整形信号量值&lt;=0时循环执行空操�
     
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2020/04/20/端口渗透总结/" >端口渗透总结</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1578,6 +1591,11 @@ wait(s)    //用于申请资源，整形信号量值&lt;=0时循环执行空操�
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/SQLServer数据库及注入方法/" >SQLServer数据库及注入方法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/数据库备份拿shell(练习)/" >各种拿shell方法总结</a>
         </li>
     
@@ -1588,17 +1606,7 @@ wait(s)    //用于申请资源，整形信号量值&lt;=0时循环执行空操�
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/SQLServer数据库及注入方法/" >SQLServer数据库及注入方法</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web安全之命令执行漏洞学习实战/" >各种拿shell方法总结</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之SQL注入/" >pikachu之SQL注入</a>
         </li>
     
     
@@ -1607,13 +1615,41 @@ wait(s)    //用于申请资源，整形信号量值&lt;=0时循环执行空操�
         </li>
     
     
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
         <li class="archive-post-item">
-            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/第十三周-web安全之手工测试之前编写的注入环境/" >第十三周web安全之手工测试之前编写的注入环境</a>
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/16/第一周：环境准备/" >第一周：环境准备</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之SQL注入/" >pikachu之SQL注入</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/CSRF(跨站请求伪造)/" >跨站请求伪造CSRF</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/第十三周-web安全之手工测试之前编写的注入环境/" >第十三周web安全之手工测试之前编写的注入环境</a>
         </li>
     
     
@@ -1682,6 +1718,16 @@ wait(s)    //用于申请资源，整形信号量值&lt;=0时循环执行空操�
         </li>
     
     
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/第二周：认识sql并学习数据库的基础操作/" >第二周：认识SQL并学习数据库的基础操作</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2019/08/15/Web安全学习之——基于dvwa的XSS (DOM）学习教程/Web安全学习之——基于dvwa的XSS (DOM）学习教程/" >Web安全学习之——基于dvwa的XSS (DOM）学习教程</a>
+        </li>
+    
+    
     
     
     
@@ -1693,54 +1739,6 @@ wait(s)    //用于申请资源，整形信号量值&lt;=0时循环执行空操�
     
         <li class="archive-post-item">
             <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/29/MySQL用户管理：添加用户、授权、删除用户/" >MySQL用户管理：添加用户、授权、删除用户</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/78599650/" >[Untitled Post]</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2019 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/第二周：认识sql并学习数据库的基础操作/" >第二周：认识SQL并学习数据库的基础操作</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2019/08/15/Web安全学习之——基于dvwa的XSS (DOM）学习教程/Web安全学习之——基于dvwa的XSS (DOM）学习教程/" >Web安全学习之——基于dvwa的XSS (DOM）学习教程</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/11</span><a class="archive-post-title" href= "/2019/08/11/Web安全学习之——基于dvwa的XSS (Stored)学习教程/Web安全学习之——基于dvwa的XSS (Stored)学习教程/" >Web安全学习之——基于dvwa的XSS (Stored)学习教程</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/web安全学习之——基于dvwa的SQL注入演练(low)/" >SQL注入练习：基于DVWA的SQL注入演练(low)</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
         </li>
     
     
@@ -1768,7 +1766,31 @@ wait(s)    //用于申请资源，整形信号量值&lt;=0时循环执行空操�
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/16/第一周：环境准备/" >第一周：环境准备</a>
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/78599650/" >[Untitled Post]</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/11</span><a class="archive-post-title" href= "/2019/08/11/Web安全学习之——基于dvwa的XSS (Stored)学习教程/Web安全学习之——基于dvwa的XSS (Stored)学习教程/" >Web安全学习之——基于dvwa的XSS (Stored)学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/web安全学习之——基于dvwa的SQL注入演练(low)/" >SQL注入练习：基于DVWA的SQL注入演练(low)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
         </li>
     
     </div>
@@ -1795,6 +1817,10 @@ wait(s)    //用于申请资源，整形信号量值&lt;=0时循环执行空操�
         <span class="sidebar-tag-name" data-tags="日志分析"><span class="iconfont-archer">&#xe606;</span>日志分析</span>
     
         <span class="sidebar-tag-name" data-tags="文件上传漏洞"><span class="iconfont-archer">&#xe606;</span>文件上传漏洞</span>
+    
+        <span class="sidebar-tag-name" data-tags="渗透测试"><span class="iconfont-archer">&#xe606;</span>渗透测试</span>
+    
+        <span class="sidebar-tag-name" data-tags="渗透测试，端口渗透"><span class="iconfont-archer">&#xe606;</span>渗透测试，端口渗透</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>

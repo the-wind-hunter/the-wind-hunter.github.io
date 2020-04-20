@@ -346,6 +346,41 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2020/04/20/端口渗透总结/" >
+            
+                <span>端口渗透总结</span>
+        </a>
+        <div class="abstract-content">
+            服务默认端口公认端口(Well Known Ports)：0-1023，他们紧密绑定了一些服务；
+注册端口(Registered Ports)：1024-49151，他们松散的绑定了一些服务；
+动态/私有：49152-65535，不为服务分配这些端口；
+文件共享服务端口渗透FTP服务FTP服务：ftp服务我分为两种情况，第一种是使用系统软件来配置，比如IIS中的FTP文件共享或Linux中的默认服务软件；第二种是通过第三方软件来配置，比如Serv-U还有一些网上写的简易ftp服务器等；
+默认端口：20（数据端口）；21（控制端口）；69（tftp小型文件传输协议）
+攻击方式：
+爆破：ft...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/04/20</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "渗透测试，端口渗透">渗透测试，端口渗透</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2020/04/16/反弹shell原理和实现/" >
             
                 <span>反弹shell原理和实现</span>
@@ -365,6 +400,8 @@
             <div class= abstract-tags >
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "get shell">get shell</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "渗透测试">渗透测试</a>
     
 </div>
             
@@ -558,41 +595,6 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/07/pikachu之CSRF练习/" >
-            
-                <span>pikachu之CSRF</span>
-        </a>
-        <div class="abstract-content">
-            0x00 实验环境​        本次实验的环境主要采用Pikachu漏洞练习平台，Pikachu是一个带有漏洞的Web应用系统，在这里包含了常见的web安全漏洞。如果你是一个Web渗透测试学习人员且正发愁没有合适的靶场进行练习，那么Pikachu可能正合你意。
-平台源码链接：https://github.com/zhuifengshaonianhanlu/pikachu
-
-至于要怎么搭建安装这个平台我就不多说了，推荐使用pspstudy来安装（如果不懂的话那就得从安装phpstudy学起啦）
-还是简单说一下吧：就是把下载解压好的文件夹放到www/下
-
-然后根据实际情况修改inc/co...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/07</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "CSRF">CSRF</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
         <a class="abstract-title" href = "/2019/11/07/pikachu之SQL注入/" >
             
                 <span>pikachu之SQL注入</span>
@@ -630,18 +632,23 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/06/CSRF(跨站请求伪造)/" >
+        <a class="abstract-title" href = "/2019/11/07/pikachu之CSRF练习/" >
             
-                <span>跨站请求伪造CSRF</span>
+                <span>pikachu之CSRF</span>
         </a>
         <div class="abstract-content">
-            0x00 什么是跨站请求伪造​       跨站请求伪造：（英语：Cross-site request forgery），也被称为 one-click attack 或者 session riding，通常缩写为 CSRF 或者 XSRF， 是一种挟制用户在当前已登录的Web应用程序上执行非本意的操作的攻击方法。跟跨网站脚本（XSS）相比，XSS利用的是用户对指定网站的信任，CSRF 利用的是网站对用户网页浏览器的信任
-​      跨站请求攻击，简单地说，是攻击者通过一些技术手段欺骗用户的浏览器去访问一个自己曾经认证过的网站并运行一些操作（如发邮件，发消息，甚至财产操作如转账和购买商品...
+            0x00 实验环境​        本次实验的环境主要采用Pikachu漏洞练习平台，Pikachu是一个带有漏洞的Web应用系统，在这里包含了常见的web安全漏洞。如果你是一个Web渗透测试学习人员且正发愁没有合适的靶场进行练习，那么Pikachu可能正合你意。
+平台源码链接：https://github.com/zhuifengshaonianhanlu/pikachu
+
+至于要怎么搭建安装这个平台我就不多说了，推荐使用pspstudy来安装（如果不懂的话那就得从安装phpstudy学起啦）
+还是简单说一下吧：就是把下载解压好的文件夹放到www/下
+
+然后根据实际情况修改inc/co...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/06</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/07</span>
             </div>
             <!-- tags  -->
             
@@ -660,29 +667,24 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/09/18/通过DVWA学习XSS/通过DVWA学习XSS/" >
+        <a class="abstract-title" href = "/2019/11/06/CSRF(跨站请求伪造)/" >
             
-                <span>通过DVWA学习XSS</span>
+                <span>跨站请求伪造CSRF</span>
         </a>
         <div class="abstract-content">
-            通过DVWA学习XSS简介这篇文章通过 dvwa 简单研究了三种类型的 xss，并且讲述了如何利用 xss 获取目标网站用户的 cookie。
-dvwa反射型xss测试环境
-一台 win2003 虚拟机，ip 为 192.168.50.128，用wamp集成环境将dvwa搭在8080端口。
-一台 win7 虚拟机，ip 为 192.168.50.150，用来接受漏洞网站的cookie，web由phpstudy搭建。
-
-low级别为了便于理解，代码如下：
-123456789&lt;?php// Is there any input?if( array_key_exists( &quot;n...
+            0x00 什么是跨站请求伪造​       跨站请求伪造：（英语：Cross-site request forgery），也被称为 one-click attack 或者 session riding，通常缩写为 CSRF 或者 XSRF， 是一种挟制用户在当前已登录的Web应用程序上执行非本意的操作的攻击方法。跟跨网站脚本（XSS）相比，XSS利用的是用户对指定网站的信任，CSRF 利用的是网站对用户网页浏览器的信任
+​      跨站请求攻击，简单地说，是攻击者通过一些技术手段欺骗用户的浏览器去访问一个自己曾经认证过的网站并运行一些操作（如发邮件，发消息，甚至财产操作如转账和购买商品...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/18</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/06</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "XSS学习">XSS学习</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "CSRF">CSRF</a>
     
 </div>
             
@@ -1475,9 +1477,14 @@ low级别为了便于理解，代码如下：
     
     
     
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 46
+        Total : 47
         </div>
         <!-- search  -->
         
@@ -1490,6 +1497,11 @@ low级别为了便于理解，代码如下：
     
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2020/04/20/端口渗透总结/" >端口渗透总结</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1582,6 +1594,11 @@ low级别为了便于理解，代码如下：
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/SQLServer数据库及注入方法/" >SQLServer数据库及注入方法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/数据库备份拿shell(练习)/" >各种拿shell方法总结</a>
         </li>
     
@@ -1592,17 +1609,7 @@ low级别为了便于理解，代码如下：
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/SQLServer数据库及注入方法/" >SQLServer数据库及注入方法</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web安全之命令执行漏洞学习实战/" >各种拿shell方法总结</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之SQL注入/" >pikachu之SQL注入</a>
         </li>
     
     
@@ -1611,13 +1618,41 @@ low级别为了便于理解，代码如下：
         </li>
     
     
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
         <li class="archive-post-item">
-            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/第十三周-web安全之手工测试之前编写的注入环境/" >第十三周web安全之手工测试之前编写的注入环境</a>
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/16/第一周：环境准备/" >第一周：环境准备</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之SQL注入/" >pikachu之SQL注入</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/CSRF(跨站请求伪造)/" >跨站请求伪造CSRF</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/第十三周-web安全之手工测试之前编写的注入环境/" >第十三周web安全之手工测试之前编写的注入环境</a>
         </li>
     
     
@@ -1686,6 +1721,16 @@ low级别为了便于理解，代码如下：
         </li>
     
     
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/第二周：认识sql并学习数据库的基础操作/" >第二周：认识SQL并学习数据库的基础操作</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2019/08/15/Web安全学习之——基于dvwa的XSS (DOM）学习教程/Web安全学习之——基于dvwa的XSS (DOM）学习教程/" >Web安全学习之——基于dvwa的XSS (DOM）学习教程</a>
+        </li>
+    
+    
     
     
     
@@ -1697,54 +1742,6 @@ low级别为了便于理解，代码如下：
     
         <li class="archive-post-item">
             <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/29/MySQL用户管理：添加用户、授权、删除用户/" >MySQL用户管理：添加用户、授权、删除用户</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/78599650/" >[Untitled Post]</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2019 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/第二周：认识sql并学习数据库的基础操作/" >第二周：认识SQL并学习数据库的基础操作</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2019/08/15/Web安全学习之——基于dvwa的XSS (DOM）学习教程/Web安全学习之——基于dvwa的XSS (DOM）学习教程/" >Web安全学习之——基于dvwa的XSS (DOM）学习教程</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/11</span><a class="archive-post-title" href= "/2019/08/11/Web安全学习之——基于dvwa的XSS (Stored)学习教程/Web安全学习之——基于dvwa的XSS (Stored)学习教程/" >Web安全学习之——基于dvwa的XSS (Stored)学习教程</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/web安全学习之——基于dvwa的SQL注入演练(low)/" >SQL注入练习：基于DVWA的SQL注入演练(low)</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
         </li>
     
     
@@ -1772,7 +1769,31 @@ low级别为了便于理解，代码如下：
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/16/第一周：环境准备/" >第一周：环境准备</a>
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/78599650/" >[Untitled Post]</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/11</span><a class="archive-post-title" href= "/2019/08/11/Web安全学习之——基于dvwa的XSS (Stored)学习教程/Web安全学习之——基于dvwa的XSS (Stored)学习教程/" >Web安全学习之——基于dvwa的XSS (Stored)学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/web安全学习之——基于dvwa的SQL注入演练(low)/" >SQL注入练习：基于DVWA的SQL注入演练(low)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
         </li>
     
     </div>
@@ -1799,6 +1820,10 @@ low级别为了便于理解，代码如下：
         <span class="sidebar-tag-name" data-tags="日志分析"><span class="iconfont-archer">&#xe606;</span>日志分析</span>
     
         <span class="sidebar-tag-name" data-tags="文件上传漏洞"><span class="iconfont-archer">&#xe606;</span>文件上传漏洞</span>
+    
+        <span class="sidebar-tag-name" data-tags="渗透测试"><span class="iconfont-archer">&#xe606;</span>渗透测试</span>
+    
+        <span class="sidebar-tag-name" data-tags="渗透测试，端口渗透"><span class="iconfont-archer">&#xe606;</span>渗透测试，端口渗透</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>

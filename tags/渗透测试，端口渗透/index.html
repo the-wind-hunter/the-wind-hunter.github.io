@@ -22,7 +22,7 @@
     <meta name="description" content>
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>php正则表达式中preg_match函数的详解 · jax&#39;s Studio</title>
+    <title>jax&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -203,23 +203,12 @@
 </head>
 
     
-        <body class="post-body">
-    
     
 <header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
-    
-    <div class="banner">
-            <div class="blog-title">
-                <a href="/" >jax&#39;s Studio.</a>
-            </div>
-            <div class="post-title">
-                <a href="#" class="post-name">php正则表达式中preg_match函数的详解</a>
-            </div>
-    </div>
     
     <a class="home-link" href=/>jax's Studio.</a>
 </header>
@@ -231,74 +220,24 @@
 
 
 
-
-height:50vh;
 ">
     
     <!-- 主页  -->
-    
-    
-    <!-- 404页  -->
             
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-img" style="background-image: url(/)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
-            
-            php正则表达式中preg_match函数的详解
-            <!-- 404 -->
             
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
-            
-            <!-- 404 -->
-            
         </p>
         <!-- 文章页meta -->
-        
-            <div class="post-intros">
-                <!-- 文章页标签  -->
-                
-                    <div class= post-intro-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SSRF学习">SSRF学习</a>
-    
-</div>
-                
-                
-                    <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">2.8k</span>阅读时长: <span class="post-count reading-time">10 min</span></span>
-                    </div>
-                
-                <div class="post-intro-meta">
-                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2019/10/10</span>
-                    
-                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
-                        <span class="iconfont-archer">&#xe602;</span>
-                        <span id="busuanzi_value_page_pv"></span>
-                    </span>
-                    
-                    <span class="shareWrapper">
-                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
-                        <span class="shareText">Share</span>
-                        <ul class="shareList">
-                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
-                                <div class="share-qrcode"></div>
-                            </li>
-                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
-                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
-                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
-                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
-                        </ul>
-                    </span>
-                </div>
-            </div>
         
     </div>
 </div>
@@ -399,234 +338,45 @@ height:50vh;
 </script>        
         <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
         <div class="container container-unloaded">
-            <main class="main post-page">
-    <article class="article-entry">
-        <h1 id="php正则表达式中preg-match函数的详解"><a href="#php正则表达式中preg-match函数的详解" class="headerlink" title="php正则表达式中preg_match函数的详解"></a>php正则表达式中preg_match函数的详解</h1><h1 id="官方解释："><a href="#官方解释：" class="headerlink" title="官方解释："></a>官方解释：</h1><p>preg_match 函数用于执行一个正则表达式匹配。</p>
-<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int preg_match ( string $pattern , string $subject [, array &amp;$matches [, int $flags = 0 [, int $offset = 0 ]]] )</span><br></pre></td></tr></table></figure>
-
-<p>搜索 subject 与 pattern 给定的正则表达式的一个匹配。</p>
-<p>参数说明：</p>
-<ul>
-<li>$pattern: 要搜索的模式，字符串形式。</li>
-<li>$subject: 输入字符串。</li>
-<li>$matches: 如果提供了参数matches，它将被填充为搜索结果。 $matches[0]将包含完整模式匹配到的文本， $matches[1] 将包含第一个捕获子组匹配到的文本，以此类推。</li>
-<li>$flags：flags 可以被设置为以下标记值：<ol>
-<li>PREG_OFFSET_CAPTURE: 如果传递了这个标记，对于每一个出现的匹配返回时会附加字符串偏移量(相对于目标字符串的)。 注意：这会改变填充到matches参数的数组，使其每个元素成为一个由 第0个元素是匹配到的字符串，第1个元素是该匹配字符串 在目标字符串subject中的偏移量。</li>
-</ol>
-</li>
-<li>offset: 通常，搜索从目标字符串的开始位置开始。可选参数 offset 用于 指定从目标字符串的某个未知开始搜索(单位是字节)。</li>
-</ul>
-<h2 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h2><p>返回 pattern 的匹配次数。 它的值将是 0 次（不匹配）或 1 次，因为 preg_match() 在第一次匹配后 将会停止搜索。preg_match_all() 不同于此，它会一直搜索subject 直到到达结尾。 如果发生错误preg_match()返回 FALSE。</p>
-<h1 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h1><h2 id="查找文本字符串”php”："><a href="#查找文本字符串”php”：" class="headerlink" title="查找文本字符串”php”："></a>查找文本字符串”php”：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">//模式分隔符后的&quot;i&quot;标记这是一个大小写不敏感的搜索</span><br><span class="line">if (preg_match(&quot;/php/i&quot;, &quot;PHP is the web scripting language of choice.&quot;)) &#123;</span><br><span class="line">    echo &quot;查找到匹配的字符串 php。&quot;;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    echo &quot;未发现匹配的字符串 php。&quot;;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-
-<p>执行结果如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">查找到匹配的字符串 php。</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="查找单词”word”"><a href="#查找单词”word”" class="headerlink" title="查找单词”word”"></a>查找单词”word”</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">/* 模式中的\b标记一个单词边界，所以只有独立的单词&quot;web&quot;会被匹配，而不会匹配</span><br><span class="line"> * 单词的部分内容比如&quot;webbing&quot; 或 &quot;cobweb&quot; */</span><br><span class="line">if (preg_match(&quot;/\bweb\b/i&quot;, &quot;PHP is the web scripting language of choice.&quot;)) &#123;</span><br><span class="line">    echo &quot;查找到匹配的字符串。\n&quot;;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    echo &quot;未发现匹配的字符串。\n&quot;;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">if (preg_match(&quot;/\bweb\b/i&quot;, &quot;PHP is the website scripting language of choice.&quot;)) &#123;</span><br><span class="line">    echo &quot;查找到匹配的字符串。\n&quot;;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    echo &quot;未发现匹配的字符串。\n&quot;;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-
-<p>执行结果如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">查找到匹配的字符串。</span><br><span class="line">未发现匹配的字符串。</span><br></pre></td></tr></table></figure>
-
-<h2 id="使用命名子组"><a href="#使用命名子组" class="headerlink" title="使用命名子组"></a>使用命名子组</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"> </span><br><span class="line">$str = &apos;foobar: 2008&apos;;</span><br><span class="line"> </span><br><span class="line">preg_match(&apos;/(?P&lt;name&gt;\w+): (?P&lt;digit&gt;\d+)/&apos;, $str, $matches);</span><br><span class="line"> </span><br><span class="line">/* 下面例子在php 5.2.2(pcre 7.0)或更新版本下工作, 然而, 为了后向兼容, 上面的方式是推荐写法. */</span><br><span class="line">// preg_match(&apos;/(?&lt;name&gt;\w+): (?&lt;digit&gt;\d+)/&apos;, $str, $matches);</span><br><span class="line"> </span><br><span class="line">print_r($matches);</span><br><span class="line"> </span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-
-<p>执行结果如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Array</span><br><span class="line">(</span><br><span class="line">    [0] =&gt; foobar: 2008</span><br><span class="line">    [name] =&gt; foobar</span><br><span class="line">    [1] =&gt; foobar</span><br><span class="line">    [digit] =&gt; 2008</span><br><span class="line">    [2] =&gt; 2008</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
-<h1 id="PHP正则表达式preg-match函数的使用："><a href="#PHP正则表达式preg-match函数的使用：" class="headerlink" title="PHP正则表达式preg_match函数的使用："></a><strong>PHP正则表达式preg_match函数的使用：</strong></h1><p>利用 preg_match()，可以完成字符串的规则匹配。如果找到一个匹配，preg_match() 函数返回 1，否则返回 0。还有一个可选的第三参数可以让你把匹配的部分存在一个数组中。在验证数据时这个功能显得非常重要以及有用。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`$string` `= ``&quot;php爱好者&quot;``;`` ``if` `(preg_match(``&apos;/php/&apos;``, ``$string``))``&#123;``// 匹配正确``&#125;`</span><br></pre></td></tr></table></figure>
-
-<p>上面的例子将成功匹配，因为“php爱好者”里面包含 php。现在我们来试一个更复杂的，例如验证一个 Email 地址。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`$string` `= ``&quot;first.last@domain.uno.dos&quot;``;``if` `(preg_match( &apos;/^[^0-9][a-zA-Z0-9_]+``([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+ ([.]``[a-zA-Z0-9_]+)*[.][a-zA-Z]&#123;2,4&#125;$/&apos;, ``$string``))``&#123;``// 验证Email地址``&#125;`</span><br></pre></td></tr></table></figure>
-
-<p>这个例子将验证出此 Email 地址为正确格式。</p>
-<h1 id="PHP正则表达式preg-match的规则："><a href="#PHP正则表达式preg-match的规则：" class="headerlink" title="PHP正则表达式preg_match的规则："></a><strong>PHP正则表达式preg_match的规则：</strong></h1><p>通过上面实例的演示我们来了解下这段正则表达式所代表的各种规则。<br>PCRE 顾名思义，与在 Perl 中的正则表达式有相同的语法，所以每段正则表达式必须要有一对定界符。我们一般使用 <code>/</code> 为定界符。<br>开头的 <code>^</code> 和结尾的 <code>$</code> 让PHP从字符串开头检查到结尾。假使没有 <code>$</code>，程序仍会匹配到 Email 的末尾。<br>◆<code>[</code> 和 <code>]</code> 被用来限制许可输入类型。例如 a-z 允许所有的小写字母，A-Z 允许所有的大写字母，0-9 所有数字，等等，以及更多其他类型。<br>◆<code>{</code> 和 <code>}</code> 被用来限制期望的字符数。例如 {2,4} 表示字符串的每一节可以有 2-4 字符长度，像是 .com.cn 或 .info。在这里, “.” 并不算一个字符，因为 {2,4} 之前定义的许可输入类型只有大小写字母，故此段只匹配大小写字母<br>◆<code>(</code> 和 <code>)</code> 被用来合并小节，并定义字符串中必须存在的字符。(a|b|c) 能够匹配 a 或 b 或 c。<br>◆<code>(.)</code> 将匹配所有字符，而 <code>[.]</code> 只匹配 “.” 本身。<br>要使用一些符号本身，必须在前增加一个 。这些字符有：<code>( ) [ ] . * ? + ^ | $</code></p>
-<h1 id="获取-URL-中的域名分析"><a href="#获取-URL-中的域名分析" class="headerlink" title="获取 URL 中的域名分析"></a>获取 URL 中的域名分析</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">正则表达式http://([^/]+/.*)是什么意思？</span><br><span class="line"></span><br><span class="line">^/表示不以/开头</span><br><span class="line">^：字符表示只匹配以http://开头的字符串</span><br><span class="line">()：字符表示子表达式的开始和结束位置，子表达式[^/]+/.*</span><br><span class="line">[]：字符表示表示字符集，这里是字符类的否定，^在这里表示反向字符集，即非/</span><br><span class="line">+：表示匹配子表达式（非/）一次或多次</span><br><span class="line">/：表示URL中常见/</span><br><span class="line">.：匹配除换行符 \n 之外的任何单字符</span><br><span class="line">*：匹配前面的子表达式（.）零次或多次</span><br><span class="line">?: 非获取匹配。用圆括号会有一个副作用，使相关的匹配会被缓存，此时可用?:放在第一个选项前来消除这种副作用。</span><br><span class="line">其中 ?: 是非捕获元之一，为正向预查，在任何开始匹配圆括号内的正则表达式模式的位置来匹配搜索字符串。</span><br><span class="line"></span><br><span class="line">?直接跟随在子表达式后面:这种方式是最常用的用法，具体表示匹配前面的一次或者0次，类似于&#123;0,1&#125;，如：abc(d)?可匹配abc和abcd</span><br><span class="line">$:匹配输入字符串的结尾位置。如果设置了 RegExp 对象的 Multiline 属性，则 $ 也匹配 &apos;\n&apos; 或 &apos;\r&apos;。要匹配 $ 字符本身，请使用 \$。</span><br></pre></td></tr></table></figure>
-
-<p>样例供分析</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">// 从URL中获取主机名称</span><br><span class="line">preg_match(&apos;@^(?:http://)?([^/]+)@i&apos;,&quot;http://www.runoob.com/index.html&quot;, $matches);</span><br><span class="line">$host = $matches[1];</span><br><span class="line"></span><br><span class="line">// 获取主机名称的后面两部分</span><br><span class="line">preg_match(&apos;/[^.]+\.[^.]+$/&apos;, $host, $matches);</span><br><span class="line">echo &quot;domain name is: &#123;$matches[0]&#125;\n&quot;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-
-<p><strong>$matches: 如果提供了参数matches，它将被填充为搜索结果。 $matches[0]将包含完整模式匹配到的文本， $matches[1] 将包含第一个捕获子组匹配到的文本，以此类推。</strong></p>
-<p>执行结果如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">domain name is: runoob.com</span><br></pre></td></tr></table></figure>
-
-<h1 id="字符表格"><a href="#字符表格" class="headerlink" title="字符表格"></a>字符表格</h1><h2 id="非打印字符"><a href="#非打印字符" class="headerlink" title="非打印字符"></a>非打印字符</h2><p>非打印字符也可以是正则表达式的组成部分。下表列出了表示非打印字符的转义序列：</p>
-<table>
-<thead>
-<tr>
-<th align="left">字符</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">\cx</td>
-<td align="left">匹配由x指明的控制字符。例如， \cM 匹配一个 Control-M 或回车符。x 的值必须为 A-Z 或 a-z 之一。否则，将 c 视为一个原义的 ‘c’ 字符。</td>
-</tr>
-<tr>
-<td align="left">\f</td>
-<td align="left">匹配一个换页符。等价于 \x0c 和 \cL。</td>
-</tr>
-<tr>
-<td align="left">\n</td>
-<td align="left">匹配一个换行符。等价于 \x0a 和 \cJ。</td>
-</tr>
-<tr>
-<td align="left">\r</td>
-<td align="left">匹配一个回车符。等价于 \x0d 和 \cM。</td>
-</tr>
-<tr>
-<td align="left">\s</td>
-<td align="left">匹配任何空白字符，包括空格、制表符、换页符等等。等价于 [ \f\n\r\t\v]。注意 Unicode 正则表达式会匹配全角空格符。</td>
-</tr>
-<tr>
-<td align="left">\S</td>
-<td align="left">匹配任何非空白字符。等价于 [^ \f\n\r\t\v]。</td>
-</tr>
-<tr>
-<td align="left">\t</td>
-<td align="left">匹配一个制表符。等价于 \x09 和 \cI。</td>
-</tr>
-<tr>
-<td align="left">\v</td>
-<td align="left">匹配一个垂直制表符。等价于 \x0b 和 \cK。</td>
-</tr>
-</tbody></table>
-<h2 id="特殊字符"><a href="#特殊字符" class="headerlink" title="特殊字符"></a>特殊字符</h2><p>所谓特殊字符，就是一些有特殊含义的字符，如上面说的 <strong>runoo*b</strong> 中的 <strong><strong>*，简单的说就是表示任何字符串的意思。如果要查找字符串中的 *</strong></strong> 符号，则需要对 ***** 进行转义，即在其前加一个 <code>\: runo\*ob 匹配 runo*ob</code>。</p>
-<p>许多元字符要求在试图匹配它们时特别对待。若要匹配这些特殊字符，必须首先使字符”转义”，即，将反斜杠字符<code>\</code> 放在它们前面。下表列出了正则表达式中的特殊字符：</p>
-<table>
-<thead>
-<tr>
-<th align="left">特别字符</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">$</td>
-<td align="left">匹配输入字符串的结尾位置。如果设置了 RegExp 对象的 Multiline 属性，则 $ 也匹配 ‘\n’ 或 ‘\r’。要匹配 $ 字符本身，请使用 $。</td>
-</tr>
-<tr>
-<td align="left">( )</td>
-<td align="left">标记一个子表达式的开始和结束位置。子表达式可以获取供以后使用。要匹配这些字符，请使用 ( 和 )。</td>
-</tr>
-<tr>
-<td align="left">*</td>
-<td align="left">匹配前面的子表达式零次或多次。要匹配 * 字符，请使用 *。</td>
-</tr>
-<tr>
-<td align="left">+</td>
-<td align="left">匹配前面的子表达式一次或多次。要匹配 + 字符，请使用 +。</td>
-</tr>
-<tr>
-<td align="left">.</td>
-<td align="left">匹配除换行符 \n 之外的任何单字符。要匹配 . ，请使用 . 。</td>
-</tr>
-<tr>
-<td align="left">[</td>
-<td align="left">标记一个中括号表达式的开始。要匹配 [，请使用 [。</td>
-</tr>
-<tr>
-<td align="left">?</td>
-<td align="left">匹配前面的子表达式零次或一次，或指明一个非贪婪限定符。要匹配 ? 字符，请使用 ?。</td>
-</tr>
-<tr>
-<td align="left">\</td>
-<td align="left">将下一个字符标记为或特殊字符、或原义字符、或向后引用、或八进制转义符。例如， ‘n’ 匹配字符 ‘n’。’\n’ 匹配换行符。序列 ‘\‘ 匹配 “&quot;，而 ‘(‘ 则匹配 “(“。</td>
-</tr>
-<tr>
-<td align="left">^</td>
-<td align="left">匹配输入字符串的开始位置，除非在方括号表达式中使用，此时它表示不接受该字符集合。要匹配 ^ 字符本身，请使用 ^。</td>
-</tr>
-<tr>
-<td align="left">{</td>
-<td align="left">标记限定符表达式的开始。要匹配 {，请使用 {。</td>
-</tr>
-<tr>
-<td align="left">|</td>
-<td align="left">指明两项之间的一个选择。要匹配 |，请使用 |。</td>
-</tr>
-</tbody></table>
-<h2 id="限定符"><a href="#限定符" class="headerlink" title="限定符"></a>限定符</h2><p>限定符用来指定正则表达式的一个给定组件必须要出现多少次才能满足匹配。有 <strong>*** 或 **+</strong> 或 <strong>?</strong> 或 <strong>{n}</strong> 或 <strong>{n,}</strong> 或 <strong>{n,m}</strong> 共6种。</p>
-<p>正则表达式的限定符有：</p>
-<table>
-<thead>
-<tr>
-<th align="left">字符</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">*</td>
-<td align="left">匹配前面的子表达式零次或多次。例如，zo* 能匹配 “z” 以及 “zoo”。* 等价于{0,}。</td>
-</tr>
-<tr>
-<td align="left">+</td>
-<td align="left">匹配前面的子表达式一次或多次。例如，’zo+’ 能匹配 “zo” 以及 “zoo”，但不能匹配 “z”。+ 等价于 {1,}。</td>
-</tr>
-<tr>
-<td align="left">?</td>
-<td align="left">匹配前面的子表达式零次或一次。例如，”do(es)?” 可以匹配 “do” 、 “does” 中的 “does” 、 “doxy” 中的 “do” 。? 等价于 {0,1}。</td>
-</tr>
-<tr>
-<td align="left">{n}</td>
-<td align="left">n 是一个非负整数。匹配确定的 n 次。例如，’o{2}’ 不能匹配 “Bob” 中的 ‘o’，但是能匹配 “food” 中的两个 o。</td>
-</tr>
-<tr>
-<td align="left">{n,}</td>
-<td align="left">n 是一个非负整数。至少匹配n 次。例如，’o{2,}’ 不能匹配 “Bob” 中的 ‘o’，但能匹配 “foooood” 中的所有 o。’o{1,}’ 等价于 ‘o+’。’o{0,}’ 则等价于 ‘o*’。</td>
-</tr>
-<tr>
-<td align="left">{n,m}</td>
-<td align="left">m 和 n 均为非负整数，其中n &lt;= m。最少匹配 n 次且最多匹配 m 次。例如，”o{1,3}” 将匹配 “fooooood” 中的前三个 o。’o{0,1}’ 等价于 ‘o?’。请注意在逗号和两个数之间不能有空格。</td>
-</tr>
-</tbody></table>
-<h1 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h1><p>问号：<a href="https://blog.csdn.net/handsomexiaominge/article/details/87886857" target="_blank" rel="noopener">https://blog.csdn.net/handsomexiaominge/article/details/87886857</a></p>
-<p>正则表达式语法：<a href="https://www.runoob.com/regexp/regexp-syntax.html" target="_blank" rel="noopener">https://www.runoob.com/regexp/regexp-syntax.html</a></p>
-
-    </article>
-    <!-- license  -->
+            <main class="main index-page">
     
-        <div class="license-wrapper">
-            <p>原文作者：<a href="https://the-wind-hunter.github.io">jax</a>
-            <p>原文链接：<a href="https://the-wind-hunter.github.io/2019/10/10/php正则表达式中preg_match函数的详解/">https://the-wind-hunter.github.io/2019/10/10/php正则表达式中preg_match函数的详解/</a>
-            <p>发表日期：<a href="https://the-wind-hunter.github.io/2019/10/10/php正则表达式中preg_match函数的详解/">十月 10日 2019, 10:10:31 晚上</a>
-            <p>更新日期：<a href="https://the-wind-hunter.github.io/2019/10/10/php正则表达式中preg_match函数的详解/">January 9th 2020, 9:00:41 pm</a>
-            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/04/20/端口渗透总结/" >
+            
+                <span>端口渗透总结</span>
+        </a>
+        <div class="abstract-content">
+            服务默认端口公认端口(Well Known Ports)：0-1023，他们紧密绑定了一些服务；
+注册端口(Registered Ports)：1024-49151，他们松散的绑定了一些服务；
+动态/私有：49152-65535，不为服务分配这些端口；
+文件共享服务端口渗透FTP服务FTP服务：ftp服务我分为两种情况，第一种是使用系统软件来配置，比如IIS中的FTP文件共享或Linux中的默认服务软件；第二种是通过第三方软件来配置，比如Serv-U还有一些网上写的简易ftp服务器等；
+默认端口：20（数据端口）；21（控制端口）；69（tftp小型文件传输协议）
+攻击方式：
+爆破：ft...
         </div>
-       
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/04/20</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "渗透测试，端口渗透">渗透测试，端口渗透</a>
+    
+</div>
+            
+        </div>
+    </article>
     
     <!-- paginator  -->
-    <ul class="post-paginator">
-        <li class="next">
-            
-                <div class="nextSlogan">Next Post</div>
-                <a href= "/2019/10/16/Web配置本地yum源-Linux安全/" title= "We配置本地yum源-Linux安全">
-                    <div class="nextTitle">We配置本地yum源-Linux安全</div>
-                </a>
-            
-        </li>
-        <li class="previous">
-            
-                <div class="prevSlogan">Previous Post</div>
-                <a href= "/2019/09/29/第九周：web-页面解析的流程学习/" title= "第九周：web 页面解析的流程学习">
-                    <div class="prevTitle">第九周：web 页面解析的流程学习</div>
-                </a>
-            
-        </li>
-    </ul>
-    <!-- 评论插件 -->
-    <!-- 来必力City版安装代码 -->
-
-<!-- City版安装代码已完成 -->
     
-    
-    <!-- partial('_partial/comment/changyan') -->
-    <!--PC版-->
-
-
-    
-    
-
-    <!-- 评论 -->
 </main>
             <!-- profile -->
             
@@ -696,24 +446,6 @@ height:50vh;
 </footer>
     </div>
     <!-- toc -->
-    
-    <div class="toc-wrapper" style=
-    
-
-
-
-
-
-
-
-top:50vh;
-
-    >
-        <div class="toc-catalog">
-            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
-        </div>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#php正则表达式中preg-match函数的详解"><span class="toc-number">1.</span> <span class="toc-text">php正则表达式中preg_match函数的详解</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#官方解释："><span class="toc-number">2.</span> <span class="toc-text">官方解释：</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#语法"><span class="toc-number">2.1.</span> <span class="toc-text">语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#返回值"><span class="toc-number">2.2.</span> <span class="toc-text">返回值</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实例"><span class="toc-number">3.</span> <span class="toc-text">实例</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#查找文本字符串”php”："><span class="toc-number">3.1.</span> <span class="toc-text">查找文本字符串”php”：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查找单词”word”"><span class="toc-number">3.2.</span> <span class="toc-text">查找单词”word”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用命名子组"><span class="toc-number">3.3.</span> <span class="toc-text">使用命名子组</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PHP正则表达式preg-match函数的使用："><span class="toc-number">4.</span> <span class="toc-text">PHP正则表达式preg_match函数的使用：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PHP正则表达式preg-match的规则："><span class="toc-number">5.</span> <span class="toc-text">PHP正则表达式preg_match的规则：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#获取-URL-中的域名分析"><span class="toc-number">6.</span> <span class="toc-text">获取 URL 中的域名分析</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#字符表格"><span class="toc-number">7.</span> <span class="toc-text">字符表格</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#非打印字符"><span class="toc-number">7.1.</span> <span class="toc-text">非打印字符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#特殊字符"><span class="toc-number">7.2.</span> <span class="toc-text">特殊字符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#限定符"><span class="toc-number">7.3.</span> <span class="toc-text">限定符</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考资料："><span class="toc-number">8.</span> <span class="toc-text">参考资料：</span></a></li></ol>
-    </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
     <div class="sidebar sidebar-hide">
@@ -1852,8 +1584,6 @@ jsonContent:
     
     </div>
     <!-- async load share.js -->
-    
-        <script src="/scripts/share.js" async></script>    
      
     </body>
 </html>
