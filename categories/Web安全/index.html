@@ -346,6 +346,36 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2020/04/20/粘滞键后门详解/" >
+            
+                <span>粘滞键后门详解</span>
+        </a>
+        <div class="abstract-content">
+            介绍首先介绍一下粘滞键，粘滞键很多人都知道，windows 系统下连续按 5 次 shift 可调出其程序，但使用可能有一部分人不太了解，毕竟这个功能一般我们都用不到，粘滞键是为了那些按钮有困难的人设计的，也可理解为残疾，就是按键困难，一次只能按一个键的这种需求，那么如果用 ctrl+c，ctrl+v 这种快捷键或者其他需要组合的键时，就会有困难，不具备一次按两个或多个键的能力，那么此时就可以单按 5 下 shift 键来启动粘滞键功能，粘滞键启动后，多个组合键就可以依次单个按下来实现，例如复制，就可以先按一下 ctrl，然后再按一下 c 即可，这就是粘滞键功能。
+粘滞键启动后，图标如下...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/04/20</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "渗透测试">渗透测试</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2020/04/20/端口渗透总结/" >
             
                 <span>端口渗透总结</span>
@@ -487,6 +517,47 @@ xss通关小游戏：https://pan.baidu.com/s/1zS2GwTNbMBXEF2yNEBeLgA   密码：
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/11/08/SQLServer数据库及注入方法/" >
+            
+                <span>SQLServer数据库及注入方法</span>
+        </a>
+        <div class="abstract-content">
+            目录
+SQLServer数据库
+修改默认1433端口
+SQLServer数据库的管理
+SQLServer数据库的查询语句
+SA权限开启xp_cmdshell获取主机权限
+SA权限使用sp_oacreate执行系统命令
+DB_owner权限LOG备份Getshell
+DB_owner权限差异备份Getshell
+盲注SQLServer数据库
+SQLServer数据库SQL Server数据库是由Microsoft开发和推广的关系数据库管理系统(DBMS)，是一个比较大型的数据库。端口号为 1433。数据库后缀名 .mdf，注释符是 –
+
+sa权限：数据库操作，文件管理，命令执行，注册表读取...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/08</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "SQL注入">SQL注入</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/11/08/数据库备份拿shell(练习)/" >
             
                 <span>各种拿shell方法总结</span>
@@ -556,82 +627,6 @@ xss通关小游戏：https://pan.baidu.com/s/1zS2GwTNbMBXEF2yNEBeLgA   密码：
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/08/SQLServer数据库及注入方法/" >
-            
-                <span>SQLServer数据库及注入方法</span>
-        </a>
-        <div class="abstract-content">
-            目录
-SQLServer数据库
-修改默认1433端口
-SQLServer数据库的管理
-SQLServer数据库的查询语句
-SA权限开启xp_cmdshell获取主机权限
-SA权限使用sp_oacreate执行系统命令
-DB_owner权限LOG备份Getshell
-DB_owner权限差异备份Getshell
-盲注SQLServer数据库
-SQLServer数据库SQL Server数据库是由Microsoft开发和推广的关系数据库管理系统(DBMS)，是一个比较大型的数据库。端口号为 1433。数据库后缀名 .mdf，注释符是 –
-
-sa权限：数据库操作，文件管理，命令执行，注册表读取...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/08</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SQL注入">SQL注入</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/07/pikachu之CSRF练习/" >
-            
-                <span>pikachu之CSRF</span>
-        </a>
-        <div class="abstract-content">
-            0x00 实验环境​        本次实验的环境主要采用Pikachu漏洞练习平台，Pikachu是一个带有漏洞的Web应用系统，在这里包含了常见的web安全漏洞。如果你是一个Web渗透测试学习人员且正发愁没有合适的靶场进行练习，那么Pikachu可能正合你意。
-平台源码链接：https://github.com/zhuifengshaonianhanlu/pikachu
-
-至于要怎么搭建安装这个平台我就不多说了，推荐使用pspstudy来安装（如果不懂的话那就得从安装phpstudy学起啦）
-还是简单说一下吧：就是把下载解压好的文件夹放到www/下
-
-然后根据实际情况修改inc/co...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/07</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "CSRF">CSRF</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
         <a class="abstract-title" href = "/2019/11/07/pikachu之SQL注入/" >
             
                 <span>pikachu之SQL注入</span>
@@ -669,18 +664,23 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/06/CSRF(跨站请求伪造)/" >
+        <a class="abstract-title" href = "/2019/11/07/pikachu之CSRF练习/" >
             
-                <span>跨站请求伪造CSRF</span>
+                <span>pikachu之CSRF</span>
         </a>
         <div class="abstract-content">
-            0x00 什么是跨站请求伪造​       跨站请求伪造：（英语：Cross-site request forgery），也被称为 one-click attack 或者 session riding，通常缩写为 CSRF 或者 XSRF， 是一种挟制用户在当前已登录的Web应用程序上执行非本意的操作的攻击方法。跟跨网站脚本（XSS）相比，XSS利用的是用户对指定网站的信任，CSRF 利用的是网站对用户网页浏览器的信任
-​      跨站请求攻击，简单地说，是攻击者通过一些技术手段欺骗用户的浏览器去访问一个自己曾经认证过的网站并运行一些操作（如发邮件，发消息，甚至财产操作如转账和购买商品...
+            0x00 实验环境​        本次实验的环境主要采用Pikachu漏洞练习平台，Pikachu是一个带有漏洞的Web应用系统，在这里包含了常见的web安全漏洞。如果你是一个Web渗透测试学习人员且正发愁没有合适的靶场进行练习，那么Pikachu可能正合你意。
+平台源码链接：https://github.com/zhuifengshaonianhanlu/pikachu
+
+至于要怎么搭建安装这个平台我就不多说了，推荐使用pspstudy来安装（如果不懂的话那就得从安装phpstudy学起啦）
+还是简单说一下吧：就是把下载解压好的文件夹放到www/下
+
+然后根据实际情况修改inc/co...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/06</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/07</span>
             </div>
             <!-- tags  -->
             
@@ -1463,110 +1463,9 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 47
+        Total : 48
         </div>
         <!-- search  -->
         
@@ -1582,31 +1481,8 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">03/06</span><a class="archive-post-title" href= "/2020/03/06/渗透测试常见开放端口及利用/" >渗透测试常见开放端口及利用</a>
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2020/04/20/粘滞键后门详解/" >粘滞键后门详解</a>
         </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/78599650/" >[Untitled Post]</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2020 </div>
-    <ul class="year-list">
     
     
         <li class="archive-post-item">
@@ -1621,6 +1497,11 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
     
         <li class="archive-post-item">
             <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2020/04/15/任意文件下载/" >Web安全之任意文件下载</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/06</span><a class="archive-post-title" href= "/2020/03/06/渗透测试常见开放端口及利用/" >渗透测试常见开放端口及利用</a>
         </li>
     
     
@@ -1699,7 +1580,12 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web安全之命令执行漏洞学习实战/" >各种拿shell方法总结</a>
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/数据库备份拿shell(练习)/" >各种拿shell方法总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web 安全之 SSRF 漏洞学习实战/" >Web安全之SSRF漏洞学习实战</a>
         </li>
     
     
@@ -1709,12 +1595,7 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/数据库备份拿shell(练习)/" >各种拿shell方法总结</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web 安全之 SSRF 漏洞学习实战/" >Web安全之SSRF漏洞学习实战</a>
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web安全之命令执行漏洞学习实战/" >各种拿shell方法总结</a>
         </li>
     
     
@@ -1813,6 +1694,43 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
         </li>
     
     
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/78599650/" >[Untitled Post]</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/29/MySQL用户管理：添加用户、授权、删除用户/" >MySQL用户管理：添加用户、授权、删除用户</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
         <li class="archive-post-item">
             <span class="archive-post-date">08/11</span><a class="archive-post-title" href= "/2019/08/11/Web安全学习之——基于dvwa的XSS (Stored)学习教程/Web安全学习之——基于dvwa的XSS (Stored)学习教程/" >Web安全学习之——基于dvwa的XSS (Stored)学习教程</a>
         </li>
@@ -1838,35 +1756,21 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/29/MySQL用户管理：添加用户、授权、删除用户/" >MySQL用户管理：添加用户、授权、删除用户</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/16/第一周：环境准备/" >第一周：环境准备</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
         </li>
     
     </div>

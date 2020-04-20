@@ -1,0 +1,1699 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="jax">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="jax">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content>
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>粘滞键后门详解 · jax&#39;s Studio</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >jax&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">粘滞键后门详解</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>jax's Studio.</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            粘滞键后门详解
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "渗透测试">渗透测试</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">2.6k</span>阅读时长: <span class="post-count reading-time">9 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2020/04/20</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>首先介绍一下粘滞键，粘滞键很多人都知道，windows 系统下连续按 5 次 shift 可调出其程序，但使用可能有一部分人不太了解，毕竟这个功能一般我们都用不到，粘滞键是为了那些按钮有困难的人设计的，也可理解为残疾，就是按键困难，一次只能按一个键的这种需求，那么如果用 ctrl+c，ctrl+v 这种快捷键或者其他需要组合的键时，就会有困难，不具备一次按两个或多个键的能力，那么此时就可以单按 5 下 shift 键来启动粘滞键功能，粘滞键启动后，多个组合键就可以依次单个按下来实现，例如复制，就可以先按一下 ctrl，然后再按一下 c 即可，这就是粘滞键功能。</p>
+<p>粘滞键启动后，图标如下，双击可以查看其设置的一些选项，如下图：</p>
+<p><img src="/2020/04/20/粘滞键后门详解/clip_image001.png" alt="请输入图片描述"></p>
+<p>选项中有一项设置时同时按两个键时关闭粘滞键，当同时按下两个键时系统检测到了用户有同时按键的能力，则会关闭粘滞键程序。</p>
+<h1 id="旧方法设置粘滞键后门"><a href="#旧方法设置粘滞键后门" class="headerlink" title="旧方法设置粘滞键后门"></a>旧方法设置粘滞键后门</h1><p>之前设置粘滞键的后门很简单，直接将 sethc 程序替换成 cmd 程序，sethc 即粘滞键程序，在 c:/windows/system32 下，删除 sethc 或者重命名一下，（重命名后 5 下 shift 依然会调用粘滞键，且修改成 sethc 的 cmd 也会执行）然后复制 cmd 修改成 sethc 即可，这时在目标机登录页面连续按 5 下 shift 可调出 cmd 命令行。</p>
+<p>这里有一个问题，如果目标机是 winvista 以上的，即 winvista 以后出的系统，修改 sethc 会提示需要 trustedinstaller 权限，trustedinstaller 是一个安全机制，即系统的最高权限，权限比 administrator 管理员高，windows 权限分为三种从低到高依次是 user，administrator，system。而 trustedinstaller 比 administrator 高但没有 system 高，这么做的好处是避免了一些恶意软件修改系统文件的可能，坏处就是自己不能直接操作了，所以要先修改 sethc 需要将其所有者改为改为我们当前管理员用户。</p>
+<p><img src="/2020/04/20/粘滞键后门详解/clip_image002.png" alt="请输入图片描述"></p>
+<p>修改所有者需要在 sethc 右键属性，安全，高级，更改权限处，切换到所有者选项卡，把所有者更改，如下图：</p>
+<p><img src="/2020/04/20/粘滞键后门详解/clip_image003.png" alt="请输入图片描述"></p>
+<p>在该所有者之前，直接编辑其权限都是灰色的，不能修改，有了所有权之后，便可以编辑其权限，这里需要给予自己权限，如下图：</p>
+<p><img src="/2020/04/20/粘滞键后门详解/clip_image004.png" alt="请输入图片描述"></p>
+<p>这时可以重命名，也可以直接删除，然后复制 cmd 修改 sethc 即可，然后在锁屏没有密码情况下，可以直接按 5 下 shift 调出 cmd，执行添加新用户等操作，如下图：</p>
+<p><img src="/2020/04/20/粘滞键后门详解/clip_image005.png" alt="请输入图片描述"></p>
+<h1 id="新方法设置粘滞键后门"><a href="#新方法设置粘滞键后门" class="headerlink" title="新方法设置粘滞键后门"></a>新方法设置粘滞键后门</h1><p>新方法设置粘滞键后门是通过注册表来实现，整体的方法思路就是通过修改注册表的映像劫持和打开其远程桌面来实现。</p>
+<p>什么是映像劫持，简单理解就是当自己打开程序 a 的时候，实际上是打开的程序 b。这个功能是 windows 自带提供给一些开发调试软件用的，但常常也被恶意的病毒木马利用，比如我们要记录的当打开粘滞键 setch 的时候却打开了 cmd。</p>
+<p>设置映像劫持也很简单，只需要在注册表的 HKLMSOFTWAREMicrosoftWindows NTCurrentVersionImage File Execution Options 位置添加被劫持的程序然后简单设置一下即可，我们通过命令行执行以下程序：</p>
+<p>REG ADD “HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\sethc.exe” /v Debugger /t REG_SZ /d “C:\windows\system32\cmd.exe”</p>
+<p>命令说明：reg add 是向注册表添加记录，后面跟的是注册表的位置，这里需要注意的是 HKLM 实际上是 HKEY_LOCAL_MACHINE 的缩写。Image File Execution Option 这个目录就是用来设置镜像劫持的，要被劫持的就是命令中的 sethc 粘滞键程序，随后通过 / v 来指定键名，这个键名 debugger 是固定的，然后通过 / t 来指定类型，即 REG_SZ 字符串类型，最后通过 / d 来指定键的值，即被恶意替换的程序，也就是我们的 cmd。</p>
+<p>设置完镜像劫持后就已经有了我们旧方法中直接替换 sethc 程序的效果，但我们为了方便利用，可以开启目标机的远程桌面，这里我们也通过注册表来设置一下，需要设置两个参数。</p>
+<p>第一个是把远程桌面链接的用户鉴定选项设置为关闭状态，即值为 0，命令行运行以下命令：</p>
+<p>REG ADD “HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp” /v UserAuthentication /t REG_DWORD /d 0</p>
+<p>参数作用上面已经介绍过，这里我们来看下用户鉴权即 userauthentication 这个参数的作用，官方文档说明如下：</p>
+<p><img src="/2020/04/20/粘滞键后门详解/clip_image006.png" alt="请输入图片描述"></p>
+<p>什么意思呢，0 的说明是进行远程桌面前不需要用户身份验证，还是默认值，1 的说明是进行远程桌面前需要进行用户身份验证。为了更好的理解，我们来看下他们的区别，下面是 userauthentication 为 1 的时候：</p>
+<p><img src="/2020/04/20/粘滞键后门详解/clip_image007.png" alt="请输入图片描述"></p>
+<p>当 userauthentication 为 1 时即远程桌面前进行用户身份验证，这时候远程链接输入 ip 后会要求输入用户名和密码，输入用户名不输入密码直接点连接会提示身份验证错误。而当 userauthentication 为 0 时，即连接前不进行身份验证，这时候输入用户名不输入密码点连接会直接到远程桌面的锁屏那一步。所以设置为 0 我们可以直接到目标的锁屏然后调起 cmd。</p>
+<p>第二个是把远程桌面连接的安全层设置为 0，命令行运行以下命令：</p>
+<p>REG ADD “HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp” /v SecurityLayer /t REG_DWORD /d 0</p>
+<p>参数我们不多说，我们来看下安全层 securitylayer 的作用，官方的说明如下：</p>
+<p><img src="/2020/04/20/粘滞键后门详解/clip_image008.png" alt="请输入图片描述"></p>
+<p>简单来说，0 就是连接前使用 rdp 协议进行身份验证，rdp 即远程桌面连接，可以简单理解为就是关闭验证。1 是指在连接前两端协商来进行身份验证，这个是默认值。2 就是使用 tls 协议来进行。来看下 0 和 1 的区别：</p>
+<p><img src="/2020/04/20/粘滞键后门详解/clip_image009.png" alt="请输入图片描述"></p>
+<p>在 userauthentication 用户鉴权为 0 的情况下，securitylayer 安全层为 1 的时候是点击连接后输入用户名然后再点连接到目标桌面，而把 securitylayer 改为 0 时，点击连接，会直接到用户的锁屏桌面，省去了输入凭证那一步。所以我们设置为 0，可以直接跳到锁屏桌面调 cmd。</p>
+<p>以上三步的操作整体如下图，因为我之前已经设置过，所以会提示我是否覆盖：</p>
+<p><img src="/2020/04/20/粘滞键后门详解/clip_image010.png" alt="请输入图片描述"></p>
+<p>以上操作的基础是目标机开启了远程桌面连接，所以我们这里也记录下如何开启远程桌面连接，首先是配置一下防火墙，设置为允许远程桌面连接，命令行运行以下命令：</p>
+<p>netsh advfirewall firewall add rule name=”Remote Desktop” protocol=TCP dir=in localport=3389 action=allow</p>
+<p>netsh 是 windows 的网络配置命令，advfirewall firewall 意思是防火墙高级设置，add rule 是添加一条规则，name 指定规则名称，protocol 指定协议，dir 指定是出战还是入站，localport 指定端口，action 指定动作 allow 允许。</p>
+<p>设置后，我们再通过注册表来设置一下允许远程桌面连接，命令行运行以下命令：</p>
+<p>REG ADD “HKLM\SYSTEM\CurrentControlSet\Control\TerminalServer” /v fDenyTSConnections /t REG_DWORD /D 0 /f</p>
+<p>至此，我们的粘滞键后门就已经完成了，远程桌面连接输入 ip 就会直接跳到目标锁屏页，如果用户没有设置密码则可以直接登录，如果有密码而又不知道密码的情况下，则可以用 shift 调出命令行来执行一些操作。</p>
+<h1 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h1><p>添加粘滞键后门需要有管理员权限，以之前的替换程序方法来说，普通用户是更改不了 sethc 的名称的，也无法进行删除。</p>
+<p>新方法在命令行操作注册表时也需要有管理权限，且如果目标机有类似于 360 那种防恶意修改的杀毒软件的话，操作也会受助。这时使用替换程序的方法也可以，或者想办法操作目标主机修改下设置，这里以 360 设置为例，首先在设置映像劫持时，注册表会提示拒绝访问，因为映像劫持的字段名 debugger 在 360 中是被禁止修改的，360 为了防止恶意软件的操作，会阻止这一项的修改，这个进程是 360 的 zhudongfangyu.exe，我们可以看到进程列表有这个选项，如下图：</p>
+<p><img src="/2020/04/20/粘滞键后门详解/clip_image011.png" alt="请输入图片描述"></p>
+<p>这个进程直接是结束不了的，即使使用 pchunter 也无法强制退出，这个自我保护功能可以在设置里关闭，位置在设置 - 自我保护 - 开启主动防御服务。</p>
+<p><img src="/2020/04/20/粘滞键后门详解/clip_image012.png" alt="请输入图片描述"></p>
+<p>这时关闭后注册表还会提示错误拒绝服务，后来发现还有一个需要设置的地方就是自我保护那一项，主动防御的上一项就是，如上图。这时就可以直接修改映像劫持。如果怕麻烦也可以直接卸载，只不过会引起目标的发现而已，所以推荐修改其配置，如果条件不允许，那么在拿到 shell 且提权的情况下，也可以直接替换 sethc 程序。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>可能一个目标机在自己准备拿下的时候已经被别人入侵过，也已经添加了后门，我们可以先 shift 试一下，也许就回弹出 cmd。防火墙杀毒软件如果条件苛刻，我们没有办法设置，那么直接替换 sethc 也可以，只不过隐蔽性稍差，同时我们也可以通过其他方法，其他方式，留下多个不同的后门，避免一个被发现而导致我们后续进入受阻。</p>
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://the-wind-hunter.github.io">jax</a>
+            <p>原文链接：<a href="https://the-wind-hunter.github.io/2020/04/20/粘滞键后门详解/">https://the-wind-hunter.github.io/2020/04/20/粘滞键后门详解/</a>
+            <p>发表日期：<a href="https://the-wind-hunter.github.io/2020/04/20/粘滞键后门详解/">四月 20日 2020, 11:26:31 上午</a>
+            <p>更新日期：<a href="https://the-wind-hunter.github.io/2020/04/20/粘滞键后门详解/">April 20th 2020, 11:43:26 am</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+       
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2020/04/20/端口渗透总结/" title= "端口渗透总结">
+                    <div class="prevTitle">端口渗透总结</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:2509594439@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/the-wind-hunter" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#介绍"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#旧方法设置粘滞键后门"><span class="toc-number">2.</span> <span class="toc-text">旧方法设置粘滞键后门</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#新方法设置粘滞键后门"><span class="toc-number">3.</span> <span class="toc-text">新方法设置粘滞键后门</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#问题记录"><span class="toc-number">4.</span> <span class="toc-text">问题记录</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#总结"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 48
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2020 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2020/04/20/粘滞键后门详解/" >粘滞键后门详解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2020/04/20/端口渗透总结/" >端口渗透总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/16</span><a class="archive-post-title" href= "/2020/04/16/反弹shell原理和实现/" >反弹shell原理和实现</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2020/04/15/任意文件下载/" >Web安全之任意文件下载</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/06</span><a class="archive-post-title" href= "/2020/03/06/渗透测试常见开放端口及利用/" >渗透测试常见开放端口及利用</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/15</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/" >Web安全之上传漏洞</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/07</span><a class="archive-post-title" href= "/2020/01/07/为什么要进行URL编码（转载）/" >为什么要进行URL编码</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/25</span><a class="archive-post-title" href= "/2019/12/25/数据库系统复习/" >数据库系统复习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/23</span><a class="archive-post-title" href= "/2019/12/23/操作系统复习/" >操作系统复习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/22</span><a class="archive-post-title" href= "/2019/12/22/软件工程复习2/" >软件工程复习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/12</span><a class="archive-post-title" href= "/2019/12/12/ubuntu搭建ftp服务器/" >ubuntu搭建ftp服务器</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像/" >Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像 toolbox安装docker</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （一）使用docker toolbox安装docker/" >Windows10下的docker安装与入门 （一）使用docker toolbox安装docker</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它/" >Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/20</span><a class="archive-post-title" href= "/2019/11/20/XSS演练平台/" >XSS演练平台</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/18</span><a class="archive-post-title" href= "/2019/11/18/注册-登录-跳转网页源码（原xss注入用）/" >注册-登陆-跳转网页源码（原xss注入用）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/18</span><a class="archive-post-title" href= "/2019/11/18/第十四周-web安全之XSS漏洞学习实战/" >第十四周-web安全之XSS漏洞学习实战</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/16</span><a class="archive-post-title" href= "/2019/11/16/Web日志安全分析浅谈/" >Web日志安全分析浅谈</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/数据库备份拿shell(练习)/" >各种拿shell方法总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web 安全之 SSRF 漏洞学习实战/" >Web安全之SSRF漏洞学习实战</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/SQLServer数据库及注入方法/" >SQLServer数据库及注入方法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web安全之命令执行漏洞学习实战/" >各种拿shell方法总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之SQL注入/" >pikachu之SQL注入</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/第十三周-web安全之手工测试之前编写的注入环境/" >第十三周web安全之手工测试之前编写的注入环境</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/CSRF(跨站请求伪造)/" >跨站请求伪造CSRF</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/20</span><a class="archive-post-title" href= "/2019/10/20/第十周-各种注入类型的环境搭建和代码编写/" >第十周：各种注入类型的环境搭建和代码编写</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/oneinstack-建站/" >oneinstack 建站</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/233/" >just a test23333333</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/Web配置本地yum源-Linux安全/" >We配置本地yum源-Linux安全</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/10</span><a class="archive-post-title" href= "/2019/10/10/php正则表达式中preg_match函数的详解/" >php正则表达式中preg_match函数的详解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/29</span><a class="archive-post-title" href= "/2019/09/29/第九周：web-页面解析的流程学习/" >第九周：web 页面解析的流程学习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/19</span><a class="archive-post-title" href= "/2019/09/19/第六周：数据库相关注入语句的收集和学习/" >第六周：数据库相关注入语句的收集和学习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/18</span><a class="archive-post-title" href= "/2019/09/18/通过DVWA学习XSS/通过DVWA学习XSS/" >通过DVWA学习XSS</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/05</span><a class="archive-post-title" href= "/2019/09/05/第四周-数据库系统功能相关学习/" >第四周-数据库系统功能相关学习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/Windows 上安装 MySQL/" >Windows 上安装 MySQL</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/hexo-github博客搭建/" >hexo+github博客搭建</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Web安全学习之——基于dvwa的XSS Reflect学习教程/Web安全学习之——基于dvwa的XSS Reflect学习教程/" >Web安全学习之——基于dvwa的XSS (Reflect)学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/17</span><a class="archive-post-title" href= "/2019/08/17/sqlmap使用的简单介绍（基于dvwa讲解）/" >sqlmap使用的简单介绍（基于dvwa讲解）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/第二周：认识sql并学习数据库的基础操作/" >第二周：认识SQL并学习数据库的基础操作</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2019/08/15/Web安全学习之——基于dvwa的XSS (DOM）学习教程/Web安全学习之——基于dvwa的XSS (DOM）学习教程/" >Web安全学习之——基于dvwa的XSS (DOM）学习教程</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/78599650/" >[Untitled Post]</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/29/MySQL用户管理：添加用户、授权、删除用户/" >MySQL用户管理：添加用户、授权、删除用户</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/11</span><a class="archive-post-title" href= "/2019/08/11/Web安全学习之——基于dvwa的XSS (Stored)学习教程/Web安全学习之——基于dvwa的XSS (Stored)学习教程/" >Web安全学习之——基于dvwa的XSS (Stored)学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/web安全学习之——基于dvwa的SQL注入演练(low)/" >SQL注入练习：基于DVWA的SQL注入演练(low)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/16/第一周：环境准备/" >第一周：环境准备</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="玩"><span class="iconfont-archer">&#xe606;</span>玩</span>
+    
+        <span class="sidebar-tag-name" data-tags="工具或环境"><span class="iconfont-archer">&#xe606;</span>工具或环境</span>
+    
+        <span class="sidebar-tag-name" data-tags="XSS学习"><span class="iconfont-archer">&#xe606;</span>XSS学习</span>
+    
+        <span class="sidebar-tag-name" data-tags="CSRF"><span class="iconfont-archer">&#xe606;</span>CSRF</span>
+    
+        <span class="sidebar-tag-name" data-tags="SQL注入"><span class="iconfont-archer">&#xe606;</span>SQL注入</span>
+    
+        <span class="sidebar-tag-name" data-tags="文件上传漏洞"><span class="iconfont-archer">&#xe606;</span>文件上传漏洞</span>
+    
+        <span class="sidebar-tag-name" data-tags="get shell"><span class="iconfont-archer">&#xe606;</span>get shell</span>
+    
+        <span class="sidebar-tag-name" data-tags="渗透测试"><span class="iconfont-archer">&#xe606;</span>渗透测试</span>
+    
+        <span class="sidebar-tag-name" data-tags="SSRF学习"><span class="iconfont-archer">&#xe606;</span>SSRF学习</span>
+    
+        <span class="sidebar-tag-name" data-tags="服务器"><span class="iconfont-archer">&#xe606;</span>服务器</span>
+    
+        <span class="sidebar-tag-name" data-tags="端口渗透"><span class="iconfont-archer">&#xe606;</span>端口渗透</span>
+    
+        <span class="sidebar-tag-name" data-tags="日志分析"><span class="iconfont-archer">&#xe606;</span>日志分析</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="XSS学习"><span class="iconfont-archer">&#xe60a;</span>XSS学习</span>
+    
+        <span class="sidebar-category-name" data-categories="转载"><span class="iconfont-archer">&#xe60a;</span>转载</span>
+    
+        <span class="sidebar-category-name" data-categories="Web安全"><span class="iconfont-archer">&#xe60a;</span>Web安全</span>
+    
+        <span class="sidebar-category-name" data-categories="小白成长学习计划"><span class="iconfont-archer">&#xe60a;</span>小白成长学习计划</span>
+    
+        <span class="sidebar-category-name" data-categories="php学习"><span class="iconfont-archer">&#xe60a;</span>php学习</span>
+    
+        <span class="sidebar-category-name" data-categories="linux系统安全"><span class="iconfont-archer">&#xe60a;</span>linux系统安全</span>
+    
+        <span class="sidebar-category-name" data-categories="期末复习"><span class="iconfont-archer">&#xe60a;</span>期末复习</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "jax"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+
