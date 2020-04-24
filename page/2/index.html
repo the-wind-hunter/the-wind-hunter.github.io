@@ -359,6 +359,150 @@ height:50vh;
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2020/01/07/为什么要进行URL编码（转载）/" >
+            
+                <span>为什么要进行URL编码</span>
+        </a>
+        <div class="abstract-content">
+            为什么要进行URL编码我们都知道Http协议中参数的传输是”key=value”这种简直对形式的，如果要传多个参数就需要用“&amp;”符号对键值对进行分割。如”?name1=value1&amp;name2=value2”，这样在服务端在收到这种字符串的时候，会用“&amp;”分割出每一个参数，然后再用“=”来分割出参数值。
+针对“name1=value1&amp;name2=value2”我们来说一下客户端到服务端的概念上解析过程:  上述字符串在计算机中用ASCII码表示为： 
+123456786E616D6531 3D 76616C756531 26 6E616D6532 3D ...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/07</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/12/25/数据库系统复习/" >
+            
+                <span>数据库系统复习</span>
+        </a>
+        <div class="abstract-content">
+            简答题数据、数据库、数据库管理系统、数据库系统的定义
+数据：描述事物的符号记录成为数据
+数据库：长期储存在计算机内、有组织的、可共享的大量数据的集合。
+数据库管理系统：数据库管理系统是位于用户和操作系统之间的一层数据管理软件。
+数据库系统：数据库系统是由数据库、数据库管理系统、应用程序和数据库管理员组成的存储、管理、处理和维护数据的系统。
+
+数据库系统的三级模式结构
+模式也称逻辑模式，是数据库中全体数据的逻辑结构和特征的描述，所有用户的公共数据视图。
+外模式也称子模式或用户模式，是数据库用户（包括应用程序员和最终用户）使用的 局部数据的逻辑结构和特征的描述，是数据库用户的数据视图，是与某...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/25</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/12/23/操作系统复习/" >
+            
+                <span>操作系统复习</span>
+        </a>
+        <div class="abstract-content">
+            1.用信号量实现下图所示的前驱关系。
+12345678Semaphore c=d=0;BeginParbegin       begin A;signal(c);signal(d);end;       begin wait(c);C;end;       begin wait(d);D;end;Parendend
+
+signal(s)  //用于释放资源S=S+1     //signal操作S值加一
+wait(s)    //用于申请资源，整形信号量值&lt;=0时循环执行空操作s=s-1      //wait操作S值减一
+
+12345678910111213Var a,b,c,d...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/23</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/12/22/软件工程复习2/" >
+            
+                <span>软件工程复习</span>
+        </a>
+        <div class="abstract-content">
+            1.需求分析的难点主要体现在哪几个方面？
+2.软件生命周期
+3.系统用例图某企业为了方便员工用餐，为餐厅开发了一个订餐系统（COS: Cafeteria Ordering System),企业员工可通过企业内联网使用该系统。企业的任何员工都可以查看菜单和今日特价。系统的顾客是注册到系统的员工，可以订餐（如果未登录，需先登录)、注册工资支付、预约规律的订餐，在特殊情况下可以覆盖预订。餐厅员工是特殊顾客，可以进行备餐、生成付费请求和请求送餐，其中对于注册工资支付的顾客生成付费请求并发送给工资系统。菜单管理员是餐厅特定员工，可以管理菜单。送餐员可以打印送餐说明，记录送餐信息（如送餐时间）以及记...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/22</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/12/12/ubuntu搭建ftp服务器/" >
+            
+                <span>ubuntu搭建ftp服务器</span>
+        </a>
+        <div class="abstract-content">
+            0x00 前言今天听了大佬的建议后准备加深网络和系统这方面的学习，所以准备学习搭建一系列的服务器。先从简单的ftp服务器搭建起吧。在Ubuntu上搭建一个ftp服务器。这样我们就可以随时在ftp服务器上下载或上传文件了。
+（本来想在docker上尝试的，毕竟小破电脑运行起虚拟机来有时卡得难受。但刚接触docker不久还不太熟悉，还是稳一点利用VMware上的虚拟机来实现吧）
+环境：18.04.1-Ubuntu
+0x01 ftp服务器搭建过程1.搭建前的一些准备工作（1）给服务器创建一个目录1mkdir /var/ftp
+
+（2）进入到ftp目录下在ftp目录下创建一个普通文件，用来做下载...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/12</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "服务器">服务器</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/12/09/Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它/" >
             
                 <span>Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它</span>
@@ -598,190 +742,10 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
         </div>
     </article>
     
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/08/SQLServer数据库及注入方法/" >
-            
-                <span>SQLServer数据库及注入方法</span>
-        </a>
-        <div class="abstract-content">
-            目录
-SQLServer数据库
-修改默认1433端口
-SQLServer数据库的管理
-SQLServer数据库的查询语句
-SA权限开启xp_cmdshell获取主机权限
-SA权限使用sp_oacreate执行系统命令
-DB_owner权限LOG备份Getshell
-DB_owner权限差异备份Getshell
-盲注SQLServer数据库
-SQLServer数据库SQL Server数据库是由Microsoft开发和推广的关系数据库管理系统(DBMS)，是一个比较大型的数据库。端口号为 1433。数据库后缀名 .mdf，注释符是 –
-
-sa权限：数据库操作，文件管理，命令执行，注册表读取...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/08</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SQL注入">SQL注入</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/08/数据库备份拿shell(练习)/" >
-            
-                <span>各种拿shell方法总结</span>
-        </a>
-        <div class="abstract-content">
-            数据库备份拿webshell原理​    数据库备份拿webshell主要前提是能进入到应用系统后台，并且有数据库备份功能。
-​    当我们想法设法进入到一个系统后台之后，本以为找一个文件上传的地方来上传一个webshell，但是上传点却是限制得死死的，高强度的白名单限制，各种绕过都没有成功，恰巧该系统后台中有数据库备份这个功能，此时我们可以通过数据库备份来拿webshell！
-​    首先我们上传一个图片马，并获取到该图片的路径！
-​    其次我们进入到数据库备份功能处，将当前的数据库路径替换为图片马的路径（如果页面不能进行修改的话，我们可以使用审查元素进行HTML代码修改）！
-...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/08</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "get shell">get shell</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/08/Web 安全之 SSRF 漏洞学习实战/" >
-            
-                <span>Web安全之SSRF漏洞学习实战</span>
-        </a>
-        <div class="abstract-content">
-            0x00 任务
-1、编写一个存在 ssrf 漏洞页面，思考造成该漏洞的函数有哪些
-2、利用 ssrf 进行内网端口扫描（思考利用 ssrf 可以做什么，为什么）
-扩展学习：防御 SSRF 漏洞都有哪些方式，是否可以绕过，思考总结和实际操作过程记录在报告中
-
-0x01 SSRF漏洞原理漏洞原理SSRF(Server-Side Request Forgery，服务器端请求伪造)漏洞，是一种由攻击者构造请求，由服务器端发起请求的安全漏洞，本质上是属于信息泄露漏洞。
-​        很多web应用都提供了从其他的服务器上获取数据的功能。使用用户指定的URL，web应用可以获取图片，下载文件，读...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/08</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SSRF学习">SSRF学习</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/08/Web安全之命令执行漏洞学习实战/" >
-            
-                <span>各种拿shell方法总结</span>
-        </a>
-        <div class="abstract-content">
-            [TOC]
-0x00 任务
-1、编写一个存在命令执行漏洞的页面（可以配置两套 win + linux）
-2、通过命令执行如何进行文件传输（尝试尽量多的方式：离线+在线，不同的系统区别）
-扩展学习：对于命令执行的输入口如何过滤，如何验证可以杜绝命令执行的问题
-
-0x01 什么是命令执行漏洞命令执行漏洞概念：当应用需要调用一些外部程序去处理内容的情况下，就会用到一些执行系统命令的函数。如PHP中的system，exec，shell_exec等，当用户可以控制命令执行函数中的参数时，将可注入恶意系统命令到正常命令中，造成命令执行攻击。
-漏洞成因：脚本语言优点是简洁，方便，但也伴随着一些问题，如...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/08</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "get shell">get shell</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/07/pikachu之CSRF练习/" >
-            
-                <span>pikachu之CSRF</span>
-        </a>
-        <div class="abstract-content">
-            0x00 实验环境​        本次实验的环境主要采用Pikachu漏洞练习平台，Pikachu是一个带有漏洞的Web应用系统，在这里包含了常见的web安全漏洞。如果你是一个Web渗透测试学习人员且正发愁没有合适的靶场进行练习，那么Pikachu可能正合你意。
-平台源码链接：https://github.com/zhuifengshaonianhanlu/pikachu
-
-至于要怎么搭建安装这个平台我就不多说了，推荐使用pspstudy来安装（如果不懂的话那就得从安装phpstudy学起啦）
-还是简单说一下吧：就是把下载解压好的文件夹放到www/下
-
-然后根据实际情况修改inc/co...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/07</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "CSRF">CSRF</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
     <!-- paginator  -->
     
     <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/">&#60; PREV</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">NEXT &#62;</a>
+        <a class="extend prev" rel="prev" href="/">&#60; PREV</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">NEXT &#62;</a>
     </nav>
     
 </main>
@@ -1638,9 +1602,198 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 48
+        Total : 53
         </div>
         <!-- search  -->
         
@@ -1653,6 +1806,31 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
     
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/24</span><a class="archive-post-title" href= "/2020/04/24/夜神模拟器链接eclipse并导出模拟器中app的db文件，查看sqlite数据库过程/" >夜神模拟器链接eclipse并导出模拟器中app的db文件，查看sqlite数据库过程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/24</span><a class="archive-post-title" href= "/2020/04/24/Eclipse中离线安装ADT插件详细教程/" >Eclipse中离线安装ADT插件详细教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/24</span><a class="archive-post-title" href= "/2020/04/24/Android SDK下载安装及配置教程/" >Android SDK下载安装及配置教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞/" >redis未授权访问漏洞</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞2/" >redis未授权访问漏洞</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1755,17 +1933,7 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/数据库备份拿shell(练习)/" >各种拿shell方法总结</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web 安全之 SSRF 漏洞学习实战/" >Web安全之SSRF漏洞学习实战</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/SQLServer数据库及注入方法/" >SQLServer数据库及注入方法</a>
         </li>
     
     
@@ -1775,12 +1943,22 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/SQLServer数据库及注入方法/" >SQLServer数据库及注入方法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/数据库备份拿shell(练习)/" >各种拿shell方法总结</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之SQL注入/" >pikachu之SQL注入</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
         </li>
     
     
@@ -1859,13 +2037,31 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
         </li>
     
     
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
         <li class="archive-post-item">
-            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/第二周：认识sql并学习数据库的基础操作/" >第二周：认识SQL并学习数据库的基础操作</a>
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/29/MySQL用户管理：添加用户、授权、删除用户/" >MySQL用户管理：添加用户、授权、删除用户</a>
         </li>
     
     
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
         <li class="archive-post-item">
-            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2019/08/15/Web安全学习之——基于dvwa的XSS (DOM）学习教程/Web安全学习之——基于dvwa的XSS (DOM）学习教程/" >Web安全学习之——基于dvwa的XSS (DOM）学习教程</a>
+            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/第二周：认识sql并学习数据库的基础操作/" >第二周：认识SQL并学习数据库的基础操作</a>
         </li>
     
     
@@ -1893,7 +2089,7 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/29/MySQL用户管理：添加用户、授权、删除用户/" >MySQL用户管理：添加用户、授权、删除用户</a>
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/16/第一周：环境准备/" >第一周：环境准备</a>
         </li>
     
     
@@ -1904,6 +2100,11 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2019/08/15/Web安全学习之——基于dvwa的XSS (DOM）学习教程/Web安全学习之——基于dvwa的XSS (DOM）学习教程/" >Web安全学习之——基于dvwa的XSS (DOM）学习教程</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1918,20 +2119,6 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
     
         <li class="archive-post-item">
             <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/16/第一周：环境准备/" >第一周：环境准备</a>
         </li>
     
     
@@ -1976,6 +2163,10 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
         <span class="sidebar-tag-name" data-tags="端口渗透"><span class="iconfont-archer">&#xe606;</span>端口渗透</span>
     
         <span class="sidebar-tag-name" data-tags="日志分析"><span class="iconfont-archer">&#xe606;</span>日志分析</span>
+    
+        <span class="sidebar-tag-name" data-tags="安卓客户端测试"><span class="iconfont-archer">&#xe606;</span>安卓客户端测试</span>
+    
+        <span class="sidebar-tag-name" data-tags="漏洞复现"><span class="iconfont-archer">&#xe606;</span>漏洞复现</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -2023,6 +2214,8 @@ jsonContent:
         <span class="sidebar-category-name" data-categories="linux系统安全"><span class="iconfont-archer">&#xe60a;</span>linux系统安全</span>
     
         <span class="sidebar-category-name" data-categories="期末复习"><span class="iconfont-archer">&#xe60a;</span>期末复习</span>
+    
+        <span class="sidebar-category-name" data-categories="Android客户端安全学习"><span class="iconfont-archer">&#xe60a;</span>Android客户端安全学习</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>

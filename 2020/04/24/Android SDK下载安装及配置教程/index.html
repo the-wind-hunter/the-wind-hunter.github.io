@@ -1,0 +1,2009 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="jax">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="jax">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content>
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Android SDK下载安装及配置教程 · jax&#39;s Studio</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >jax&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">Android SDK下载安装及配置教程</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>jax's Studio.</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            Android SDK下载安装及配置教程
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "渗透测试">渗透测试</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "安卓客户端测试">安卓客户端测试</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">3.3k</span>阅读时长: <span class="post-count reading-time">11 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2020/04/24</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p>​        在绿盟实习的这周遇到了点小挑战，没有测试过安卓客户端的我被安排到对两个app进行测试，一来这边还有其他平台的测试任务，二来是我还未学习过安卓客户端安全的相关知识！！！只在大一的时候在公选课选修过一门安卓编程入门，算是比较相关一点，但是那时我期末根本就是混过去的，学的东西全忘了，只记得老师当时教我们安装Android studio 装了四五个小时！！没有基础的我配置环境，下载组件给我留下了深深的阴影….</p>
+<p>​        这样也好，人面对挑战的时候学习能力是最强的，工作也能倒逼着自己提升自身技能。废话少说，在安装配置环境时看到了一篇不错的文章，我稍微修改了一下把它转载过来，也记下踩过的坑和获取的经验。</p>
+<p>原文连接：<a href="https://blog.csdn.net/dr_neo/article/details/49870587" target="_blank" rel="noopener">https://blog.csdn.net/dr_neo/article/details/49870587</a></p>
+<p>（肯定是转载修改过的比原文好啦）</p>
+<p>总结起来，Android开发环境搭建可以分为以下四步：</p>
+<p><strong>第一步、安装JDK；</strong></p>
+<p><strong>第二步、安装Eclipse；</strong></p>
+<p><strong>第三步、下载并安装AndroidSDK；</strong></p>
+<p><strong>第四步、为Eclipse安装ADT插件</strong></p>
+<p>下面详细介绍。</p>
+<h1 id="第一步、安装JDK"><a href="#第一步、安装JDK" class="headerlink" title="第一步、安装JDK"></a><strong>第一步、安装JDK</strong></h1><p>Android开发工具要求必须安装JDK(JavaDevelopment Kit)，不能只安装JRE(Java Runtime Edition)，在安装Android开发工具之前需要先安装JavaJDK。尤其是Eclipse的开发过程必须要JDK或者JRE的支持，否则在启动Eclipse的时候就会报错：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image001.png" alt="img"></p>
+<p>首先，去JAVA官网上（<a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html）下载JDK（注意是下载JDK，不是JRE），" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/javase/downloads/index.html）下载JDK（注意是下载JDK，不是JRE），</a></p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image002.png" alt="img"></p>
+<p>点击JDK下载按钮后，进入JDK版本选择界面，找到适合自己电脑系统的JDK版本，并下载，如下图所示，win32位的系统选择Windows x86,64位的系统则选择Windows x64安装：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image003.png" alt="img"></p>
+<p>下载好后，双击安装：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image004.png" alt="img"></p>
+<p>然后选择好自己要安装的路径：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image005.png" alt="img"></p>
+<p>安装JDK的时候，会自动给你安装JRE，选择好自己要安装的路径就行了：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image006.png" alt="img"></p>
+<p>然后就不断下一步，到最后安装完成：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image007.png" alt="img"></p>
+<p>安装好后，要配置环境变量。新建一个系统环境变量，变量名为JAVA_HOME，变量值为JDK的安装路径，如下图所示：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image008.png" alt="img"></p>
+<p>然后在系统变量列表中，双击Path变量，并将;%JAVA_HOME%\bin; %JAVA_HOME%\jre\bin追加到变量值后面（注意，在变量的最末尾添加时，要记得加上分号）：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image009.png" alt="img"></p>
+<p>现在Oracle JDK成为系统可执行文件搜索路径的一部分了，且该地址很容易找到。为了验证安装是否成功，打开命令行窗口，在命令提示符下执行javac -version。如果安装成功，就会看到Oracle JDK版本号，如下图所示：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image010.png" alt="img"><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image010.png" alt="img"></p>
+<h1 id="第二步、安装Eclipse"><a href="#第二步、安装Eclipse" class="headerlink" title="第二步、安装Eclipse"></a><strong>第二步、安装Eclipse</strong></h1><p>去Eclipse官网（<a href="http://www.eclipse.org/downloads/）上下载Eclipse，选择EclipseIDE" target="_blank" rel="noopener">http://www.eclipse.org/downloads/）上下载Eclipse，选择EclipseIDE</a> for JAVA EE Developers，根据自己的系统选择32位或者64位的安装包，</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image011.png" alt="img"></p>
+<p>Eclipse下载好后是一个zip压缩包，直接解压到你想要放置的文件夹中即可使用，无需自己安装，其文件目录如下：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image012.png" alt="img"></p>
+<p>Eclipse安装好后，双击“eclipse.exe”打开，如下图所示：</p>
+<p> <img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image013.png" alt="img"></p>
+<p>要注意，此时打开Eclipse。有可能会报如下的错误：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image001.png" alt="img"></p>
+<p>出现这种问题，可能的原因是JDK的环境变量没有配置好，请按照第一步中讲到的JDK环境变量设置方式进行配置。如果还是报错的话，那么可能是环境变量还是没有设置好，出现这种情况我们只需要重启一下电脑就行了。如果还是不行，那么可以通过修改Eclipse.ini文件，在最前面加上两行内容：</p>
+<p>-vm</p>
+<p>D:\android\Java\jdk1.8.0_51\bin\javaw.exe   (注意，要把D:\android\Java\jdk1.8.0_51\换成你自己的jdk安装目录)</p>
+<p>通过上面一番折腾之后，那么现在Eclipse就可以顺利启动啦！</p>
+<p>启动Eclipse后，首先会让你选择一个工作空间，自己指定一个就是了（默认的是C盘的workspace文件夹）：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image014.png" alt="img"></p>
+<p>然后进入Eclipse欢迎界面，如下图所示：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image015.png" alt="img"></p>
+<p>到这里，Eclipse安装就完毕了。</p>
+<h1 id="第三步、下载并安装AndroidSDK"><a href="#第三步、下载并安装AndroidSDK" class="headerlink" title="第三步、下载并安装AndroidSDK"></a><strong>第三步、下载并安装AndroidSDK</strong></h1><p>前面两步，我们已经配置了JDK变量环境，并安装好了Eclipse，通过这两步之后Java的开发环境就准备好了，如果我们只是开发普通的JAVA应用程序的话，那么到这里就可以了。但如果我们要通过Eclipse来开发Android应用程序的话，那么我们还需要下载Android SDK（Software Development Kit）和在Eclipse上安装ADT插件。</p>
+<p>首先，下载Android SDK Tools，翻过墙的朋友可以去Google Android的官网上下载（<a href="http://developer.android.com/sdk/index.html）。不愿意翻墙的朋友，可以去我的bd网盘上下载（http://pan.baidu.com/s/1nt8BcBB），或者去这个网站下载（http://www.androiddevtools.cn/）。下面介绍一下在这个网站上下载的情况，首先打开http://www.androiddevtools.cn/，我们可以看到这里面有Android开发所需的各种工具，首先找到SDK" target="_blank" rel="noopener">http://developer.android.com/sdk/index.html）。不愿意翻墙的朋友，可以去我的bd网盘上下载（http://pan.baidu.com/s/1nt8BcBB），或者去这个网站下载（http://www.androiddevtools.cn/）。下面介绍一下在这个网站上下载的情况，首先打开http://www.androiddevtools.cn/，我们可以看到这里面有Android开发所需的各种工具，首先找到SDK</a> Tools：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image016.png" alt="img"></p>
+<p>选择一个最新的版本就行了。注意，这里有exe和zip两种文件可供下载，exe的就是个安装程序，下载下来需要自己双击安装。这里建议下载zip压缩包，下载后，直接解压缩到你想要安装Android的路径就行了。解压后的文件目录如下：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image017.png" alt="img"></p>
+<p>然后就双击“SDK Manager.exe”，启动SDK Manager，如图所示：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image018.png" alt="img"></p>
+<p>看到有这么多需要选择安装的时候，是不是一时有点头脑发昏眼冒金星不知道咋办了啊。。。尤其是对于像Neo这种重度选择恐惧症患者来说，真是感觉脑袋都要爆浆了。。。这个时候啦，一定要keep calm。</p>
+<p>在这里我只说几个必须要安装的，如上图所示的，Tools文件夹里面的Android SDK Tools（这个我们在之前的一步已经下载好了的，一般不会让你再安装了，不过有可能会让你更新），然后就是Android SDK Platform-tools和Android SDKBuild-tools，注意只需要下载最新的版本就行了。</p>
+<p>然后就是API的选择了。我们可以看到这里提供了很多很多从Android 2.2到Android 5.x的很多版本的API，那么怎么选择呢。这里我建议，新手的话，选择一个最新的版本就好了，因为Android是向下兼容的。其他的以后你要用到了在下载就行了（因为下载安装的速度实在太慢啦。。。）。所以如上图所示，这里我只选择了下载当前最新的Android 5.1.1(API 22)。这里需要说明的是，如果你以后不打算用模拟器调试，而是一直用真机来调试的话，那么就可以不用装“system images“了。不过新手的话，不知道怎么选择，还是建议直接全部勾上吧，</p>
+<p>最后就是extras文件夹中的东西了，如下图所示，</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image019.png" alt="img"></p>
+<p>理论上来说，extras中的东西如果网速允许，时间充沛的话，就都下载了吧，应为都是好东西。不过一开始安装的话，可以只用安装上图中的三个，即Android Support Repository、Android SupportLibrary和Google USB Driver。其他的以后有时间再慢慢下载吧。</p>
+<p>接下来就可以进行安装了。要注意，由于这些东西都是在google 的服务器上下载的。由于俺们天朝有墙，所以可能会出现连接不上的情况，如下图：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image020.png" alt="img"></p>
+<p>这种时候，我们可以通过有Android SDK的国内镜像服务器来下载安装，这里推荐几个：</p>
+<p>1、中科院开源协会镜像站地址:</p>
+<p>IPV4/IPV6 : <a href="http://mirrors.opencas.ac.cn/" target="_blank" rel="noopener">http://mirrors.opencas.ac.cn</a> 端口：80</p>
+<p>2、北京化工大学镜像服务器地址：</p>
+<p>IPv4: <a href="http://ubuntu.buct.edu.cn/" target="_blank" rel="noopener">http://ubuntu.buct.edu.cn/</a>  端口：80</p>
+<p>IPv4: <a href="http://ubuntu.buct.cn/" target="_blank" rel="noopener">http://ubuntu.buct.cn/</a>  端口：80</p>
+<p>IPv6: <a href="http://ubuntu.buct6.edu.cn/" target="_blank" rel="noopener">http://ubuntu.buct6.edu.cn/</a>  端口：80</p>
+<p>3、大连东软信息学院镜像服务器地址:</p>
+<p><a href="http://mirrors.neusoft.edu.cn/" target="_blank" rel="noopener">http://mirrors.neusoft.edu.cn</a>  端口：80</p>
+<p>随便选择一个就行啦。这里我选择的是第三个站点，即大连东软的镜像，使用方法如下：</p>
+<p>首先，点击菜单中的“Tools”,然后选择下拉中的“Options…”，</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image021.png" alt="img"></p>
+<p>然后在弹出的对话框中，填写HTTP Proxy Server为mirrors.neusoft.edu.cn（镜像服务器的地址，注意前面不要加http），然后填写HTTP Proxy Port为80 （端口号）。最后在勾选下面的『<strong>Forcehttps://… sources to be fetched using http://…</strong>』复选框，如下图所示</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image022.png" alt="img"></p>
+<p>接着点击close，关闭对话框，再重新启动SDK Manager就行啦。</p>
+<p>经过漫长的下载安装过程后（建议在晚上睡觉的时候下载。。。），我们可以看到，之前选中安装的项目后面的状态都由之前的“<em>Not installed</em>”变为了如今的“Installed”，这就表示我们已经安装成功了！有没有很兴奋啊。。ps。。赶紧刷牙洗脸上班去吧。。要迟到啦。。。</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image023.png" alt="img"></p>
+<p>由于直接使用SDK Manager在线下载安装的方式，非常漫长，如果不想等待那么长的朋友，可以自己到国内的站点（<a href="http://www.androiddevtools.cn/）上去下载需要安装的package，这种方式要快得多，不过就是要注意选择好自己需要下载的package以及相应的版本，在此就不加详述了，有选择恐惧症的硼油可以给我留言。" target="_blank" rel="noopener">http://www.androiddevtools.cn/）上去下载需要安装的package，这种方式要快得多，不过就是要注意选择好自己需要下载的package以及相应的版本，在此就不加详述了，有选择恐惧症的硼油可以给我留言。</a></p>
+<blockquote>
+<p>在此我在实践后强烈建议大家自己去（<a href="http://www.androiddevtools.cn/）下载package！！！速度比在线下载快的不止十倍" target="_blank" rel="noopener">http://www.androiddevtools.cn/）下载package！！！速度比在线下载快的不止十倍</a></p>
+</blockquote>
+<p>以下是我加到原文里的内容：</p>
+<p>转到网站后需要下载的基本项有这几个：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/1587740998761.png" alt="1587740998761"></p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/1587741063083.png" alt="1587741063083"></p>
+<p>下载后放到sdk的哪些目录里，网站里都有说，上面是我的目录截图</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/1587741136536.png" alt="1587741136536"></p>
+<p>附上我的package网盘分享</p>
+<p>链接：<a href="https://pan.baidu.com/s/1tIxWD9As6jXjsa-8SS-E8Q" target="_blank" rel="noopener">https://pan.baidu.com/s/1tIxWD9As6jXjsa-8SS-E8Q</a><br>提取码：0u3q<br>复制这段内容后打开百度网盘手机App，操作更方便哦</p>
+<p>以上是加到原文里的内容。</p>
+<p>Ok，接着就是最后一步，我们熟悉的设置环境变量。这里需要把”\platform-tools“和”\tools”路径追加到系统环境变量Path中，具体如下：</p>
+<p>首先，新建一个系统环境变量，变量名为ANDROID_SDK_HOME，变量值为你的SDK安装路径，这里我的安装路径为D:\android\android-sdk，如图所示：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image024.png" alt="img"></p>
+<p>然后就是在系统的Path变量后，追加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">;%ANDROID_SDK_HOME%\platform-tools;%ANDROID_SDK_HOME%\tools</span><br></pre></td></tr></table></figure>
+
+<p>（原文路径出现了小空格，坑了我好久）如图所示：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image025.png" alt="img"></p>
+<p>然后我们可以检验一下Android SDK是否安装成功：在命令行窗口中输入”adb version“，出现如下显示，则安装成功了：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image026.png" alt="img"></p>
+<h1 id="第四步、为Eclipse安装ADT插件"><a href="#第四步、为Eclipse安装ADT插件" class="headerlink" title="第四步、为Eclipse安装ADT插件"></a><strong>第四步、为Eclipse安装ADT插件</strong></h1><p>感谢伟大的抠鼻·布莱恩特！终于来到最后一步啦！为了能在Eclipse上进行Android开发，我们必须为他安装一个ADT（Android Development Tools）插件。</p>
+<p>首先打开Eclipse软件。进入欢迎界面。单击菜单中的“Help”，选择“Install New Software…”，如下图所示：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image027.png" alt="img"></p>
+<p>单击“Install New Software…”后，弹出“Install”窗口，然后单击“Add”按钮，</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image028.png" alt="img"></p>
+<p>然后会弹出“Add Repository”窗口，键入信息如下：Name（ADT），Location（<a href="http://dl-ssl.google.com/android/eclipse/），如下图所示，然后单击“OK”按钮：" target="_blank" rel="noopener">http://dl-ssl.google.com/android/eclipse/），如下图所示，然后单击“OK”按钮：</a></p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image029.png" alt="img"></p>
+<p>在弹出的对话框选择要安装的工具，然后下一步就可以了：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image030.png" alt="img"></p>
+<p>不过如果我们没有修改hosts或者使用代理翻墙的话，由于（<a href="http://dl-ssl.google.com/android/eclipse/）这个网站在天朝上不去，所以就会报如下错误：" target="_blank" rel="noopener">http://dl-ssl.google.com/android/eclipse/）这个网站在天朝上不去，所以就会报如下错误：</a></p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image031.png" alt="img"></p>
+<p>出现这种情况，我们要么就选择通过修改hosts或者使用代理翻墙，以继续进行在线安装，或者就采用离线安装的方式（推荐），具体见我的另一篇blog（<a href="http://blog.csdn.net/dr_neo/article/details/46941859）" target="_blank" rel="noopener">http://blog.csdn.net/dr_neo/article/details/46941859）</a></p>
+<p>待一切安装好后，重启Eclipse，然后，Eclipse会根据目录的位置智能地和它相同目录下Android sdk进行关联，可以通过选择菜单项“Window”然后单击Preference来查看，如图所示：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image032.png" alt="img"></p>
+<p>选择侧栏的“Android”，然后如果可以看到已经安装的SDK平台，表示已经自动关联好了，如下图所示；如果发现没有自动关联好，则需自己添加了，单击“Browse…”按钮，选择你的SDK安装路径，添加好就行啦~</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image033.png" alt="img"></p>
+<p>到这里，我们的整个在windows上进行Android开发环境的搭建就全部完成了，这时候，在Eclipse里，选择菜单项File—&gt;New—&gt;Project新建一个项目，我们就能看到建立Android项目的选项了：</p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image034.png" alt="img"></p>
+<p><img src="/2020/04/24/Android SDK下载安装及配置教程/clip_image035.png" alt="img"></p>
+<p>打完收工！到这里，漫长的Android开发环境搭建工作就此结束！是不是有点小鸡冻啊！还等什么，赶紧开始你的Android之旅！</p>
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://the-wind-hunter.github.io">jax</a>
+            <p>原文链接：<a href="https://the-wind-hunter.github.io/2020/04/24/Android SDK下载安装及配置教程/">https://the-wind-hunter.github.io/2020/04/24/Android SDK下载安装及配置教程/</a>
+            <p>发表日期：<a href="https://the-wind-hunter.github.io/2020/04/24/Android SDK下载安装及配置教程/">四月 24日 2020, 10:05:31 晚上</a>
+            <p>更新日期：<a href="https://the-wind-hunter.github.io/2020/04/24/Android SDK下载安装及配置教程/">April 24th 2020, 11:15:29 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+       
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2020/04/24/夜神模拟器链接eclipse并导出模拟器中app的db文件，查看sqlite数据库过程/" title= "夜神模拟器链接eclipse并导出模拟器中app的db文件，查看sqlite数据库过程">
+                    <div class="nextTitle">夜神模拟器链接eclipse并导出模拟器中app的db文件，查看sqlite数据库过程</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2020/04/24/Eclipse中离线安装ADT插件详细教程/" title= "Eclipse中离线安装ADT插件详细教程">
+                    <div class="prevTitle">Eclipse中离线安装ADT插件详细教程</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:2509594439@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/the-wind-hunter" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#第一步、安装JDK"><span class="toc-number">1.</span> <span class="toc-text">第一步、安装JDK</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第二步、安装Eclipse"><span class="toc-number">2.</span> <span class="toc-text">第二步、安装Eclipse</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第三步、下载并安装AndroidSDK"><span class="toc-number">3.</span> <span class="toc-text">第三步、下载并安装AndroidSDK</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第四步、为Eclipse安装ADT插件"><span class="toc-number">4.</span> <span class="toc-text">第四步、为Eclipse安装ADT插件</span></a></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 53
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2020 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/24</span><a class="archive-post-title" href= "/2020/04/24/夜神模拟器链接eclipse并导出模拟器中app的db文件，查看sqlite数据库过程/" >夜神模拟器链接eclipse并导出模拟器中app的db文件，查看sqlite数据库过程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/24</span><a class="archive-post-title" href= "/2020/04/24/Eclipse中离线安装ADT插件详细教程/" >Eclipse中离线安装ADT插件详细教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/24</span><a class="archive-post-title" href= "/2020/04/24/Android SDK下载安装及配置教程/" >Android SDK下载安装及配置教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞/" >redis未授权访问漏洞</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞2/" >redis未授权访问漏洞</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2020/04/20/粘滞键后门详解/" >粘滞键后门详解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2020/04/20/端口渗透总结/" >端口渗透总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/16</span><a class="archive-post-title" href= "/2020/04/16/反弹shell原理和实现/" >反弹shell原理和实现</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2020/04/15/任意文件下载/" >Web安全之任意文件下载</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/06</span><a class="archive-post-title" href= "/2020/03/06/渗透测试常见开放端口及利用/" >渗透测试常见开放端口及利用</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/15</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/" >Web安全之上传漏洞</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/07</span><a class="archive-post-title" href= "/2020/01/07/为什么要进行URL编码（转载）/" >为什么要进行URL编码</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/25</span><a class="archive-post-title" href= "/2019/12/25/数据库系统复习/" >数据库系统复习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/23</span><a class="archive-post-title" href= "/2019/12/23/操作系统复习/" >操作系统复习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/22</span><a class="archive-post-title" href= "/2019/12/22/软件工程复习2/" >软件工程复习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/12</span><a class="archive-post-title" href= "/2019/12/12/ubuntu搭建ftp服务器/" >ubuntu搭建ftp服务器</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像/" >Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像 toolbox安装docker</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （一）使用docker toolbox安装docker/" >Windows10下的docker安装与入门 （一）使用docker toolbox安装docker</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它/" >Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/20</span><a class="archive-post-title" href= "/2019/11/20/XSS演练平台/" >XSS演练平台</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/18</span><a class="archive-post-title" href= "/2019/11/18/注册-登录-跳转网页源码（原xss注入用）/" >注册-登陆-跳转网页源码（原xss注入用）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/18</span><a class="archive-post-title" href= "/2019/11/18/第十四周-web安全之XSS漏洞学习实战/" >第十四周-web安全之XSS漏洞学习实战</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/16</span><a class="archive-post-title" href= "/2019/11/16/Web日志安全分析浅谈/" >Web日志安全分析浅谈</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web 安全之 SSRF 漏洞学习实战/" >Web安全之SSRF漏洞学习实战</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web安全之命令执行漏洞学习实战/" >各种拿shell方法总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/SQLServer数据库及注入方法/" >SQLServer数据库及注入方法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/数据库备份拿shell(练习)/" >各种拿shell方法总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之SQL注入/" >pikachu之SQL注入</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/第十三周-web安全之手工测试之前编写的注入环境/" >第十三周web安全之手工测试之前编写的注入环境</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/CSRF(跨站请求伪造)/" >跨站请求伪造CSRF</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/20</span><a class="archive-post-title" href= "/2019/10/20/第十周-各种注入类型的环境搭建和代码编写/" >第十周：各种注入类型的环境搭建和代码编写</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/oneinstack-建站/" >oneinstack 建站</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/233/" >just a test23333333</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/Web配置本地yum源-Linux安全/" >We配置本地yum源-Linux安全</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/10</span><a class="archive-post-title" href= "/2019/10/10/php正则表达式中preg_match函数的详解/" >php正则表达式中preg_match函数的详解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/29</span><a class="archive-post-title" href= "/2019/09/29/第九周：web-页面解析的流程学习/" >第九周：web 页面解析的流程学习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/19</span><a class="archive-post-title" href= "/2019/09/19/第六周：数据库相关注入语句的收集和学习/" >第六周：数据库相关注入语句的收集和学习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/18</span><a class="archive-post-title" href= "/2019/09/18/通过DVWA学习XSS/通过DVWA学习XSS/" >通过DVWA学习XSS</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/05</span><a class="archive-post-title" href= "/2019/09/05/第四周-数据库系统功能相关学习/" >第四周-数据库系统功能相关学习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/Windows 上安装 MySQL/" >Windows 上安装 MySQL</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/hexo-github博客搭建/" >hexo+github博客搭建</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Web安全学习之——基于dvwa的XSS Reflect学习教程/Web安全学习之——基于dvwa的XSS Reflect学习教程/" >Web安全学习之——基于dvwa的XSS (Reflect)学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/17</span><a class="archive-post-title" href= "/2019/08/17/sqlmap使用的简单介绍（基于dvwa讲解）/" >sqlmap使用的简单介绍（基于dvwa讲解）</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/29/MySQL用户管理：添加用户、授权、删除用户/" >MySQL用户管理：添加用户、授权、删除用户</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/第二周：认识sql并学习数据库的基础操作/" >第二周：认识SQL并学习数据库的基础操作</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/78599650/" >[Untitled Post]</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/16/第一周：环境准备/" >第一周：环境准备</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2019/08/15/Web安全学习之——基于dvwa的XSS (DOM）学习教程/Web安全学习之——基于dvwa的XSS (DOM）学习教程/" >Web安全学习之——基于dvwa的XSS (DOM）学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/11</span><a class="archive-post-title" href= "/2019/08/11/Web安全学习之——基于dvwa的XSS (Stored)学习教程/Web安全学习之——基于dvwa的XSS (Stored)学习教程/" >Web安全学习之——基于dvwa的XSS (Stored)学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/web安全学习之——基于dvwa的SQL注入演练(low)/" >SQL注入练习：基于DVWA的SQL注入演练(low)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="玩"><span class="iconfont-archer">&#xe606;</span>玩</span>
+    
+        <span class="sidebar-tag-name" data-tags="工具或环境"><span class="iconfont-archer">&#xe606;</span>工具或环境</span>
+    
+        <span class="sidebar-tag-name" data-tags="XSS学习"><span class="iconfont-archer">&#xe606;</span>XSS学习</span>
+    
+        <span class="sidebar-tag-name" data-tags="CSRF"><span class="iconfont-archer">&#xe606;</span>CSRF</span>
+    
+        <span class="sidebar-tag-name" data-tags="SQL注入"><span class="iconfont-archer">&#xe606;</span>SQL注入</span>
+    
+        <span class="sidebar-tag-name" data-tags="文件上传漏洞"><span class="iconfont-archer">&#xe606;</span>文件上传漏洞</span>
+    
+        <span class="sidebar-tag-name" data-tags="get shell"><span class="iconfont-archer">&#xe606;</span>get shell</span>
+    
+        <span class="sidebar-tag-name" data-tags="渗透测试"><span class="iconfont-archer">&#xe606;</span>渗透测试</span>
+    
+        <span class="sidebar-tag-name" data-tags="SSRF学习"><span class="iconfont-archer">&#xe606;</span>SSRF学习</span>
+    
+        <span class="sidebar-tag-name" data-tags="服务器"><span class="iconfont-archer">&#xe606;</span>服务器</span>
+    
+        <span class="sidebar-tag-name" data-tags="端口渗透"><span class="iconfont-archer">&#xe606;</span>端口渗透</span>
+    
+        <span class="sidebar-tag-name" data-tags="日志分析"><span class="iconfont-archer">&#xe606;</span>日志分析</span>
+    
+        <span class="sidebar-tag-name" data-tags="安卓客户端测试"><span class="iconfont-archer">&#xe606;</span>安卓客户端测试</span>
+    
+        <span class="sidebar-tag-name" data-tags="漏洞复现"><span class="iconfont-archer">&#xe606;</span>漏洞复现</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="XSS学习"><span class="iconfont-archer">&#xe60a;</span>XSS学习</span>
+    
+        <span class="sidebar-category-name" data-categories="转载"><span class="iconfont-archer">&#xe60a;</span>转载</span>
+    
+        <span class="sidebar-category-name" data-categories="Web安全"><span class="iconfont-archer">&#xe60a;</span>Web安全</span>
+    
+        <span class="sidebar-category-name" data-categories="小白成长学习计划"><span class="iconfont-archer">&#xe60a;</span>小白成长学习计划</span>
+    
+        <span class="sidebar-category-name" data-categories="php学习"><span class="iconfont-archer">&#xe60a;</span>php学习</span>
+    
+        <span class="sidebar-category-name" data-categories="linux系统安全"><span class="iconfont-archer">&#xe60a;</span>linux系统安全</span>
+    
+        <span class="sidebar-category-name" data-categories="期末复习"><span class="iconfont-archer">&#xe60a;</span>期末复习</span>
+    
+        <span class="sidebar-category-name" data-categories="Android客户端安全学习"><span class="iconfont-archer">&#xe60a;</span>Android客户端安全学习</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "jax"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+
