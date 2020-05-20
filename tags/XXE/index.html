@@ -346,301 +346,26 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/29/Windows 上安装 MySQL/" >
+        <a class="abstract-title" href = "/2020/05/20/XXE漏洞/" >
             
-                <span>Windows 上安装 MySQL</span>
+                <span>XXE漏洞利用技巧：从XML到远程代码执行</span>
         </a>
         <div class="abstract-content">
-            Windows 上安装 MySQLWindows 上安装 MySQL 相对来说会较为简单，点击链接 https://cdn.mysql.com//Downloads/MySQL-8.0/mysql-8.0.11-winx64.zip 下载 zip 包。
-最新版本可以在 MySQL 下载 中下载中查看。
-
-
-点击 Download**No thanks, just start my download.**
-
-下载完后，我们将 zip 包解压到相应的目录，这里我将解压后的文件夹放在 C:\web\mysql-8.0.17 下。
-接下来我们需要配置下 MySQL 的配置文件
-打开刚刚解压的文件...
+            什么是XXE简单来说，XXE就是XML外部实体注入。当允许引用外部实体时，通过构造恶意内容，就可能导致任意文件读取、系统命令执行、内网端口探测、攻击内网网站等危害。
+例如，如果你当前使用的程序为PHP，则可以将libxml_disable_entity_loader设置为TRUE来禁用外部实体，从而起到防御的目的。
+基本利用通常攻击者会将payload注入XML文件中，一旦文件被执行，将会读取服务器上的本地文件，并对内网发起访问扫描内部网络端口。换而言之，XXE是一种从本地到达各种服务的方法。此外，在一定程度上这也可能帮助攻击者绕过防火墙规则过滤或身份验证检查。
+以下是一个简单的XML代...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/29</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/29/MySQL用户管理：添加用户、授权、删除用户/" >
-            
-                <span>MySQL用户管理：添加用户、授权、删除用户</span>
-        </a>
-        <div class="abstract-content">
-            
-日期：2019-08-28
-作者：无风
-简介：学习MySQL用户管理
-环境：PHPstudy所带的MySQL
-Server version: 5.5.53
-
-添加用户以root用户登录数据库，运行以下命令：
-1create user test identified by &apos;test&apos;;
-
-上面的命令创建了用户test，密码是test。在mysql.user表里可以查看到新增用户的信息：
-12345678910mysql&gt; select user,host,password from mysql.user;+------+-----------+--------...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/29</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/29/hexo-github博客搭建/" >
-            
-                <span>hexo+github博客搭建</span>
-        </a>
-        <div class="abstract-content">
-            原文链接
-
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/29</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/22/第三周：数据库系统表相关学习/" >
-            
-                <span>第三周：数据库系统表相关学习</span>
-        </a>
-        <div class="abstract-content">
-            
-日期：2019-08-19
-作者：无风
-简介：MySQL系统表相关学习
-
-0x01 MySQL系统表及常用函数1、数据库系统表的功能MySQL 5.0版本之后，MySQL默认在数据库中存放一个“information_schema”的数据库，在该数据库中，有三个比较重要的表，schemata，tables和columns。把 information_schema 看作是一个数据库，确切说是信息数据库。其中保存着关于MySQL服务器所维护的所有其他数据 库的信息。如数据库名，数据库的表，表栏的数据类型与访问权 限等。在INFORMATION_SCHEMA中，有数个只读表。它们实际上是视 ...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/22</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/20/Web安全学习之——基于dvwa的XSS Reflect学习教程/Web安全学习之——基于dvwa的XSS Reflect学习教程/" >
-            
-                <span>Web安全学习之——基于dvwa的XSS (Reflect)学习教程</span>
-        </a>
-        <div class="abstract-content">
-            由于写这篇文章的时候是初学，建议参考文章：https://www.freebuf.com/articles/web/157953.html
-什么是XSS？XSS，全称Cross Site Scripting（为了与CSS区分开来故称为XSS），即跨站脚本攻击，某种意义上也是一种注入攻击，是指攻击者在页面中注入恶意的脚本代码，当受害者访问该页面时，恶意代码会在其浏览器上执行，需要强调的是，XSS不仅仅限于JavaScript，还包括flash等其它脚本语言。根据恶意代码是否存储在服务器中，XSS可以分为存储型的XSS与反射型的XSS。
-DOM型的XSS由于其特殊性，常常被分为第三种，这是一...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/20</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/05/20</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "XSS学习">XSS学习</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/17/sqlmap使用的简单介绍（基于dvwa讲解）/" >
-            
-                <span>sqlmap使用的简单介绍（基于dvwa讲解）</span>
-        </a>
-        <div class="abstract-content">
-            前言：写这篇文章主要是给自己做个笔记，也方便刚入门的新手快速上手。至于详细原理和基础，各位还得自己动手搜索其他文章或者看书学习。
-本教程基于dvwa来测试，首先我们直接以SQL Injection (Blind)的medium level为例：
-1.首先，我们先准备好burpsuite进行抓包 ，然后在输入框里输入一个数字：#补丁1：（我后来发现不用burpsuite也可以了，火狐浏览器的还可以编辑重发）#点击提交，在burpsuite里抓到包2.我们把里面的代码全部复制下来，在你的sqlmap安装目录下新建一个txt文件，把代码全复制进去，保存。（这是个偷懒的方法，你也可以按其他教程一...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/17</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SQL注入">SQL注入</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/16/第一周：环境准备/" >
-            
-                <span>第一周：环境准备</span>
-        </a>
-        <div class="abstract-content">
-            1.安装CentOS 7(1)  因为是用来做服务器的Linux操作系统，在这里我选择了CentOS 7。首先进入CentOS的官方网站 https://www.centos.org/download/然后点击DVD ISO下载你想要的版本,我选的是第一个。
-​                                                                                    
-下载完成后用虚拟机进行安装，我用的是VMware。VMware的具体安装过程就省略了，很简单。安装完成后点击 文件–&gt;新建虚拟机–&gt;典型–&gt;下一...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/16</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/16/第二周：认识sql并学习数据库的基础操作/" >
-            
-                <span>第二周：认识SQL并学习数据库的基础操作</span>
-        </a>
-        <div class="abstract-content">
-            [TOC]
-一、关系型数据库和非关系型数据库（1）关系型数据库关系型数据库，是指采用了关系模型来组织数据的数据库。
-简单来说，关系模型指的就是二维表格模型，而一个关系型数据库就是由二维表及其之间的联系所组成的一个数据组织。
-a.常见的关系型数据库：
- Oracle、DB2、PostgreSQL、Microsoft SQL Server、Microsoft Access、MySQL
-b.关系型数据库优点1231、易于维护：都是使用表结构，格式一致；2、使用方便：SQL语言通用，可用于复杂查询；3、复杂操作：支持SQL，可用于一个表以及多个表之间非常复杂的查询。
-
-c.关系型数据库缺点123...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/16</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SQL注入">SQL注入</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/15/Web安全学习之——基于dvwa的XSS (DOM）学习教程/Web安全学习之——基于dvwa的XSS (DOM）学习教程/" >
-            
-                <span>Web安全学习之——基于dvwa的XSS (DOM）学习教程</span>
-        </a>
-        <div class="abstract-content">
-            由于写这篇文章的时候是初学，建议参考文章：https://www.freebuf.com/articles/web/157953.html
-1.什么是DOM型XSS？DOM全称Document Object Model，是一个平台和语言都中立的接口，可以使程序和脚本能够动态访问和更新文档的内容、结构以及样式。
-DOM型XSS其实是一种特殊类型的反射型XSS，它是基于DOM文档对象模型的一种漏洞，其触发不需要经过服务器端，也就是说，服务端的防御并不起作用。它的特殊之处在于它是利用 JS 的document.write 、document.innerHTML等函数进行 “HTML注入”
-2....
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/15</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "XSS学习">XSS学习</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/11/Web安全学习之——基于dvwa的XSS (Stored)学习教程/Web安全学习之——基于dvwa的XSS (Stored)学习教程/" >
-            
-                <span>Web安全学习之——基于dvwa的XSS (Stored)学习教程</span>
-        </a>
-        <div class="abstract-content">
-            由于写这篇文章的时候是初学，建议参考文章：https://www.freebuf.com/articles/web/157953.html
-1.什么是XSS(stored)?  存储型XSS，持久化，代码是存储在服务器中的，如在个人信息或发表文章等地方，加入代码，如果没有过滤或过滤不严，那么这些代码将储存到服务器中，用户访问该页面的时候触发代码执行。这种XSS比较危险，容易造成蠕虫，盗窃cookie等
-例子：
-
-发一篇文章，里面包含了恶意脚本
-
-1今天和女朋友出去约会了，心情不错&lt;script&gt;alert(&apos;handsome boy&apos;)&lt;/scrip...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/11</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "XSS学习">XSS学习</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "XXE">XXE</a>
     
 </div>
             
@@ -648,10 +373,6 @@ DOM型XSS其实是一种特殊类型的反射型XSS，它是基于DOM文档对�
     </article>
     
     <!-- paginator  -->
-    
-    <nav class="page-nav">
-        <span class="page-number current">1</span><a class="page-number" href="/archives/2019/08/page/2/">2</a><a class="extend next" rel="next" href="/archives/2019/08/page/2/">NEXT &#62;</a>
-    </nav>
     
 </main>
             <!-- profile -->
