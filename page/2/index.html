@@ -359,6 +359,176 @@ height:50vh;
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2020/04/15/任意文件下载/" >
+            
+                <span>Web安全之任意文件下载</span>
+        </a>
+        <div class="abstract-content">
+            最近在实习，疫情期间既要远程上班又要上课，太忙了，都没时间时间更新博客了。今天转载一下别人的文章。
+01 漏洞描述某些网站可能因为业务需要，提供文件查看或者下载的功能，如果对用户查看或者需要下载的文件不做限制，那么一些攻击者可能构造恶意代码下载网站的敏感文件（源代码，数据库文件，登录密码等）
+02 漏洞危害理论上只要代码构造的好可以下载服务器的任何文件（代码脚本，服务器配置文件，数据库文件等），用得到的代码进行审计，那么这个网站的漏洞就彻底暴露了。
+03 漏洞产生附上源代码~
+图是从别人那盗来的，不过这都不重要，现在来分析下。通过GET传值传进来一个file，然后是对file的定义，最后...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/04/15</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "文件上传漏洞">文件上传漏洞</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/03/06/渗透测试常见开放端口及利用/" >
+            
+                <span>渗透测试常见开放端口及利用</span>
+        </a>
+        <div class="abstract-content">
+            渗透测试常见开放端口及利用转载自：(https://www.cnblogs.com/iAmSoScArEd/p/10564262.html)
+渗透测试常见开放端口及利用 - Penetration testing common open ports and utilization
+1、文件共享服务端口
+
+
+
+端口号
+端口说明
+利用方向
+
+
+
+21/22/69
+FTP/TFTP文件传输协议
+允许匿名上传、下载、爆破和嗅探
+
+
+2049
+NFS服务
+配置不当
+
+
+139
+Samba服务
+爆破、未授权访问、远程代码执行
+
+
+389
+LDAP目录访问协议
+注入、允许匿名访问、弱口令
+
+
+2、远程...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/03/06</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/01/15/WEB 安全之上传漏洞/" >
+            
+                <span>Web安全之上传漏洞</span>
+        </a>
+        <div class="abstract-content">
+            [TOC]
+0x00 任务
+1、编写一个上传图片的功能页面
+2、针对上传的文件进行验证（后缀验证、文件头验证、文件名验证等）
+3、文件上传通常会与文件解析漏洞相结合，可以收集整理存在解析漏洞的组件和相关版本，无法部署相关环境，可以学习相关技术，不用实际操作
+扩展学习：学习如何绕过黑名单验证、文件头验证，如何杜绝上传图片的功能无法利用获取 shell ？
+
+0x01 客户端检测（1）后缀检测（使用js检查不合法图片）1234567891011121314151617function checkFile() &#123;    var file = document.getElementsB...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/15</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "文件上传漏洞">文件上传漏洞</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/01/15/WEB 安全之上传漏洞/78599650/" >
+            
+                <span>[Untitled Post]</span>
+        </a>
+        <div class="abstract-content">
+            
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+    
+    
+    Substring()、lastIndexOf()的用法_那么多的人，你要去哪里-CSDN博客
+    
+    
+        
+                    
+                            {"@context":"https:\/\/ziyuan.baidu.com\/contexts\/cambrian.jsonld","@id":"https:\/\/blog.csdn....
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/15</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2020/01/07/为什么要进行URL编码（转载）/" >
             
                 <span>为什么要进行URL编码</span>
@@ -597,145 +767,6 @@ Docker引擎提供核心的Docker技术能够启动镜像和容器。在上一�
             <div class= abstract-tags >
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "工具或环境">工具或环境</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/20/XSS演练平台/" >
-            
-                <span>XSS演练平台</span>
-        </a>
-        <div class="abstract-content">
-            ————————-
-XSS 挑战之旅
-————————-
-最近在学习xss，找到了一个xss练习平台，在线地址：http://test.xss.tv/
-实验环境也可以本地搭建，不过需要php+mysql的环境：
-xss通关小游戏：https://pan.baidu.com/s/1zS2GwTNbMBXEF2yNEBeLgA   密码：85g8
-由于编辑出现了一些问题，现在直接转载一下别人的一篇文章
-
-转载自
- 作　　者：bmjoker
- 出　　处：https://www.cnblogs.com/bmjoker/p/9446472.html
-
-
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/20</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "XSS学习">XSS学习</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/18/注册-登录-跳转网页源码（原xss注入用）/" >
-            
-                <span>注册-登陆-跳转网页源码（原xss注入用）</span>
-        </a>
-        <div class="abstract-content">
-            2
-login.php12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091&lt;!DOCTYPE html&gt;&lt;html lang=&quot;zh-CN&quot;&gt;&lt;head&gt;    &lt;meta charset=&quot;utf-8&quot;/&gt;  ...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/18</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "XSS学习">XSS学习</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/18/第十四周-web安全之XSS漏洞学习实战/" >
-            
-                <span>第十四周-web安全之XSS漏洞学习实战</span>
-        </a>
-        <div class="abstract-content">
-            0x00 前言
-1、编写一个存在 xss 漏洞的页面
-2、利用 xss 漏洞获取当前用户 cookie
-3、思考，利用 xss 漏洞能干嘛（参考 beef）
-
-报告要求：记录编写的页面代码、操作流程、思考总结
-扩展学习：学习如何防御 xss、总结防御策略加到报告里
-在这里放几篇之前学习XSS时做笔记写的文章：
-Web安全学习之——基于dvwa的XSS (Reflect）学习教程
-[Web安全学习之——基于dvwa的XSS (Stored）学习教程](https://the-wind-hunter.github.io/2019/08/11/Web安全学习之——基于dvwa的XSS Stor...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/18</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "XSS学习">XSS学习</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/16/Web日志安全分析浅谈/" >
-            
-                <span>Web日志安全分析浅谈</span>
-        </a>
-        <div class="abstract-content">
-            0x00  为什么需要对日志进行分析​       随着Web技术不断发展，Web被应用得越来越广泛，所谓有价值的地方就有江湖，网站被恶意黑客攻击的频率和网站的价值一般成正比趋势，即使网站价值相对较小，也会面对“脚本小子”的恶意测试攻击或者躺枪于各种大范围漏洞扫描器。正如安全行业的一句话：“世界上只有两种人,一种是知道自己被黑了的,另外一种是被黑了还不知道的”。
-​      此时对网站的日志分析就显得特别重要，作为网站管理运维等人员如不能实时的了解服务器的安全状况，则必定会成为“被黑了还不知道的”那一类人，从而造成损失，当然还有一个场景是已经因为黑客攻击造成经济损失，此时我们也会进行日...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/16</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "日志分析">日志分析</a>
     
 </div>
             
@@ -1783,17 +1814,9 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 53
+        Total : 57
         </div>
         <!-- search  -->
         
@@ -1806,6 +1829,26 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/20</span><a class="archive-post-title" href= "/2020/05/20/代码审计思路讨论/" >代码审计思路讨论</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/07</span><a class="archive-post-title" href= "/2020/05/07/2020-05-07-安卓客户端测试备忘/" >安卓客户端测试备忘</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/05</span><a class="archive-post-title" href= "/2020/05/05/华为机试题目/" >华为机试题目</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/25</span><a class="archive-post-title" href= "/2020/04/25/解决Android killer或apktool回编译报错问题/" >解决Android killer或apktool回编译报错问题</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1898,7 +1941,7 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像/" >Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像 toolbox安装docker</a>
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它/" >Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它</a>
         </li>
     
     
@@ -1908,7 +1951,7 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它/" >Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它</a>
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像/" >Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像 toolbox安装docker</a>
         </li>
     
     
@@ -1943,22 +1986,22 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/SQLServer数据库及注入方法/" >SQLServer数据库及注入方法</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/数据库备份拿shell(练习)/" >各种拿shell方法总结</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之SQL注入/" >pikachu之SQL注入</a>
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/SQLServer数据库及注入方法/" >SQLServer数据库及注入方法</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之SQL注入/" >pikachu之SQL注入</a>
         </li>
     
     
@@ -1983,12 +2026,12 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/233/" >just a test23333333</a>
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/Web配置本地yum源-Linux安全/" >We配置本地yum源-Linux安全</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/Web配置本地yum源-Linux安全/" >We配置本地yum源-Linux安全</a>
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/233/" >just a test23333333</a>
         </li>
     
     
@@ -2037,45 +2080,13 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
         </li>
     
     
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/29/MySQL用户管理：添加用户、授权、删除用户/" >MySQL用户管理：添加用户、授权、删除用户</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2019 </div>
-    <ul class="year-list">
-    
-    
         <li class="archive-post-item">
             <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/第二周：认识sql并学习数据库的基础操作/" >第二周：认识SQL并学习数据库的基础操作</a>
         </li>
     
     
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
         <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/78599650/" >[Untitled Post]</a>
+            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2019/08/15/Web安全学习之——基于dvwa的XSS (DOM）学习教程/Web安全学习之——基于dvwa的XSS (DOM）学习教程/" >Web安全学习之——基于dvwa的XSS (DOM）学习教程</a>
         </li>
     
     
@@ -2103,13 +2114,45 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2019/08/15/Web安全学习之——基于dvwa的XSS (DOM）学习教程/Web安全学习之——基于dvwa的XSS (DOM）学习教程/" >Web安全学习之——基于dvwa的XSS (DOM）学习教程</a>
+            <span class="archive-post-date">08/11</span><a class="archive-post-title" href= "/2019/08/11/Web安全学习之——基于dvwa的XSS (Stored)学习教程/Web安全学习之——基于dvwa的XSS (Stored)学习教程/" >Web安全学习之——基于dvwa的XSS (Stored)学习教程</a>
         </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/11</span><a class="archive-post-title" href= "/2019/08/11/Web安全学习之——基于dvwa的XSS (Stored)学习教程/Web安全学习之——基于dvwa的XSS (Stored)学习教程/" >Web安全学习之——基于dvwa的XSS (Stored)学习教程</a>
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
         </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/78599650/" >[Untitled Post]</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
     
     
         <li class="archive-post-item">
@@ -2132,7 +2175,7 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/29/MySQL用户管理：添加用户、授权、删除用户/" >MySQL用户管理：添加用户、授权、删除用户</a>
         </li>
     
     </div>
@@ -2167,6 +2210,12 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
         <span class="sidebar-tag-name" data-tags="安卓客户端测试"><span class="iconfont-archer">&#xe606;</span>安卓客户端测试</span>
     
         <span class="sidebar-tag-name" data-tags="漏洞复现"><span class="iconfont-archer">&#xe606;</span>漏洞复现</span>
+    
+        <span class="sidebar-tag-name" data-tags="面试"><span class="iconfont-archer">&#xe606;</span>面试</span>
+    
+        <span class="sidebar-tag-name" data-tags="编程练习"><span class="iconfont-archer">&#xe606;</span>编程练习</span>
+    
+        <span class="sidebar-tag-name" data-tags="代码审计"><span class="iconfont-archer">&#xe606;</span>代码审计</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -2216,6 +2265,8 @@ jsonContent:
         <span class="sidebar-category-name" data-categories="期末复习"><span class="iconfont-archer">&#xe60a;</span>期末复习</span>
     
         <span class="sidebar-category-name" data-categories="Android客户端安全学习"><span class="iconfont-archer">&#xe60a;</span>Android客户端安全学习</span>
+    
+        <span class="sidebar-category-name" data-categories="面试"><span class="iconfont-archer">&#xe60a;</span>面试</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
