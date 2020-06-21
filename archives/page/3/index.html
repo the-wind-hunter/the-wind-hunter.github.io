@@ -346,6 +346,66 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/12/25/数据库系统复习/" >
+            
+                <span>数据库系统复习</span>
+        </a>
+        <div class="abstract-content">
+            简答题数据、数据库、数据库管理系统、数据库系统的定义
+数据：描述事物的符号记录成为数据
+数据库：长期储存在计算机内、有组织的、可共享的大量数据的集合。
+数据库管理系统：数据库管理系统是位于用户和操作系统之间的一层数据管理软件。
+数据库系统：数据库系统是由数据库、数据库管理系统、应用程序和数据库管理员组成的存储、管理、处理和维护数据的系统。
+
+数据库系统的三级模式结构
+模式也称逻辑模式，是数据库中全体数据的逻辑结构和特征的描述，所有用户的公共数据视图。
+外模式也称子模式或用户模式，是数据库用户（包括应用程序员和最终用户）使用的 局部数据的逻辑结构和特征的描述，是数据库用户的数据视图，是与某...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/25</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/12/23/操作系统复习/" >
+            
+                <span>操作系统复习</span>
+        </a>
+        <div class="abstract-content">
+            1.用信号量实现下图所示的前驱关系。
+12345678Semaphore c=d=0;BeginParbegin       begin A;signal(c);signal(d);end;       begin wait(c);C;end;       begin wait(d);D;end;Parendend
+
+signal(s)  //用于释放资源S=S+1     //signal操作S值加一
+wait(s)    //用于申请资源，整形信号量值&lt;=0时循环执行空操作s=s-1      //wait操作S值减一
+
+12345678910111213Var a,b,c,d...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/23</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/12/22/软件工程复习2/" >
             
                 <span>软件工程复习</span>
@@ -608,71 +668,6 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
             <div class= abstract-tags >
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "XSS学习">XSS学习</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/16/Web日志安全分析浅谈/" >
-            
-                <span>Web日志安全分析浅谈</span>
-        </a>
-        <div class="abstract-content">
-            0x00  为什么需要对日志进行分析​       随着Web技术不断发展，Web被应用得越来越广泛，所谓有价值的地方就有江湖，网站被恶意黑客攻击的频率和网站的价值一般成正比趋势，即使网站价值相对较小，也会面对“脚本小子”的恶意测试攻击或者躺枪于各种大范围漏洞扫描器。正如安全行业的一句话：“世界上只有两种人,一种是知道自己被黑了的,另外一种是被黑了还不知道的”。
-​      此时对网站的日志分析就显得特别重要，作为网站管理运维等人员如不能实时的了解服务器的安全状况，则必定会成为“被黑了还不知道的”那一类人，从而造成损失，当然还有一个场景是已经因为黑客攻击造成经济损失，此时我们也会进行日...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/16</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "日志分析">日志分析</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/08/Web 安全之 SSRF 漏洞学习实战/" >
-            
-                <span>Web安全之SSRF漏洞学习实战</span>
-        </a>
-        <div class="abstract-content">
-            0x00 任务
-1、编写一个存在 ssrf 漏洞页面，思考造成该漏洞的函数有哪些
-2、利用 ssrf 进行内网端口扫描（思考利用 ssrf 可以做什么，为什么）
-扩展学习：防御 SSRF 漏洞都有哪些方式，是否可以绕过，思考总结和实际操作过程记录在报告中
-
-0x01 SSRF漏洞原理漏洞原理SSRF(Server-Side Request Forgery，服务器端请求伪造)漏洞，是一种由攻击者构造请求，由服务器端发起请求的安全漏洞，本质上是属于信息泄露漏洞。
-​        很多web应用都提供了从其他的服务器上获取数据的功能。使用用户指定的URL，web应用可以获取图片，下载文件，读...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/08</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SSRF学习">SSRF学习</a>
     
 </div>
             
@@ -1698,9 +1693,99 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 57
+        Total : 59
         </div>
         <!-- search  -->
         
@@ -1711,8 +1796,41 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
     
     
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/78599650/" >[Untitled Post]</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/21</span><a class="archive-post-title" href= "/2020/06/21/开源代码监控--码小六/" >开源代码监控--码小六（安装使用教程）</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1722,6 +1840,11 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
         <li class="archive-post-item">
             <span class="archive-post-date">05/20</span><a class="archive-post-title" href= "/2020/05/20/代码审计思路讨论/" >代码审计思路讨论</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/11</span><a class="archive-post-title" href= "/2020/05/11/CentOS 7 搭建 TinyProxy 代理/" >CentOS 7 搭建 TinyProxy 代理</a>
         </li>
     
     
@@ -1746,22 +1869,22 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/24</span><a class="archive-post-title" href= "/2020/04/24/Android SDK下载安装及配置教程/" >Android SDK下载安装及配置教程</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">04/24</span><a class="archive-post-title" href= "/2020/04/24/Eclipse中离线安装ADT插件详细教程/" >Eclipse中离线安装ADT插件详细教程</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞/" >redis未授权访问漏洞</a>
+            <span class="archive-post-date">04/24</span><a class="archive-post-title" href= "/2020/04/24/Android SDK下载安装及配置教程/" >Android SDK下载安装及配置教程</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞2/" >redis未授权访问漏洞</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞/" >redis未授权访问漏洞</a>
         </li>
     
     
@@ -1830,17 +1953,17 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像/" >Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像 toolbox安装docker</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （一）使用docker toolbox安装docker/" >Windows10下的docker安装与入门 （一）使用docker toolbox安装docker</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它/" >Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像/" >Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像 toolbox安装docker</a>
         </li>
     
     
@@ -1870,6 +1993,11 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/SQLServer数据库及注入方法/" >SQLServer数据库及注入方法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web安全之命令执行漏洞学习实战/" >各种拿shell方法总结</a>
         </li>
     
@@ -1880,17 +2008,12 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/SQLServer数据库及注入方法/" >SQLServer数据库及注入方法</a>
+            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之SQL注入/" >pikachu之SQL注入</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
         </li>
     
     
@@ -1910,35 +2033,12 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/Web配置本地yum源-Linux安全/" >We配置本地yum源-Linux安全</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/29/MySQL用户管理：添加用户、授权、删除用户/" >MySQL用户管理：添加用户、授权、删除用户</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2019 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/oneinstack-建站/" >oneinstack 建站</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/Web配置本地yum源-Linux安全/" >We配置本地yum源-Linux安全</a>
         </li>
     
     
@@ -1992,16 +2092,6 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
         </li>
     
     
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2019/08/15/Web安全学习之——基于dvwa的XSS (DOM）学习教程/Web安全学习之——基于dvwa的XSS (DOM）学习教程/" >Web安全学习之——基于dvwa的XSS (DOM）学习教程</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/11</span><a class="archive-post-title" href= "/2019/08/11/Web安全学习之——基于dvwa的XSS (Stored)学习教程/Web安全学习之——基于dvwa的XSS (Stored)学习教程/" >Web安全学习之——基于dvwa的XSS (Stored)学习教程</a>
-        </li>
-    
-    
     
     
     
@@ -2012,7 +2102,31 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/78599650/" >[Untitled Post]</a>
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/29/MySQL用户管理：添加用户、授权、删除用户/" >MySQL用户管理：添加用户、授权、删除用户</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2019/08/15/Web安全学习之——基于dvwa的XSS (DOM）学习教程/Web安全学习之——基于dvwa的XSS (DOM）学习教程/" >Web安全学习之——基于dvwa的XSS (DOM）学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/11</span><a class="archive-post-title" href= "/2019/08/11/Web安全学习之——基于dvwa的XSS (Stored)学习教程/Web安全学习之——基于dvwa的XSS (Stored)学习教程/" >Web安全学习之——基于dvwa的XSS (Stored)学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/web安全学习之——基于dvwa的SQL注入演练(low)/" >SQL注入练习：基于DVWA的SQL注入演练(low)</a>
         </li>
     
     
@@ -2043,31 +2157,16 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
             <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
         </li>
     
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2019 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/web安全学习之——基于dvwa的SQL注入演练(low)/" >SQL注入练习：基于DVWA的SQL注入演练(low)</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
-        </li>
-    
     </div>
   </div>
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name" data-tags="玩"><span class="iconfont-archer">&#xe606;</span>玩</span>
+        <span class="sidebar-tag-name" data-tags="渗透测试"><span class="iconfont-archer">&#xe606;</span>渗透测试</span>
+    
+        <span class="sidebar-tag-name" data-tags="安卓客户端测试"><span class="iconfont-archer">&#xe606;</span>安卓客户端测试</span>
+    
+        <span class="sidebar-tag-name" data-tags="云服务器"><span class="iconfont-archer">&#xe606;</span>云服务器</span>
     
         <span class="sidebar-tag-name" data-tags="工具或环境"><span class="iconfont-archer">&#xe606;</span>工具或环境</span>
     
@@ -2079,29 +2178,25 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
         <span class="sidebar-tag-name" data-tags="文件上传漏洞"><span class="iconfont-archer">&#xe606;</span>文件上传漏洞</span>
     
+        <span class="sidebar-tag-name" data-tags="面试"><span class="iconfont-archer">&#xe606;</span>面试</span>
+    
+        <span class="sidebar-tag-name" data-tags="编程练习"><span class="iconfont-archer">&#xe606;</span>编程练习</span>
+    
         <span class="sidebar-tag-name" data-tags="get shell"><span class="iconfont-archer">&#xe606;</span>get shell</span>
     
-        <span class="sidebar-tag-name" data-tags="渗透测试"><span class="iconfont-archer">&#xe606;</span>渗透测试</span>
-    
         <span class="sidebar-tag-name" data-tags="SSRF学习"><span class="iconfont-archer">&#xe606;</span>SSRF学习</span>
+    
+        <span class="sidebar-tag-name" data-tags="XXE"><span class="iconfont-archer">&#xe606;</span>XXE</span>
     
         <span class="sidebar-tag-name" data-tags="服务器"><span class="iconfont-archer">&#xe606;</span>服务器</span>
     
         <span class="sidebar-tag-name" data-tags="端口渗透"><span class="iconfont-archer">&#xe606;</span>端口渗透</span>
     
-        <span class="sidebar-tag-name" data-tags="日志分析"><span class="iconfont-archer">&#xe606;</span>日志分析</span>
-    
-        <span class="sidebar-tag-name" data-tags="安卓客户端测试"><span class="iconfont-archer">&#xe606;</span>安卓客户端测试</span>
-    
         <span class="sidebar-tag-name" data-tags="漏洞复现"><span class="iconfont-archer">&#xe606;</span>漏洞复现</span>
-    
-        <span class="sidebar-tag-name" data-tags="面试"><span class="iconfont-archer">&#xe606;</span>面试</span>
-    
-        <span class="sidebar-tag-name" data-tags="编程练习"><span class="iconfont-archer">&#xe606;</span>编程练习</span>
     
         <span class="sidebar-tag-name" data-tags="代码审计"><span class="iconfont-archer">&#xe606;</span>代码审计</span>
     
-        <span class="sidebar-tag-name" data-tags="XXE"><span class="iconfont-archer">&#xe606;</span>XXE</span>
+        <span class="sidebar-tag-name" data-tags="日志分析"><span class="iconfont-archer">&#xe606;</span>日志分析</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -2136,7 +2231,9 @@ jsonContent:
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
     
-        <span class="sidebar-category-name" data-categories="XSS学习"><span class="iconfont-archer">&#xe60a;</span>XSS学习</span>
+        <span class="sidebar-category-name" data-categories="Android客户端安全学习"><span class="iconfont-archer">&#xe60a;</span>Android客户端安全学习</span>
+    
+        <span class="sidebar-category-name" data-categories="工具或环境"><span class="iconfont-archer">&#xe60a;</span>工具或环境</span>
     
         <span class="sidebar-category-name" data-categories="转载"><span class="iconfont-archer">&#xe60a;</span>转载</span>
     
@@ -2144,15 +2241,13 @@ jsonContent:
     
         <span class="sidebar-category-name" data-categories="小白成长学习计划"><span class="iconfont-archer">&#xe60a;</span>小白成长学习计划</span>
     
+        <span class="sidebar-category-name" data-categories="面试"><span class="iconfont-archer">&#xe60a;</span>面试</span>
+    
         <span class="sidebar-category-name" data-categories="php学习"><span class="iconfont-archer">&#xe60a;</span>php学习</span>
     
         <span class="sidebar-category-name" data-categories="linux系统安全"><span class="iconfont-archer">&#xe60a;</span>linux系统安全</span>
     
         <span class="sidebar-category-name" data-categories="期末复习"><span class="iconfont-archer">&#xe60a;</span>期末复习</span>
-    
-        <span class="sidebar-category-name" data-categories="Android客户端安全学习"><span class="iconfont-archer">&#xe60a;</span>Android客户端安全学习</span>
-    
-        <span class="sidebar-category-name" data-categories="面试"><span class="iconfont-archer">&#xe60a;</span>面试</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
