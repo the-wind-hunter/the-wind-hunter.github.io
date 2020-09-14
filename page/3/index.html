@@ -359,6 +359,40 @@ height:50vh;
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/12/12/ubuntu搭建ftp服务器/" >
+            
+                <span>ubuntu搭建ftp服务器</span>
+        </a>
+        <div class="abstract-content">
+            0x00 前言今天听了大佬的建议后准备加深网络和系统这方面的学习，所以准备学习搭建一系列的服务器。先从简单的ftp服务器搭建起吧。在Ubuntu上搭建一个ftp服务器。这样我们就可以随时在ftp服务器上下载或上传文件了。
+（本来想在docker上尝试的，毕竟小破电脑运行起虚拟机来有时卡得难受。但刚接触docker不久还不太熟悉，还是稳一点利用VMware上的虚拟机来实现吧）
+环境：18.04.1-Ubuntu
+0x01 ftp服务器搭建过程1.搭建前的一些准备工作（1）给服务器创建一个目录1mkdir /var/ftp
+
+（2）进入到ftp目录下在ftp目录下创建一个普通文件，用来做下载...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/12</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "服务器">服务器</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/12/09/Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它/" >
             
                 <span>Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它</span>
@@ -637,19 +671,24 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/08/Web安全之命令执行漏洞学习实战/" >
+        <a class="abstract-title" href = "/2019/11/08/SQLServer数据库及注入方法/" >
             
-                <span>各种拿shell方法总结</span>
+                <span>SQLServer数据库及注入方法</span>
         </a>
         <div class="abstract-content">
-            [TOC]
-0x00 任务
-1、编写一个存在命令执行漏洞的页面（可以配置两套 win + linux）
-2、通过命令执行如何进行文件传输（尝试尽量多的方式：离线+在线，不同的系统区别）
-扩展学习：对于命令执行的输入口如何过滤，如何验证可以杜绝命令执行的问题
+            目录
+SQLServer数据库
+修改默认1433端口
+SQLServer数据库的管理
+SQLServer数据库的查询语句
+SA权限开启xp_cmdshell获取主机权限
+SA权限使用sp_oacreate执行系统命令
+DB_owner权限LOG备份Getshell
+DB_owner权限差异备份Getshell
+盲注SQLServer数据库
+SQLServer数据库SQL Server数据库是由Microsoft开发和推广的关系数据库管理系统(DBMS)，是一个比较大型的数据库。端口号为 1433。数据库后缀名 .mdf，注释符是 –
 
-0x01 什么是命令执行漏洞命令执行漏洞概念：当应用需要调用一些外部程序去处理内容的情况下，就会用到一些执行系统命令的函数。如PHP中的system，exec，shell_exec等，当用户可以控制命令执行函数中的参数时，将可注入恶意系统命令到正常命令中，造成命令执行攻击。
-漏洞成因：脚本语言优点是简洁，方便，但也伴随着一些问题，如...
+sa权限：数据库操作，文件管理，命令执行，注册表读取...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -660,7 +699,7 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "get shell">get shell</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "SQL注入">SQL注入</a>
     
 </div>
             
@@ -708,24 +747,19 @@ Web安全学习之——基于dvwa的XSS (Reflect）学习教程
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/08/SQLServer数据库及注入方法/" >
+        <a class="abstract-title" href = "/2019/11/08/Web安全之命令执行漏洞学习实战/" >
             
-                <span>SQLServer数据库及注入方法</span>
+                <span>各种拿shell方法总结</span>
         </a>
         <div class="abstract-content">
-            目录
-SQLServer数据库
-修改默认1433端口
-SQLServer数据库的管理
-SQLServer数据库的查询语句
-SA权限开启xp_cmdshell获取主机权限
-SA权限使用sp_oacreate执行系统命令
-DB_owner权限LOG备份Getshell
-DB_owner权限差异备份Getshell
-盲注SQLServer数据库
-SQLServer数据库SQL Server数据库是由Microsoft开发和推广的关系数据库管理系统(DBMS)，是一个比较大型的数据库。端口号为 1433。数据库后缀名 .mdf，注释符是 –
+            [TOC]
+0x00 任务
+1、编写一个存在命令执行漏洞的页面（可以配置两套 win + linux）
+2、通过命令执行如何进行文件传输（尝试尽量多的方式：离线+在线，不同的系统区别）
+扩展学习：对于命令执行的输入口如何过滤，如何验证可以杜绝命令执行的问题
 
-sa权限：数据库操作，文件管理，命令执行，注册表读取...
+0x01 什么是命令执行漏洞命令执行漏洞概念：当应用需要调用一些外部程序去处理内容的情况下，就会用到一些执行系统命令的函数。如PHP中的system，exec，shell_exec等，当用户可以控制命令执行函数中的参数时，将可注入恶意系统命令到正常命令中，造成命令执行攻击。
+漏洞成因：脚本语言优点是简洁，方便，但也伴随着一些问题，如...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -736,42 +770,7 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SQL注入">SQL注入</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/07/pikachu之CSRF练习/" >
-            
-                <span>pikachu之CSRF</span>
-        </a>
-        <div class="abstract-content">
-            0x00 实验环境​        本次实验的环境主要采用Pikachu漏洞练习平台，Pikachu是一个带有漏洞的Web应用系统，在这里包含了常见的web安全漏洞。如果你是一个Web渗透测试学习人员且正发愁没有合适的靶场进行练习，那么Pikachu可能正合你意。
-平台源码链接：https://github.com/zhuifengshaonianhanlu/pikachu
-
-至于要怎么搭建安装这个平台我就不多说了，推荐使用pspstudy来安装（如果不懂的话那就得从安装phpstudy学起啦）
-还是简单说一下吧：就是把下载解压好的文件夹放到www/下
-
-然后根据实际情况修改inc/co...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/07</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "CSRF">CSRF</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "get shell">get shell</a>
     
 </div>
             
@@ -1936,50 +1935,9 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 59
+        Total : 60
         </div>
         <!-- search  -->
         
@@ -1990,36 +1948,13 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
     
     
     
-    <div class="archive-year"> 2019 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/78599650/" >[Untitled Post]</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/12</span><a class="archive-post-title" href= "/2020/09/12/红蓝对抗文章导航/" >渗透测试文章导航</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -2073,12 +2008,12 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞2/" >redis未授权访问漏洞</a>
+            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞/" >redis未授权访问漏洞</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞/" >redis未授权访问漏洞</a>
+            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞2/" >redis未授权访问漏洞</a>
         </li>
     
     
@@ -2147,12 +2082,12 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像/" >Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像 toolbox安装docker</a>
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （一）使用docker toolbox安装docker/" >Windows10下的docker安装与入门 （一）使用docker toolbox安装docker</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （一）使用docker toolbox安装docker/" >Windows10下的docker安装与入门 （一）使用docker toolbox安装docker</a>
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像/" >Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像 toolbox安装docker</a>
         </li>
     
     
@@ -2182,7 +2117,7 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web 安全之 SSRF 漏洞学习实战/" >Web安全之SSRF漏洞学习实战</a>
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/数据库备份拿shell(练习)/" >各种拿shell方法总结</a>
         </li>
     
     
@@ -2197,7 +2132,7 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/数据库备份拿shell(练习)/" >各种拿shell方法总结</a>
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web 安全之 SSRF 漏洞学习实战/" >Web安全之SSRF漏洞学习实战</a>
         </li>
     
     
@@ -2286,6 +2221,21 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
         </li>
     
     
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2019/08/15/Web安全学习之——基于dvwa的XSS (DOM）学习教程/Web安全学习之——基于dvwa的XSS (DOM）学习教程/" >Web安全学习之——基于dvwa的XSS (DOM）学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/11</span><a class="archive-post-title" href= "/2019/08/11/Web安全学习之——基于dvwa的XSS (Stored)学习教程/Web安全学习之——基于dvwa的XSS (Stored)学习教程/" >Web安全学习之——基于dvwa的XSS (Stored)学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/web安全学习之——基于dvwa的SQL注入演练(low)/" >SQL注入练习：基于DVWA的SQL注入演练(low)</a>
+        </li>
+    
+    
     
     
     
@@ -2305,22 +2255,26 @@ sa权限：数据库操作，文件管理，命令执行，注册表读取...
     
         </ul>
     
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/78599650/" >[Untitled Post]</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2019/08/15/Web安全学习之——基于dvwa的XSS (DOM）学习教程/Web安全学习之——基于dvwa的XSS (DOM）学习教程/" >Web安全学习之——基于dvwa的XSS (DOM）学习教程</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/11</span><a class="archive-post-title" href= "/2019/08/11/Web安全学习之——基于dvwa的XSS (Stored)学习教程/Web安全学习之——基于dvwa的XSS (Stored)学习教程/" >Web安全学习之——基于dvwa的XSS (Stored)学习教程</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/web安全学习之——基于dvwa的SQL注入演练(low)/" >SQL注入练习：基于DVWA的SQL注入演练(low)</a>
+            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
         </li>
     
     
@@ -2442,6 +2396,8 @@ jsonContent:
         <span class="sidebar-category-name" data-categories="linux系统安全"><span class="iconfont-archer">&#xe60a;</span>linux系统安全</span>
     
         <span class="sidebar-category-name" data-categories="期末复习"><span class="iconfont-archer">&#xe60a;</span>期末复习</span>
+    
+        <span class="sidebar-category-name" data-categories="文章集合"><span class="iconfont-archer">&#xe60a;</span>文章集合</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
