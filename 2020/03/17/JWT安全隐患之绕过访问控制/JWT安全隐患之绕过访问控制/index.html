@@ -22,7 +22,7 @@
     <meta name="description" content>
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>We配置本地yum源-Linux安全 · jax&#39;s Studio</title>
+    <title>JWT安全隐患之绕过访问控制 · jax&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -217,7 +217,7 @@
                 <a href="/" >jax&#39;s Studio.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">We配置本地yum源-Linux安全</a>
+                <a href="#" class="post-name">JWT安全隐患之绕过访问控制</a>
             </div>
     </div>
     
@@ -247,7 +247,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            We配置本地yum源-Linux安全
+            JWT安全隐患之绕过访问控制
             <!-- 404 -->
             
         </h1>
@@ -264,14 +264,20 @@ height:50vh;
             <div class="post-intros">
                 <!-- 文章页标签  -->
                 
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "渗透测试">渗透测试</a>
+    
+</div>
+                
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">0</span>阅读时长: <span class="post-count reading-time">1 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">2.6k</span>阅读时长: <span class="post-count reading-time">9 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2019/10/16</span>
+                    <span class="post-intro-time">2020/03/17</span>
                     
                     <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                         <span class="iconfont-archer">&#xe602;</span>
@@ -395,15 +401,107 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        
+        <p>转载自：<a href="https://my.oschina.net/u/3076320/blog/4372604" target="_blank" rel="noopener">https://my.oschina.net/u/3076320/blog/4372604</a></p>
+<h1 id="0x00-JWT含义"><a href="#0x00-JWT含义" class="headerlink" title="0x00 JWT含义"></a><strong>0x00 JWT含义</strong></h1><p><strong>JSON Web Tokens（缩写JWTs，读作 [/dʒɒts/]），是一种基于JSON格式,用于在网络上声明某种标准（广泛使用于商业应用程序中）的访问令牌，其包含令牌签名以确保令牌的完整性，令牌使用私钥或公钥/私钥进行签名验证。</strong></p>
+<p><strong>JWT通常由三部分组成: 头信息（header）, 消息体（payload）和签名（signature）。</strong></p>
+<p><strong>我们今天讨论攻击者如何利用它们绕过访问控制，即伪造令牌并以其他人身份登录。</strong></p>
+<h1 id="0x01-JWT的工作原理"><a href="#0x01-JWT的工作原理" class="headerlink" title="0x01 JWT的工作原理"></a><strong>0x01 JWT的工作原理</strong></h1><p><strong>JWT的头信息部分标识用于生成签名的算法</strong></p>
+<p><strong>{</strong> </p>
+<p> <strong>“ alg”：“ HS256”，</strong></p>
+<p> <strong>“ typ”：“ JWT”</strong> </p>
+<p><strong>}</strong></p>
+<p><strong>使用的典型加密算法是HMAC和RSA。其中HS256 表明此令牌是使用HMAC-SHA256签名的，它是通过base64url编码的字符串，即eyBhbGcgOiBIUzI1NiwgdHlwIDogSldUIH0K</strong></p>
+<p><strong>（Base64url编码是针对URL格式的base64的修改版本。它类似于base64，但使用不同的非字母数字字符并省略了填充符号。其中有关Base64url编码的知识详见</strong></p>
+<p><strong><a href="https://zh.wikipedia.org/wiki/Base64这里不做赘述。）" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/Base64这里不做赘述。）</a></strong></p>
+<p><strong>JWT的消息体部分包含实际用于访问控制的信息。此部分在应用于令牌之前也已经进行过base64url编码：</strong></p>
+<p><strong>eyB1c2VyX25hbWUgOiBhZG1pbiB9Cg</strong></p>
+<p><strong>{</strong> </p>
+<p>  <strong>“loggedInAs” : “admin”,</strong></p>
+<p> <strong>“iat” : 1422779638</strong></p>
+<p><strong>}</strong></p>
+<p><strong>JWT的签名是用于验证令牌未被篡改的部分。它通过将头信息与消息体串联在一起，然后使用头信息中指定的算法进行签名来计算。</strong></p>
+<p><strong>HMAC-SHA256(</strong></p>
+<p> <strong>base64urlEncoding(header) + ‘.’ +</strong></p>
+<p> <strong>base64urlEncoding(payload),</strong></p>
+<p> <strong>secret_key</strong></p>
+<p><strong>)</strong></p>
+<p><strong>签名函数返回值：</strong></p>
+<p><strong>4Hb/6ibbViPOzq9SJflsNGPWSk6B8F6EqVrkNjpXh7M</strong></p>
+<p><strong>对于此特定令牌，字符串</strong></p>
+<p><strong>“eyBhbGcgOiBIUzI1NiwgdHlwIDogSldUIH0K.eyB1c2VyX25hbWUgOiBhZG1pbiB9Cg”已用得到的密钥“secret_key”的HS256算法签名。</strong></p>
+<p><strong>接着生成的字符串是：</strong></p>
+<p><strong>4Hb/6ibbViPOzq9SJflsNGPWSk6B8F6EqVrkNjpXh7M</strong></p>
+<p><strong>最后获取完整的令牌：</strong></p>
+<p><strong>将上文提到的三个部分即头信息（header）, 消息体（payload）和签名（signature）与“.”串联在一起，便可以获得完整的令牌，如下所示：</strong></p>
+<p><strong>eyBhbGcgOiBIUzI1NiwgdHlwIDogSldUIH0K.eyB1c2VyX25hbWUgOiBhZG1pbiB9Cg.4Hb/6ibbViPOzq9SJflsNGPWSk6B8F6EqVrkNjpXh7M</strong></p>
+<h1 id="0x02-绕过JWT控件的方法"><a href="#0x02-绕过JWT控件的方法" class="headerlink" title="0x02 绕过JWT控件的方法"></a><strong>0x02 绕过JWT控件的方法</strong></h1><p><strong>如果上述操作能够正确实现，那么JWT将提供一种安全的方式来标识用户，此时消息体部分中所包含的数据无法被篡改。（而且由于用户无权访问密钥，因此也不能自己对令牌进行签名。）</strong></p>
+<p><strong>但是，如果操作失败或者不正确，攻击者就可以通过多种方式绕过安全机制并伪造任意令牌以其他人身份登录，接下来具体讲述几种绕过方式。</strong></p>
+<h1 id="0x03-修改算法类型"><a href="#0x03-修改算法类型" class="headerlink" title="0x03 修改算法类型"></a><strong>0x03 修改算法类型</strong></h1><p><strong>攻击者可以伪造自己的令牌，其中一种方法是篡改头信息中的alg字段。如果应用程序没有限制JWT中使用的算法类型，则攻击者可以指定要使用的算法，很明显，这可能会对令牌的安全性造成影响。</strong></p>
+<h2 id="1-none-算法"><a href="#1-none-算法" class="headerlink" title="1.none 算法"></a><strong>1.none 算法</strong></h2><p><strong>JWT支持“none”算法。如果将alg字段设置为“none”，则任何令牌都将被视为有效。例如，以下令牌将被视为有效：</strong></p>
+<p><strong>eyAiYWxnIiA6ICJOb25lIiwgInR5cCIgOiAiSldUIiB9Cg.eyB1c2VyX25hbWUgOiBhZG1pbiB9Cg.</strong></p>
+<p><strong>那么它只是这两块的base64url编码版本，并且没有签名。</strong></p>
+<p><strong>{</strong></p>
+<p> <strong>“alg” : “none”,</strong></p>
+<p> <strong>“typ” : “JWT”</strong></p>
+<p><strong>}</strong></p>
+<p><strong>{</strong></p>
+<p> <strong>“user” : “admin”</strong></p>
+<p><strong>}</strong></p>
+<p><strong>我们不难猜出，此功能最初用于调试目的。但是如果未在发行环境中将其关闭，则攻击者可以利用此安全隐患，通过将alg字段设置为“ none” 来伪造他们想要的任何令牌。然后他们可以使用伪造的令牌模拟网站上的任何人。</strong></p>
+<h2 id="2-HMAC算法"><a href="#2-HMAC算法" class="headerlink" title="2. HMAC算法"></a><strong>2. HMAC算法</strong></h2><p><strong>上文提到，用于JWT的两种最常见的算法类型是HMAC和RSA。使用HMAC，将使用密钥对令牌进行签名，然后使用相同的密钥进行验证。对于RSA，将首先使用私钥创建令牌，然后使用相应的公钥进行验证，概括如下：</strong></p>
+<p><strong>HMAC -&gt; 用密钥签名，并用相同的密钥验证</strong></p>
+<p><strong>RSA -&gt; 用私钥签名，并用相应的公钥验证</strong></p>
+<p><strong>毋庸置疑，我们需要将HMAC令牌的密钥和RSA令牌的私钥妥善保管，因为它们用于签名令牌。</strong></p>
+<p><strong>举个场景说明一下：</strong></p>
+<p><strong>我们假设有一个最初设计为使用RSA令牌的应用程序。令牌用私钥A签名，私钥A 不公开。然后使用任何人都可以使用公钥B验证令牌，只要此令牌始终被视为RSA令牌。</strong></p>
+<p><strong>使用密钥A签名的令牌-&gt;使用密钥B验证的令牌（RSA方案）</strong></p>
+<p><strong>如果攻击者改变的alg到HMAC，那么或许可以通过与RSA公钥B   签订伪造的标记来创建有效的令牌，这是因为最初使用RSA对令牌进行签名时，程序会使用RSA公钥B对其进行验证。当将签名算法切换为HMAC时，仍使用RSA公钥B来验证令牌，但是这次是使用令牌时，可以使用相同的公钥B进行签名。</strong></p>
+<p><strong>使用密钥B签名的令牌-&gt;使用密钥B验证的令牌（HMAC方案）</strong></p>
+<h1 id="0x04-提供无效的签名"><a href="#0x04-提供无效的签名" class="headerlink" title="0x04 提供无效的签名"></a><strong>0x04 提供无效的签名</strong></h1><p><strong>令牌的无效签名在运用到应用程序后也可能永远不会被验证，攻击者则可以通过提供无效签名来简单地绕过安全机制。</strong></p>
+<h1 id="0x05-暴力破解密钥"><a href="#0x05-暴力破解密钥" class="headerlink" title="0x05 暴力破解密钥"></a><strong>0x05 暴力破解密钥</strong></h1><p><strong>因为长度有限，也可能暴力破解用于签署JWT的密钥。</strong></p>
+<p><strong>攻击者从一开始就知道很多（固定的）信息，比如知道用于对令牌进行签名的算法类型，已签名的消息体以及生成的签名。如果用于对令牌进行签名的密钥不够复杂，则攻击者可能可以轻松地对其进行暴力破解。</strong></p>
+<h1 id="0x06-泄漏密钥"><a href="#0x06-泄漏密钥" class="headerlink" title="0x06 泄漏密钥"></a><strong>0x06 泄漏密钥</strong></h1><p><strong>如果攻击者无法暴力破解密钥，则可以尝试（旁路攻击）猜解密钥。此时如果存在另一个允许攻击者读取存储密钥值的文件漏洞（如目录遍历，XXE，SSRF），则攻击者可以窃取密钥并签署任意令牌。</strong></p>
+<p><strong>（注：如果破解密码学系统使用的信息是通过与其使用人的合法交流获取的，这通常不被认为是旁路攻击/测信道攻击，而是社会工程学攻击。XXE漏洞文章补充链接：<a href="https://xz.aliyun.com/t/3357）" target="_blank" rel="noopener">https://xz.aliyun.com/t/3357）</a></strong></p>
+<h1 id="0x07-KID操作"><a href="#0x07-KID操作" class="headerlink" title="0x07 KID操作"></a><strong>0x07 KID操作</strong></h1><p><strong>KID代表“KEY ID”。它是JWT中的可选头信息字段，它使开发人员可以指定用于验证令牌的密钥。KID参数的正确用法如下所示：</strong></p>
+<p><strong>{</strong></p>
+<p> <strong>“alg” : “HS256”,</strong></p>
+<p> <strong>“typ” : “JWT”,</strong></p>
+<p> <strong>“kid” : “1”       // use key number 1 to verify the token</strong> </p>
+<p><strong>}</strong></p>
+<p><strong>由于此字段是由用户控制的，因此攻击者可能会控制它造成安全问题。</strong></p>
+<h2 id="1-目录遍历"><a href="#1-目录遍历" class="headerlink" title="1.目录遍历"></a><strong>1.目录遍历</strong></h2><p><strong>由于KID通常用于从文件系统中检索密钥文件，因此，如果在使用前未对其进行清理，则可能导致目录遍历攻击。在这种情况下，攻击者将能够在文件系统中指定任何文件作为用于验证令牌的密钥。</strong></p>
+<p><strong>“kid”: “../../public/css/main.css”</strong> </p>
+<p><strong>例如，攻击者可以强制应用程序使用公开可用的文件作为密钥，并使用该文件对HMAC令牌进行签名。</strong></p>
+<h2 id="2-SQL注入"><a href="#2-SQL注入" class="headerlink" title="2. SQL注入"></a><strong>2. SQL注入</strong></h2><p><strong>KID还可以用于从数据库检索密钥。在这种情况下，可以利用SQL注入来绕过JWT签名。</strong></p>
+<p><strong>如果可以在KID参数上进行SQL注入，则攻击者可以使用该注入返回攻击者想要的任何值。</strong></p>
+<p><strong>“kid”: “aaaaaaa’ UNION SELECT ‘key’;–”</strong></p>
+<p><strong>例如，上面的SQL注入将使应用程序返回字符串“key”（因为数据库中不存在名为“aaaaaaa”的密钥），然后将使用字符串“key”作为密钥来验证令牌。</strong></p>
+<h1 id="0x08-头信息参数处理"><a href="#0x08-头信息参数处理" class="headerlink" title="0x08 头信息参数处理"></a><strong>0x08 头信息参数处理</strong></h1><p><strong>除密钥ID外，JWT标准还允许开发人员能够通过URL指定密钥。</strong></p>
+<h2 id="1-JKU头信息参数"><a href="#1-JKU头信息参数" class="headerlink" title="1.JKU头信息参数"></a><strong>1.JKU头信息参数</strong></h2><p><strong>JKU即“ JWK设置URL”。它是一个可选的头信息字段，用于指定指向一组用于验证令牌的密钥的URL。如果允许该字段，又没有对该字段进行适当的限制，则攻击者可以调用自己的密钥文件，并指定应用程序使用它来验证令牌。</strong></p>
+<p><strong>jku URL -&gt; file containing JWK set -&gt; JWK used to verify the token</strong></p>
+<h2 id="2-JWK头信息参数"><a href="#2-JWK头信息参数" class="headerlink" title="2. JWK头信息参数"></a><strong>2. JWK头信息参数</strong></h2><p><strong>可选的JWK（JSON Web Key）头信息参数允许攻击者将用于验证令牌的密钥直接嵌入到令牌中。</strong></p>
+<h2 id="3-X5U，X5C-URL操作"><a href="#3-X5U，X5C-URL操作" class="headerlink" title="3. X5U，X5C URL操作"></a><strong>3. X5U，X5C URL操作</strong></h2><p><strong>和JKU和JWK头信息类似，X5U和X5C头信息参数允许攻击者指定用于验证令牌的公钥证书或证书链。其中，X5U以URI形式指定信息，而X5C则允许将证书值嵌入令牌中。</strong></p>
+<h1 id="0x09-其他JWT安全问题"><a href="#0x09-其他JWT安全问题" class="headerlink" title="0x09 其他JWT安全问题"></a><strong>0x09 其他JWT安全问题</strong></h1><p><strong>如果没有正确应用JWT，还会产生其他安全问题。这些虽然不是很常见，但是也绝对需要注意：</strong></p>
+<h2 id="1-信息泄漏"><a href="#1-信息泄漏" class="headerlink" title="1.信息泄漏"></a><strong>1.信息泄漏</strong></h2><p><strong>由于JWT用于访问控制，因此它们通常包含有关用户的信息。</strong></p>
+<p><strong>如果令牌未加密，则任何人都可以通过base64解码令牌并读取令牌的消息体。因此，如果令牌中包含敏感信息，则它可能成为信息泄漏的来源。因为JWT正确运用的签名部分可以保证提供数据的完整性，而不是其保密性。</strong></p>
+<h2 id="2-命令注入"><a href="#2-命令注入" class="headerlink" title="2.命令注入"></a><strong>2.命令注入</strong></h2><p><strong>有时当KID参数直接传递到不安全的文件读取操作中时，可能会将命令注入代码流中。</strong></p>
+<p><strong>可能允许这种类型的攻击函数之一是Ruby open（）函数。此函数使攻击者只需在KID文件名之后将命令添加到输入，即可执行系统命令：</strong></p>
+<p><strong>“key_file” | whoami;</strong></p>
+<p><strong>这只是一个例子，从理论上讲，每当应用程序将任何未清理过的头信息参数传递到类似system()、exec()等的任何函数中时，都会出现这样的漏洞。</strong></p>
+<p><strong>总而言之，JWT只是用户输入的另一种形式。我们应该始终对它们保持怀疑，并严格地清理它们。</strong></p>
+<p><strong>References：</strong></p>
+<p><strong><a href="https://tools.ietf.org/html/draft-ietf-oauth-jwt-bcp-07" target="_blank" rel="noopener">https://tools.ietf.org/html/draft-ietf-oauth-jwt-bcp-07</a></strong></p>
+<p><strong><a href="https://en.wikipedia.org/wiki/JSON_Web_Token" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/JSON_Web_Token</a></strong></p>
+<p><strong><a href="https://medium.com/swlh/hacking-json-web-tokens-jwts-9122efe91e4a" target="_blank" rel="noopener">https://medium.com/swlh/hacking-json-web-tokens-jwts-9122efe91e4a</a></strong></p>
+
     </article>
     <!-- license  -->
     
         <div class="license-wrapper">
             <p>原文作者：<a href="https://the-wind-hunter.github.io">jax</a>
-            <p>原文链接：<a href="https://the-wind-hunter.github.io/2019/10/16/Web配置本地yum源-Linux安全/">https://the-wind-hunter.github.io/2019/10/16/Web配置本地yum源-Linux安全/</a>
-            <p>发表日期：<a href="https://the-wind-hunter.github.io/2019/10/16/Web配置本地yum源-Linux安全/">October 16th 2019, 9:21:39 pm</a>
-            <p>更新日期：<a href="https://the-wind-hunter.github.io/2019/10/16/Web配置本地yum源-Linux安全/">October 16th 2019, 9:21:39 pm</a>
+            <p>原文链接：<a href="https://the-wind-hunter.github.io/2020/03/17/JWT安全隐患之绕过访问控制/JWT安全隐患之绕过访问控制/">https://the-wind-hunter.github.io/2020/03/17/JWT安全隐患之绕过访问控制/JWT安全隐患之绕过访问控制/</a>
+            <p>发表日期：<a href="https://the-wind-hunter.github.io/2020/03/17/JWT安全隐患之绕过访问控制/JWT安全隐患之绕过访问控制/">三月 17日 2020, 12:20:13 中午</a>
+            <p>更新日期：<a href="https://the-wind-hunter.github.io/2020/03/17/JWT安全隐患之绕过访问控制/JWT安全隐患之绕过访问控制/">September 23rd 2020, 8:11:23 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
        
@@ -413,16 +511,16 @@ height:50vh;
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href= "/2019/10/16/oneinstack-建站/" title= "oneinstack 建站">
-                    <div class="nextTitle">oneinstack 建站</div>
+                <a href= "/2020/03/28/一篇文章带你深入理解XXE漏洞/" title= "一篇文章带你深入理解XXE漏洞">
+                    <div class="nextTitle">一篇文章带你深入理解XXE漏洞</div>
                 </a>
             
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2019/10/10/php正则表达式中preg_match函数的详解/" title= "php正则表达式中preg_match函数的详解">
-                    <div class="prevTitle">php正则表达式中preg_match函数的详解</div>
+                <a href= "/2020/03/06/渗透测试常见开放端口及利用/" title= "渗透测试常见开放端口及利用">
+                    <div class="prevTitle">渗透测试常见开放端口及利用</div>
                 </a>
             
         </li>
@@ -526,7 +624,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0x00-JWT含义"><span class="toc-number">1.</span> <span class="toc-text">0x00 JWT含义</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x01-JWT的工作原理"><span class="toc-number">2.</span> <span class="toc-text">0x01 JWT的工作原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x02-绕过JWT控件的方法"><span class="toc-number">3.</span> <span class="toc-text">0x02 绕过JWT控件的方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x03-修改算法类型"><span class="toc-number">4.</span> <span class="toc-text">0x03 修改算法类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-none-算法"><span class="toc-number">4.1.</span> <span class="toc-text">1.none 算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-HMAC算法"><span class="toc-number">4.2.</span> <span class="toc-text">2. HMAC算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x04-提供无效的签名"><span class="toc-number">5.</span> <span class="toc-text">0x04 提供无效的签名</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x05-暴力破解密钥"><span class="toc-number">6.</span> <span class="toc-text">0x05 暴力破解密钥</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x06-泄漏密钥"><span class="toc-number">7.</span> <span class="toc-text">0x06 泄漏密钥</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x07-KID操作"><span class="toc-number">8.</span> <span class="toc-text">0x07 KID操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-目录遍历"><span class="toc-number">8.1.</span> <span class="toc-text">1.目录遍历</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-SQL注入"><span class="toc-number">8.2.</span> <span class="toc-text">2. SQL注入</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x08-头信息参数处理"><span class="toc-number">9.</span> <span class="toc-text">0x08 头信息参数处理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-JKU头信息参数"><span class="toc-number">9.1.</span> <span class="toc-text">1.JKU头信息参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-JWK头信息参数"><span class="toc-number">9.2.</span> <span class="toc-text">2. JWK头信息参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-X5U，X5C-URL操作"><span class="toc-number">9.3.</span> <span class="toc-text">3. X5U，X5C URL操作</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x09-其他JWT安全问题"><span class="toc-number">10.</span> <span class="toc-text">0x09 其他JWT安全问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-信息泄漏"><span class="toc-number">10.1.</span> <span class="toc-text">1.信息泄漏</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-命令注入"><span class="toc-number">10.2.</span> <span class="toc-text">2.命令注入</span></a></li></ol></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
