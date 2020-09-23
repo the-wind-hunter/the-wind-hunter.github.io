@@ -346,29 +346,30 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/07/pikachu之CSRF练习/" >
+        <a class="abstract-title" href = "/2019/11/08/Web安全之命令执行漏洞学习实战/" >
             
-                <span>pikachu之CSRF</span>
+                <span>各种拿shell方法总结</span>
         </a>
         <div class="abstract-content">
-            0x00 实验环境​        本次实验的环境主要采用Pikachu漏洞练习平台，Pikachu是一个带有漏洞的Web应用系统，在这里包含了常见的web安全漏洞。如果你是一个Web渗透测试学习人员且正发愁没有合适的靶场进行练习，那么Pikachu可能正合你意。
-平台源码链接：https://github.com/zhuifengshaonianhanlu/pikachu
+            [TOC]
+0x00 任务
+1、编写一个存在命令执行漏洞的页面（可以配置两套 win + linux）
+2、通过命令执行如何进行文件传输（尝试尽量多的方式：离线+在线，不同的系统区别）
+扩展学习：对于命令执行的输入口如何过滤，如何验证可以杜绝命令执行的问题
 
-至于要怎么搭建安装这个平台我就不多说了，推荐使用pspstudy来安装（如果不懂的话那就得从安装phpstudy学起啦）
-还是简单说一下吧：就是把下载解压好的文件夹放到www/下
-
-然后根据实际情况修改inc/co...
+0x01 什么是命令执行漏洞命令执行漏洞概念：当应用需要调用一些外部程序去处理内容的情况下，就会用到一些执行系统命令的函数。如PHP中的system，exec，shell_exec等，当用户可以控制命令执行函数中的参数时，将可注入恶意系统命令到正常命令中，造成命令执行攻击。
+漏洞成因：脚本语言优点是简洁，方便，但也伴随着一些问题，如...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/07</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/08</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "CSRF">CSRF</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "get shell">get shell</a>
     
 </div>
             
@@ -406,6 +407,41 @@
             <div class= abstract-tags >
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "SQL注入">SQL注入</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/11/07/pikachu之CSRF练习/" >
+            
+                <span>pikachu之CSRF</span>
+        </a>
+        <div class="abstract-content">
+            0x00 实验环境​        本次实验的环境主要采用Pikachu漏洞练习平台，Pikachu是一个带有漏洞的Web应用系统，在这里包含了常见的web安全漏洞。如果你是一个Web渗透测试学习人员且正发愁没有合适的靶场进行练习，那么Pikachu可能正合你意。
+平台源码链接：https://github.com/zhuifengshaonianhanlu/pikachu
+
+至于要怎么搭建安装这个平台我就不多说了，推荐使用pspstudy来安装（如果不懂的话那就得从安装phpstudy学起啦）
+还是简单说一下吧：就是把下载解压好的文件夹放到www/下
+
+然后根据实际情况修改inc/co...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/07</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "CSRF">CSRF</a>
     
 </div>
             
@@ -637,40 +673,10 @@ DOM型XSS其实是一种特殊类型的反射型XSS，它是基于DOM文档对�
         </div>
     </article>
     
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >
-            
-                <span>web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</span>
-        </a>
-        <div class="abstract-content">
-            1.什么是盲注？盲注的本质是猜解,所谓 “盲” 就是在你看不到返回数据的情况下能通过 “感觉” 来判断。SQL Injection（Blind），即SQL盲注，与一般注入的区别在于，一般的注入攻击者可以直接从页面上看到注入语句的执行结果，而盲注时攻击者通常是无法从显示页面上获取执行结果，甚至连注入语句是否执行都无从得知，因此盲注的难度要比一般注入高。目前网络上现存的SQL注入漏洞大多是SQL盲注。
-2.基于布尔SQL盲注———-构造逻辑判断在进行盲注学习之前，你首先要知道的是盲注的基本原理手工盲注的过程，就像你与一个机器人聊天，这个机器人知道的很多，但只会回答“是”或者“不是”，因此你需...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/06</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "SQL注入">SQL注入</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
     <!-- paginator  -->
     
     <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/categories/Web安全/">&#60; PREV</a><a class="page-number" href="/categories/Web安全/">1</a><span class="page-number current">2</span>
+        <a class="extend prev" rel="prev" href="/categories/Web安全/">&#60; PREV</a><a class="page-number" href="/categories/Web安全/">1</a><span class="page-number current">2</span><a class="page-number" href="/categories/Web安全/page/3/">3</a><a class="extend next" rel="next" href="/categories/Web安全/page/3/">NEXT &#62;</a>
     </nav>
     
 </main>
@@ -1735,9 +1741,67 @@ DOM型XSS其实是一种特殊类型的反射型XSS，它是基于DOM文档对�
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 60
+        Total : 64
         </div>
         <!-- search  -->
         
@@ -1750,6 +1814,21 @@ DOM型XSS其实是一种特殊类型的反射型XSS，它是基于DOM文档对�
     
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2020/09/15/文件上传技巧思路/" >文件上传技巧思路</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2020/09/15/解析漏洞总结/" >解析漏洞总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/14</span><a class="archive-post-title" href= "/2020/09/14/在url中传参写文件/" >在url中传参写文件</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1808,12 +1887,12 @@ DOM型XSS其实是一种特殊类型的反射型XSS，它是基于DOM文档对�
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞/" >redis未授权访问漏洞</a>
+            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞2/" >redis未授权访问漏洞</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞2/" >redis未授权访问漏洞</a>
+            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞/" >redis未授权访问漏洞</a>
         </li>
     
     
@@ -1834,6 +1913,11 @@ DOM型XSS其实是一种特殊类型的反射型XSS，它是基于DOM文档对�
     
         <li class="archive-post-item">
             <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2020/04/15/任意文件下载/" >Web安全之任意文件下载</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/28</span><a class="archive-post-title" href= "/2020/03/28/一篇文章带你深入理解XXE漏洞/" >一篇文章带你深入理解XXE漏洞</a>
         </li>
     
     
@@ -1882,7 +1966,7 @@ DOM型XSS其实是一种特殊类型的反射型XSS，它是基于DOM文档对�
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （一）使用docker toolbox安装docker/" >Windows10下的docker安装与入门 （一）使用docker toolbox安装docker</a>
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它/" >Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它</a>
         </li>
     
     
@@ -1892,7 +1976,7 @@ DOM型XSS其实是一种特殊类型的反射型XSS，它是基于DOM文档对�
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它/" >Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它</a>
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （一）使用docker toolbox安装docker/" >Windows10下的docker安装与入门 （一）使用docker toolbox安装docker</a>
         </li>
     
     
@@ -1917,7 +2001,7 @@ DOM型XSS其实是一种特殊类型的反射型XSS，它是基于DOM文档对�
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/数据库备份拿shell(练习)/" >各种拿shell方法总结</a>
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web安全之命令执行漏洞学习实战/" >各种拿shell方法总结</a>
         </li>
     
     
@@ -1927,17 +2011,12 @@ DOM型XSS其实是一种特殊类型的反射型XSS，它是基于DOM文档对�
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web安全之命令执行漏洞学习实战/" >各种拿shell方法总结</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web 安全之 SSRF 漏洞学习实战/" >Web安全之SSRF漏洞学习实战</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/数据库备份拿shell(练习)/" >各种拿shell方法总结</a>
         </li>
     
     
@@ -1947,12 +2026,17 @@ DOM型XSS其实是一种特殊类型的反射型XSS，它是基于DOM文档对�
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/CSRF(跨站请求伪造)/" >跨站请求伪造CSRF</a>
+            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/第十三周-web安全之手工测试之前编写的注入环境/" >第十三周web安全之手工测试之前编写的注入环境</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/CSRF(跨站请求伪造)/" >跨站请求伪造CSRF</a>
         </li>
     
     
@@ -2006,6 +2090,29 @@ DOM型XSS其实是一种特殊类型的反射型XSS，它是基于DOM文档对�
         </li>
     
     
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
         <li class="archive-post-item">
             <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Web安全学习之——基于dvwa的XSS Reflect学习教程/Web安全学习之——基于dvwa的XSS Reflect学习教程/" >Web安全学习之——基于dvwa的XSS (Reflect)学习教程</a>
         </li>
@@ -2036,6 +2143,11 @@ DOM型XSS其实是一种特殊类型的反射型XSS，它是基于DOM文档对�
         </li>
     
     
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
+        </li>
+    
+    
     
     
     
@@ -2047,34 +2159,6 @@ DOM型XSS其实是一种特殊类型的反射型XSS，它是基于DOM文档对�
     
         <li class="archive-post-item">
             <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/29/MySQL用户管理：添加用户、授权、删除用户/" >MySQL用户管理：添加用户、授权、删除用户</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/78599650/" >[Untitled Post]</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2019 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
         </li>
     
     
@@ -2102,7 +2186,7 @@ DOM型XSS其实是一种特殊类型的反射型XSS，它是基于DOM文档对�
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/78599650/" >[Untitled Post]</a>
         </li>
     
     </div>
@@ -2145,6 +2229,8 @@ DOM型XSS其实是一种特殊类型的反射型XSS，它是基于DOM文档对�
         <span class="sidebar-tag-name" data-tags="代码审计"><span class="iconfont-archer">&#xe606;</span>代码审计</span>
     
         <span class="sidebar-tag-name" data-tags="日志分析"><span class="iconfont-archer">&#xe606;</span>日志分析</span>
+    
+        <span class="sidebar-tag-name" data-tags="红蓝对抗"><span class="iconfont-archer">&#xe606;</span>红蓝对抗</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -2198,6 +2284,10 @@ jsonContent:
         <span class="sidebar-category-name" data-categories="期末复习"><span class="iconfont-archer">&#xe60a;</span>期末复习</span>
     
         <span class="sidebar-category-name" data-categories="文章集合"><span class="iconfont-archer">&#xe60a;</span>文章集合</span>
+    
+        <span class="sidebar-category-name" data-categories="攻击技术"><span class="iconfont-archer">&#xe60a;</span>攻击技术</span>
+    
+        <span class="sidebar-category-name" data-categories="常规漏洞技巧"><span class="iconfont-archer">&#xe60a;</span>常规漏洞技巧</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>

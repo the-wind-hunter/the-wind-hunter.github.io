@@ -346,6 +346,107 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2020/09/15/解析漏洞总结/" >
+            
+                <span>解析漏洞总结</span>
+        </a>
+        <div class="abstract-content">
+            一、解析漏洞
+​        解析漏洞指的是服务器应用程序在解析某些精心构造的后缀文件时，会将其解析成网页脚本，从而导致网站的沦陷。大部分解析漏洞的产生都是由应用程序本身的漏洞导致的。
+
+二、常见的解析漏洞1、IIS5.x-6.x解析漏洞​         使用 IIS5.x-6.x 版本的服务器，大多为Windows server 2003，网站比较古老，开发语句一般为asp；该解析漏洞也只能解析asp文件，不能解析aspx文件。
+目录解析漏洞
+​          IIS6.0中的目录解析漏洞，如果网站目录中有一个 *.asp/ 的文件夹，那么该文件夹下面的一切内容都会被 IIS ...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/09/15</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "文件上传漏洞">文件上传漏洞</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/09/15/文件上传技巧思路/" >
+            
+                <span>文件上传技巧思路</span>
+        </a>
+        <div class="abstract-content">
+            1、CVE-2015-2348 move_uploaded_file() 00截断PHP任意文件上传漏洞（CVE-2015-2348）分析与利用    
+2、上传图片马注意：图片马要配合解析漏洞才有用
+如：IIS 7.0/IIS 7.5/ Nginx &lt;8.03、IIS5.x-6.x、Apache 、Nginx0.5.,0.6., 0.7 &lt;= 0.7.65, 0.8 &lt;= 0.8.37
+图片马制作：copy normal.jpg /b + shell.php /a webshell.jpg
+​       （1） 文件后缀名做了白名单判断，然后会一步一步检查文件大小、...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/09/15</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "文件上传漏洞">文件上传漏洞</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/09/14/在url中传参写文件/" >
+            
+                <span>在url中传参写文件</span>
+        </a>
+        <div class="abstract-content">
+            
+转载自：https://blog.blankshell.com  作者：woojay
+原文地址：https://blog.blankshell.com/2020/06/27/%E5%B0%8F%E6%8A%80%E5%B7%A7-%E5%9C%A8url%E4%B8%AD%E4%BC%A0%E5%8F%82%E5%86%99%E6%96%87%E4%BB%B6/
+具体利用文章：https://blog.blankshell.com/2019/09/12/%E6%9F%90oa%E7%B3%BB%E7%BB%9F%E4%BB%8Esystem%E6%9D%83%E9%99%90%E5%9...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/09/14</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "渗透测试">渗透测试</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "红蓝对抗">红蓝对抗</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2020/09/12/红蓝对抗文章导航/" >
             
                 <span>渗透测试文章导航</span>
@@ -353,7 +454,8 @@
         <div class="abstract-content">
             红蓝对抗–攻击队Webshell红队攻防实践：闲谈Webshell在实战中的应用
 如何优雅的隐藏你的webshell
-完整渗透过程细说渗透江湖之披荆斩棘
+完整渗透过程记一次从零到getshell的渗透历程
+细说渗透江湖之披荆斩棘
 从DNSBeacon到域控
 请不要在我喜欢的人身上下手，我“刀”呢？
 从组合漏洞到域控
@@ -366,8 +468,7 @@
 记一次曲折的RCE挖掘
 内网部分手工 - 内网信息收集
 红队之浅谈基于Windows telemetry的权限维持
-获取域内管理员和用户信息
-Windows 系...
+获取...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -1449,9 +1550,67 @@ Windows 系...
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 60
+        Total : 64
         </div>
         <!-- search  -->
         
@@ -1464,6 +1623,21 @@ Windows 系...
     
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2020/09/15/文件上传技巧思路/" >文件上传技巧思路</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2020/09/15/解析漏洞总结/" >解析漏洞总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/14</span><a class="archive-post-title" href= "/2020/09/14/在url中传参写文件/" >在url中传参写文件</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1522,12 +1696,12 @@ Windows 系...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞/" >redis未授权访问漏洞</a>
+            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞2/" >redis未授权访问漏洞</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞2/" >redis未授权访问漏洞</a>
+            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞/" >redis未授权访问漏洞</a>
         </li>
     
     
@@ -1548,6 +1722,11 @@ Windows 系...
     
         <li class="archive-post-item">
             <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2020/04/15/任意文件下载/" >Web安全之任意文件下载</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/28</span><a class="archive-post-title" href= "/2020/03/28/一篇文章带你深入理解XXE漏洞/" >一篇文章带你深入理解XXE漏洞</a>
         </li>
     
     
@@ -1596,7 +1775,7 @@ Windows 系...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （一）使用docker toolbox安装docker/" >Windows10下的docker安装与入门 （一）使用docker toolbox安装docker</a>
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它/" >Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它</a>
         </li>
     
     
@@ -1606,7 +1785,7 @@ Windows 系...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它/" >Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它</a>
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （一）使用docker toolbox安装docker/" >Windows10下的docker安装与入门 （一）使用docker toolbox安装docker</a>
         </li>
     
     
@@ -1631,7 +1810,7 @@ Windows 系...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/数据库备份拿shell(练习)/" >各种拿shell方法总结</a>
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web安全之命令执行漏洞学习实战/" >各种拿shell方法总结</a>
         </li>
     
     
@@ -1641,17 +1820,12 @@ Windows 系...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web安全之命令执行漏洞学习实战/" >各种拿shell方法总结</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web 安全之 SSRF 漏洞学习实战/" >Web安全之SSRF漏洞学习实战</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/数据库备份拿shell(练习)/" >各种拿shell方法总结</a>
         </li>
     
     
@@ -1661,12 +1835,17 @@ Windows 系...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/CSRF(跨站请求伪造)/" >跨站请求伪造CSRF</a>
+            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/第十三周-web安全之手工测试之前编写的注入环境/" >第十三周web安全之手工测试之前编写的注入环境</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/CSRF(跨站请求伪造)/" >跨站请求伪造CSRF</a>
         </li>
     
     
@@ -1720,6 +1899,29 @@ Windows 系...
         </li>
     
     
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
         <li class="archive-post-item">
             <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Web安全学习之——基于dvwa的XSS Reflect学习教程/Web安全学习之——基于dvwa的XSS Reflect学习教程/" >Web安全学习之——基于dvwa的XSS (Reflect)学习教程</a>
         </li>
@@ -1750,6 +1952,11 @@ Windows 系...
         </li>
     
     
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
+        </li>
+    
+    
     
     
     
@@ -1761,34 +1968,6 @@ Windows 系...
     
         <li class="archive-post-item">
             <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/29/MySQL用户管理：添加用户、授权、删除用户/" >MySQL用户管理：添加用户、授权、删除用户</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/78599650/" >[Untitled Post]</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2019 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
         </li>
     
     
@@ -1816,7 +1995,7 @@ Windows 系...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/78599650/" >[Untitled Post]</a>
         </li>
     
     </div>
@@ -1859,6 +2038,8 @@ Windows 系...
         <span class="sidebar-tag-name" data-tags="代码审计"><span class="iconfont-archer">&#xe606;</span>代码审计</span>
     
         <span class="sidebar-tag-name" data-tags="日志分析"><span class="iconfont-archer">&#xe606;</span>日志分析</span>
+    
+        <span class="sidebar-tag-name" data-tags="红蓝对抗"><span class="iconfont-archer">&#xe606;</span>红蓝对抗</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -1912,6 +2093,10 @@ jsonContent:
         <span class="sidebar-category-name" data-categories="期末复习"><span class="iconfont-archer">&#xe60a;</span>期末复习</span>
     
         <span class="sidebar-category-name" data-categories="文章集合"><span class="iconfont-archer">&#xe60a;</span>文章集合</span>
+    
+        <span class="sidebar-category-name" data-categories="攻击技术"><span class="iconfont-archer">&#xe60a;</span>攻击技术</span>
+    
+        <span class="sidebar-category-name" data-categories="常规漏洞技巧"><span class="iconfont-archer">&#xe60a;</span>常规漏洞技巧</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>

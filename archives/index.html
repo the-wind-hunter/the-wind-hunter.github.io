@@ -346,6 +346,107 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2020/09/15/解析漏洞总结/" >
+            
+                <span>解析漏洞总结</span>
+        </a>
+        <div class="abstract-content">
+            一、解析漏洞
+​        解析漏洞指的是服务器应用程序在解析某些精心构造的后缀文件时，会将其解析成网页脚本，从而导致网站的沦陷。大部分解析漏洞的产生都是由应用程序本身的漏洞导致的。
+
+二、常见的解析漏洞1、IIS5.x-6.x解析漏洞​         使用 IIS5.x-6.x 版本的服务器，大多为Windows server 2003，网站比较古老，开发语句一般为asp；该解析漏洞也只能解析asp文件，不能解析aspx文件。
+目录解析漏洞
+​          IIS6.0中的目录解析漏洞，如果网站目录中有一个 *.asp/ 的文件夹，那么该文件夹下面的一切内容都会被 IIS ...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/09/15</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "文件上传漏洞">文件上传漏洞</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/09/15/文件上传技巧思路/" >
+            
+                <span>文件上传技巧思路</span>
+        </a>
+        <div class="abstract-content">
+            1、CVE-2015-2348 move_uploaded_file() 00截断PHP任意文件上传漏洞（CVE-2015-2348）分析与利用    
+2、上传图片马注意：图片马要配合解析漏洞才有用
+如：IIS 7.0/IIS 7.5/ Nginx &lt;8.03、IIS5.x-6.x、Apache 、Nginx0.5.,0.6., 0.7 &lt;= 0.7.65, 0.8 &lt;= 0.8.37
+图片马制作：copy normal.jpg /b + shell.php /a webshell.jpg
+​       （1） 文件后缀名做了白名单判断，然后会一步一步检查文件大小、...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/09/15</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "文件上传漏洞">文件上传漏洞</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/09/14/在url中传参写文件/" >
+            
+                <span>在url中传参写文件</span>
+        </a>
+        <div class="abstract-content">
+            
+转载自：https://blog.blankshell.com  作者：woojay
+原文地址：https://blog.blankshell.com/2020/06/27/%E5%B0%8F%E6%8A%80%E5%B7%A7-%E5%9C%A8url%E4%B8%AD%E4%BC%A0%E5%8F%82%E5%86%99%E6%96%87%E4%BB%B6/
+具体利用文章：https://blog.blankshell.com/2019/09/12/%E6%9F%90oa%E7%B3%BB%E7%BB%9F%E4%BB%8Esystem%E6%9D%83%E9%99%90%E5%9...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/09/14</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "渗透测试">渗透测试</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "红蓝对抗">红蓝对抗</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2020/09/12/红蓝对抗文章导航/" >
             
                 <span>渗透测试文章导航</span>
@@ -353,7 +454,8 @@
         <div class="abstract-content">
             红蓝对抗–攻击队Webshell红队攻防实践：闲谈Webshell在实战中的应用
 如何优雅的隐藏你的webshell
-完整渗透过程细说渗透江湖之披荆斩棘
+完整渗透过程记一次从零到getshell的渗透历程
+细说渗透江湖之披荆斩棘
 从DNSBeacon到域控
 请不要在我喜欢的人身上下手，我“刀”呢？
 从组合漏洞到域控
@@ -366,8 +468,7 @@
 记一次曲折的RCE挖掘
 内网部分手工 - 内网信息收集
 红队之浅谈基于Windows telemetry的权限维持
-获取域内管理员和用户信息
-Windows 系...
+获取...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -594,122 +695,10 @@ Squid 是一款优秀的代理软件，有很丰富的ACL管理功能，虽然sq
         </div>
     </article>
     
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/04/25/解决Android killer或apktool回编译报错问题/" >
-            
-                <span>解决Android killer或apktool回编译报错问题</span>
-        </a>
-        <div class="abstract-content">
-            昨天在测试安卓客户端时，回编总是出错出错，换各种工具都没有用，error: No resource identifier found for attribute ‘keyboardNavigationCluster’ in package ‘android’，在网上找了各种博客都没有找到一个能解决的办法，下面记录一下最终解决办法：
-1.将apktool升级到最新版；
-2.通过cmd命令行执行以下命令（需要进入到apktook的目录下运行此命令）：
-1java -jar apktool_2.3.4.jar empty-framework-dir
-
-下面是我在对应的apktool目录下运行命...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/04/25</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "渗透测试">渗透测试</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "安卓客户端测试">安卓客户端测试</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/04/24/夜神模拟器链接eclipse并导出模拟器中app的db文件，查看sqlite数据库过程/" >
-            
-                <span>夜神模拟器链接eclipse并导出模拟器中app的db文件，查看sqlite数据库过程</span>
-        </a>
-        <div class="abstract-content">
-            第一步，启动夜神模拟器的开发者选项，类似华为手机功能
-
-进入屏幕上的[设置]，如图
-
-2，进入[关于平板电脑]，如图
- 
-3，点击5次[版本号]
-
-4，退回到[设置]目录，会看到[开发者选项]，如图
-
-5，进入[开发者选项]，选中[USB调试]，或选择其他需要选项，如图
-
-\6. 打开命令行窗口cmd，打开夜神模拟器安装目录：如（C:\Users\lico\AppData\Roaming\Nox\bin）即输入cd AppData\Roaming\Nox\bin
-执行命令： nox_adb.exe connect 127.0.0.1:62001, 显示connect to …或是alre...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/04/24</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "渗透测试">渗透测试</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "安卓客户端测试">安卓客户端测试</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/04/24/Android SDK下载安装及配置教程/" >
-            
-                <span>Android SDK下载安装及配置教程</span>
-        </a>
-        <div class="abstract-content">
-            ​        在绿盟实习的这周遇到了点小挑战，没有测试过安卓客户端的我被安排到对两个app进行测试，一来这边还有其他平台的测试任务，二来是我还未学习过安卓客户端安全的相关知识！！！只在大一的时候在公选课选修过一门安卓编程入门，算是比较相关一点，但是那时我期末根本就是混过去的，学的东西全忘了，只记得老师当时教我们安装Android studio 装了四五个小时！！没有基础的我配置环境，下载组件给我留下了深深的阴影….
-​        这样也好，人面对挑战的时候学习能力是最强的，工作也能倒逼着自己提升自身技能。废话少说，在安装配置环境时看到了一篇不错的文章，我稍微修改了一下把它转载过来...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/04/24</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "渗透测试">渗透测试</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "安卓客户端测试">安卓客户端测试</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
     <!-- paginator  -->
     
     <nav class="page-nav">
-        <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/6/">6</a><a class="extend next" rel="next" href="/archives/page/2/">NEXT &#62;</a>
+        <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/7/">7</a><a class="extend next" rel="next" href="/archives/page/2/">NEXT &#62;</a>
     </nav>
     
 </main>
@@ -1774,9 +1763,67 @@ Squid 是一款优秀的代理软件，有很丰富的ACL管理功能，虽然sq
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 60
+        Total : 64
         </div>
         <!-- search  -->
         
@@ -1789,6 +1836,21 @@ Squid 是一款优秀的代理软件，有很丰富的ACL管理功能，虽然sq
     
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2020/09/15/文件上传技巧思路/" >文件上传技巧思路</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2020/09/15/解析漏洞总结/" >解析漏洞总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/14</span><a class="archive-post-title" href= "/2020/09/14/在url中传参写文件/" >在url中传参写文件</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1847,12 +1909,12 @@ Squid 是一款优秀的代理软件，有很丰富的ACL管理功能，虽然sq
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞/" >redis未授权访问漏洞</a>
+            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞2/" >redis未授权访问漏洞</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞2/" >redis未授权访问漏洞</a>
+            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞/" >redis未授权访问漏洞</a>
         </li>
     
     
@@ -1873,6 +1935,11 @@ Squid 是一款优秀的代理软件，有很丰富的ACL管理功能，虽然sq
     
         <li class="archive-post-item">
             <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2020/04/15/任意文件下载/" >Web安全之任意文件下载</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/28</span><a class="archive-post-title" href= "/2020/03/28/一篇文章带你深入理解XXE漏洞/" >一篇文章带你深入理解XXE漏洞</a>
         </li>
     
     
@@ -1921,7 +1988,7 @@ Squid 是一款优秀的代理软件，有很丰富的ACL管理功能，虽然sq
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （一）使用docker toolbox安装docker/" >Windows10下的docker安装与入门 （一）使用docker toolbox安装docker</a>
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它/" >Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它</a>
         </li>
     
     
@@ -1931,7 +1998,7 @@ Squid 是一款优秀的代理软件，有很丰富的ACL管理功能，虽然sq
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它/" >Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它</a>
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （一）使用docker toolbox安装docker/" >Windows10下的docker安装与入门 （一）使用docker toolbox安装docker</a>
         </li>
     
     
@@ -1956,7 +2023,7 @@ Squid 是一款优秀的代理软件，有很丰富的ACL管理功能，虽然sq
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/数据库备份拿shell(练习)/" >各种拿shell方法总结</a>
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web安全之命令执行漏洞学习实战/" >各种拿shell方法总结</a>
         </li>
     
     
@@ -1966,17 +2033,12 @@ Squid 是一款优秀的代理软件，有很丰富的ACL管理功能，虽然sq
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web安全之命令执行漏洞学习实战/" >各种拿shell方法总结</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web 安全之 SSRF 漏洞学习实战/" >Web安全之SSRF漏洞学习实战</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/数据库备份拿shell(练习)/" >各种拿shell方法总结</a>
         </li>
     
     
@@ -1986,12 +2048,17 @@ Squid 是一款优秀的代理软件，有很丰富的ACL管理功能，虽然sq
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/CSRF(跨站请求伪造)/" >跨站请求伪造CSRF</a>
+            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/第十三周-web安全之手工测试之前编写的注入环境/" >第十三周web安全之手工测试之前编写的注入环境</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/CSRF(跨站请求伪造)/" >跨站请求伪造CSRF</a>
         </li>
     
     
@@ -2045,6 +2112,29 @@ Squid 是一款优秀的代理软件，有很丰富的ACL管理功能，虽然sq
         </li>
     
     
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
         <li class="archive-post-item">
             <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Web安全学习之——基于dvwa的XSS Reflect学习教程/Web安全学习之——基于dvwa的XSS Reflect学习教程/" >Web安全学习之——基于dvwa的XSS (Reflect)学习教程</a>
         </li>
@@ -2075,6 +2165,11 @@ Squid 是一款优秀的代理软件，有很丰富的ACL管理功能，虽然sq
         </li>
     
     
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
+        </li>
+    
+    
     
     
     
@@ -2086,34 +2181,6 @@ Squid 是一款优秀的代理软件，有很丰富的ACL管理功能，虽然sq
     
         <li class="archive-post-item">
             <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/29/MySQL用户管理：添加用户、授权、删除用户/" >MySQL用户管理：添加用户、授权、删除用户</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/78599650/" >[Untitled Post]</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2019 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
         </li>
     
     
@@ -2141,7 +2208,7 @@ Squid 是一款优秀的代理软件，有很丰富的ACL管理功能，虽然sq
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/78599650/" >[Untitled Post]</a>
         </li>
     
     </div>
@@ -2184,6 +2251,8 @@ Squid 是一款优秀的代理软件，有很丰富的ACL管理功能，虽然sq
         <span class="sidebar-tag-name" data-tags="代码审计"><span class="iconfont-archer">&#xe606;</span>代码审计</span>
     
         <span class="sidebar-tag-name" data-tags="日志分析"><span class="iconfont-archer">&#xe606;</span>日志分析</span>
+    
+        <span class="sidebar-tag-name" data-tags="红蓝对抗"><span class="iconfont-archer">&#xe606;</span>红蓝对抗</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -2237,6 +2306,10 @@ jsonContent:
         <span class="sidebar-category-name" data-categories="期末复习"><span class="iconfont-archer">&#xe60a;</span>期末复习</span>
     
         <span class="sidebar-category-name" data-categories="文章集合"><span class="iconfont-archer">&#xe60a;</span>文章集合</span>
+    
+        <span class="sidebar-category-name" data-categories="攻击技术"><span class="iconfont-archer">&#xe60a;</span>攻击技术</span>
+    
+        <span class="sidebar-category-name" data-categories="常规漏洞技巧"><span class="iconfont-archer">&#xe60a;</span>常规漏洞技巧</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
