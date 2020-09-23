@@ -359,14 +359,25 @@ height:50vh;
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2020/04/24/Eclipse中离线安装ADT插件详细教程/" >
+        <a class="abstract-title" href = "/2020/04/24/夜神模拟器链接eclipse并导出模拟器中app的db文件，查看sqlite数据库过程/" >
             
-                <span>Eclipse中离线安装ADT插件详细教程</span>
+                <span>夜神模拟器链接eclipse并导出模拟器中app的db文件，查看sqlite数据库过程</span>
         </a>
         <div class="abstract-content">
-            （这篇也是转载的~ 原文：https://blog.csdn.net/dr_neo/article/details/46941859）
-在搭建Android开发环境的时候，我们需要为Eclipse安装ADT（Android Development Tools）插件，这个插件可以为用户提供一个强大的Android集成开发环境。通过给Eclipse安装ADT插件，用户才能够完成快速新建Android项目、创建界面、调试程序、导出apk等一系列的开发任务。
-一般论坛或博客上关于Android开发环境搭建的帖子在讲Eclipse安装ADT插件的时候，都是通过在线安装的方式。不过这种方法有几大缺陷...
+            第一步，启动夜神模拟器的开发者选项，类似华为手机功能
+
+进入屏幕上的[设置]，如图
+
+2，进入[关于平板电脑]，如图
+ 
+3，点击5次[版本号]
+
+4，退回到[设置]目录，会看到[开发者选项]，如图
+
+5，进入[开发者选项]，选中[USB调试]，或选择其他需要选项，如图
+
+\6. 打开命令行窗口cmd，打开夜神模拟器安装目录：如（C:\Users\lico\AppData\Roaming\Nox\bin）即输入cd AppData\Roaming\Nox\bin
+执行命令： nox_adb.exe connect 127.0.0.1:62001, 显示connect to …或是alre...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -424,12 +435,45 @@ height:50vh;
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞/" >
+        <a class="abstract-title" href = "/2020/04/24/Eclipse中离线安装ADT插件详细教程/" >
+            
+                <span>Eclipse中离线安装ADT插件详细教程</span>
+        </a>
+        <div class="abstract-content">
+            （这篇也是转载的~ 原文：https://blog.csdn.net/dr_neo/article/details/46941859）
+在搭建Android开发环境的时候，我们需要为Eclipse安装ADT（Android Development Tools）插件，这个插件可以为用户提供一个强大的Android集成开发环境。通过给Eclipse安装ADT插件，用户才能够完成快速新建Android项目、创建界面、调试程序、导出apk等一系列的开发任务。
+一般论坛或博客上关于Android开发环境搭建的帖子在讲Eclipse安装ADT插件的时候，都是通过在线安装的方式。不过这种方法有几大缺陷...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/04/24</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "渗透测试">渗透测试</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "安卓客户端测试">安卓客户端测试</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞2/" >
             
                 <span>redis未授权访问漏洞</span>
         </a>
         <div class="abstract-content">
-            什么是redis未授权访问漏洞Redis 默认情况下，会绑定在 0.0.0.0:6379，如果没有进行采用相关的策略，比如添加防火墙规则避免其他非信任来源 ip 访问等，这样将会将 Redis 服务暴露到公网上，如果在没有设置密码认证（一般为空）的情况下，会导致任意用户在可以访问目标服务器的情况下未授权访问 Redis 以及读取 Redis 的数据。攻击者在未授权访问 Redis 的情况下，利用 Redis 自身的提供的config 命令，可以进行写文件操作，攻击者可以成功将自己的ssh公钥写入目标服务器的 /root/.ssh 文件夹的authotrized_keys 文件中，进而可以...
+            Redis 默认情况下，会绑定在 0.0.0.0:6379，如果没有进行采用相关的策略，比如添加防火墙规则避免其他非信任来源 ip 访问等，这样将会将 Redis 服务暴露到公网上，如果在没有设置密码认证（一般为空）的情况下，会导致任意用户在可以访问目标服务器的情况下未授权访问 Redis 以及读取 Redis 的数据。攻击者在未授权访问 Redis 的情况下，利用 Redis 自身的提供的config 命令，可以进行写文件操作，攻击者可以成功将自己的ssh公钥写入目标服务器的 /root/.ssh 文件夹的authotrized_keys 文件中，进而可以使用对应私钥直接使用ssh服务...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -455,12 +499,12 @@ height:50vh;
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞2/" >
+        <a class="abstract-title" href = "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞/" >
             
                 <span>redis未授权访问漏洞</span>
         </a>
         <div class="abstract-content">
-            Redis 默认情况下，会绑定在 0.0.0.0:6379，如果没有进行采用相关的策略，比如添加防火墙规则避免其他非信任来源 ip 访问等，这样将会将 Redis 服务暴露到公网上，如果在没有设置密码认证（一般为空）的情况下，会导致任意用户在可以访问目标服务器的情况下未授权访问 Redis 以及读取 Redis 的数据。攻击者在未授权访问 Redis 的情况下，利用 Redis 自身的提供的config 命令，可以进行写文件操作，攻击者可以成功将自己的ssh公钥写入目标服务器的 /root/.ssh 文件夹的authotrized_keys 文件中，进而可以使用对应私钥直接使用ssh服务...
+            什么是redis未授权访问漏洞Redis 默认情况下，会绑定在 0.0.0.0:6379，如果没有进行采用相关的策略，比如添加防火墙规则避免其他非信任来源 ip 访问等，这样将会将 Redis 服务暴露到公网上，如果在没有设置密码认证（一般为空）的情况下，会导致任意用户在可以访问目标服务器的情况下未授权访问 Redis 以及读取 Redis 的数据。攻击者在未授权访问 Redis 的情况下，利用 Redis 自身的提供的config 命令，可以进行写文件操作，攻击者可以成功将自己的ssh公钥写入目标服务器的 /root/.ssh 文件夹的authotrized_keys 文件中，进而可以...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -734,52 +778,6 @@ LDAP目录访问协议
         <a class="post-tag" href="javascript:void(0);" data-tags = "文件上传漏洞">文件上传漏洞</a>
     
 </div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/01/15/WEB 安全之上传漏洞/78599650/" >
-            
-                <span>[Untitled Post]</span>
-        </a>
-        <div class="abstract-content">
-            
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    Substring()、lastIndexOf()的用法_那么多的人，你要去哪里-CSDN博客
-    
-    
-        
-                    
-                            {"@context":"https:\/\/ziyuan.baidu.com\/contexts\/cambrian.jsonld","@id":"https:\/\/blog.csdn....
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/15</span>
-            </div>
-            <!-- tags  -->
             
         </div>
     </article>
@@ -2000,9 +1998,76 @@ LDAP目录访问协议
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 64
+        Total : 65
         </div>
         <!-- search  -->
         
@@ -2015,6 +2080,11 @@ LDAP目录访问协议
     
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2020/09/23/学习文章导航/" >学习文章导航</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -2078,22 +2148,22 @@ LDAP目录访问协议
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/24</span><a class="archive-post-title" href= "/2020/04/24/Eclipse中离线安装ADT插件详细教程/" >Eclipse中离线安装ADT插件详细教程</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">04/24</span><a class="archive-post-title" href= "/2020/04/24/Android SDK下载安装及配置教程/" >Android SDK下载安装及配置教程</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞2/" >redis未授权访问漏洞</a>
+            <span class="archive-post-date">04/24</span><a class="archive-post-title" href= "/2020/04/24/Eclipse中离线安装ADT插件详细教程/" >Eclipse中离线安装ADT插件详细教程</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞/" >redis未授权访问漏洞</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞2/" >redis未授权访问漏洞</a>
         </li>
     
     
@@ -2167,7 +2237,7 @@ LDAP目录访问协议
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它/" >Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它</a>
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （一）使用docker toolbox安装docker/" >Windows10下的docker安装与入门 （一）使用docker toolbox安装docker</a>
         </li>
     
     
@@ -2177,7 +2247,7 @@ LDAP目录访问协议
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （一）使用docker toolbox安装docker/" >Windows10下的docker安装与入门 （一）使用docker toolbox安装docker</a>
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它/" >Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它</a>
         </li>
     
     
@@ -2202,12 +2272,7 @@ LDAP目录访问协议
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web安全之命令执行漏洞学习实战/" >各种拿shell方法总结</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/SQLServer数据库及注入方法/" >SQLServer数据库及注入方法</a>
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/数据库备份拿shell(练习)/" >各种拿shell方法总结</a>
         </li>
     
     
@@ -2217,7 +2282,12 @@ LDAP目录访问协议
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/数据库备份拿shell(练习)/" >各种拿shell方法总结</a>
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web安全之命令执行漏洞学习实战/" >各种拿shell方法总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/SQLServer数据库及注入方法/" >SQLServer数据库及注入方法</a>
         </li>
     
     
@@ -2232,12 +2302,12 @@ LDAP目录访问协议
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/第十三周-web安全之手工测试之前编写的注入环境/" >第十三周web安全之手工测试之前编写的注入环境</a>
+            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/CSRF(跨站请求伪造)/" >跨站请求伪造CSRF</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/CSRF(跨站请求伪造)/" >跨站请求伪造CSRF</a>
+            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/第十三周-web安全之手工测试之前编写的注入环境/" >第十三周web安全之手工测试之前编写的注入环境</a>
         </li>
     
     
@@ -2276,6 +2346,29 @@ LDAP目录访问协议
         </li>
     
     
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/16/第一周：环境准备/" >第一周：环境准备</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
         <li class="archive-post-item">
             <span class="archive-post-date">09/05</span><a class="archive-post-title" href= "/2019/09/05/第四周-数据库系统功能相关学习/" >第四周-数据库系统功能相关学习</a>
         </li>
@@ -2289,29 +2382,6 @@ LDAP目录访问协议
         <li class="archive-post-item">
             <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/hexo-github博客搭建/" >hexo+github博客搭建</a>
         </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> Invalid date </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2019 </div>
-    <ul class="year-list">
     
     
         <li class="archive-post-item">
@@ -2344,11 +2414,6 @@ LDAP目录访问协议
         </li>
     
     
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
-        </li>
-    
-    
     
     
     
@@ -2368,12 +2433,26 @@ LDAP目录访问协议
     
         </ul>
     
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
     <div class="archive-year"> Invalid date </div>
     <ul class="year-list">
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/16/第一周：环境准备/" >第一周：环境准备</a>
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
         </li>
     
     
