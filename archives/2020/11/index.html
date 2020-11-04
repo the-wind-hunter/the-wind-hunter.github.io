@@ -346,172 +346,29 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2020/05/07/2020-05-07-安卓客户端测试备忘/" >
+        <a class="abstract-title" href = "/2020/11/04/渗透技术收集/渗透技术收集/" >
             
-                <span>安卓客户端测试备忘</span>
+                <span>渗透技术收集</span>
         </a>
         <div class="abstract-content">
-            夜神模拟器命令行1E:\迅雷下载\Nox\bin&gt; nox_adb.exe connect 127.0.0.1:62001
+            渗透技术收集对邮件系统用户进行枚举1smtp-user-enum -M RCPT -u bin -t 202.38.xxx.xxx
 
-日志相关命令1234567891011#查看pid等信息E:\迅雷下载\Nox\bin&gt; nox_adb.exe shell top#过滤输出特定app日志E:\迅雷下载\Nox\bin&gt; nox_adb.exe logcat | find &quot;com.asiainfo.channeloperation&quot; &gt;E:/app_test/Log/1.txt     作为测试做常用的adb查看日志命令：1.adb logcat -...
+查找运维管理脚本里面可能存在有敏感信息：
+1egrep expect /* -rl |grep “.sh”：递归查询包含expect字段的文件。
+
+当搜索出的无用文件较多，影响判断时，也可以通过指定目录来进行操作：
+1egrep expect /&#123;root,home,opt,tmp&#125;/* -rl|grep &quot;.sh&quot;
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/05/07</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/11/04</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "渗透测试">渗透测试</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "安卓客户端测试">安卓客户端测试</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/04/25/解决Android killer或apktool回编译报错问题/" >
-            
-                <span>解决Android killer或apktool回编译报错问题</span>
-        </a>
-        <div class="abstract-content">
-            昨天在测试安卓客户端时，回编总是出错出错，换各种工具都没有用，error: No resource identifier found for attribute ‘keyboardNavigationCluster’ in package ‘android’，在网上找了各种博客都没有找到一个能解决的办法，下面记录一下最终解决办法：
-1.将apktool升级到最新版；
-2.通过cmd命令行执行以下命令（需要进入到apktook的目录下运行此命令）：
-1java -jar apktool_2.3.4.jar empty-framework-dir
-
-下面是我在对应的apktool目录下运行命...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/04/25</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "渗透测试">渗透测试</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "安卓客户端测试">安卓客户端测试</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/04/24/夜神模拟器链接eclipse并导出模拟器中app的db文件，查看sqlite数据库过程/" >
-            
-                <span>夜神模拟器链接eclipse并导出模拟器中app的db文件，查看sqlite数据库过程</span>
-        </a>
-        <div class="abstract-content">
-            第一步，启动夜神模拟器的开发者选项，类似华为手机功能
-
-进入屏幕上的[设置]，如图
-
-2，进入[关于平板电脑]，如图
- 
-3，点击5次[版本号]
-
-4，退回到[设置]目录，会看到[开发者选项]，如图
-
-5，进入[开发者选项]，选中[USB调试]，或选择其他需要选项，如图
-
-\6. 打开命令行窗口cmd，打开夜神模拟器安装目录：如（C:\Users\lico\AppData\Roaming\Nox\bin）即输入cd AppData\Roaming\Nox\bin
-执行命令： nox_adb.exe connect 127.0.0.1:62001, 显示connect to …或是alre...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/04/24</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "渗透测试">渗透测试</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "安卓客户端测试">安卓客户端测试</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/04/24/Eclipse中离线安装ADT插件详细教程/" >
-            
-                <span>Eclipse中离线安装ADT插件详细教程</span>
-        </a>
-        <div class="abstract-content">
-            （这篇也是转载的~ 原文：https://blog.csdn.net/dr_neo/article/details/46941859）
-在搭建Android开发环境的时候，我们需要为Eclipse安装ADT（Android Development Tools）插件，这个插件可以为用户提供一个强大的Android集成开发环境。通过给Eclipse安装ADT插件，用户才能够完成快速新建Android项目、创建界面、调试程序、导出apk等一系列的开发任务。
-一般论坛或博客上关于Android开发环境搭建的帖子在讲Eclipse安装ADT插件的时候，都是通过在线安装的方式。不过这种方法有几大缺陷...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/04/24</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "渗透测试">渗透测试</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "安卓客户端测试">安卓客户端测试</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2020/04/24/Android SDK下载安装及配置教程/" >
-            
-                <span>Android SDK下载安装及配置教程</span>
-        </a>
-        <div class="abstract-content">
-            ​        在绿盟实习的这周遇到了点小挑战，没有测试过安卓客户端的我被安排到对两个app进行测试，一来这边还有其他平台的测试任务，二来是我还未学习过安卓客户端安全的相关知识！！！只在大一的时候在公选课选修过一门安卓编程入门，算是比较相关一点，但是那时我期末根本就是混过去的，学的东西全忘了，只记得老师当时教我们安装Android studio 装了四五个小时！！没有基础的我配置环境，下载组件给我留下了深深的阴影….
-​        这样也好，人面对挑战的时候学习能力是最强的，工作也能倒逼着自己提升自身技能。废话少说，在安装配置环境时看到了一篇不错的文章，我稍微修改了一下把它转载过来...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/04/24</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "渗透测试">渗透测试</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "安卓客户端测试">安卓客户端测试</a>
     
 </div>
             
