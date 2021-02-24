@@ -1,0 +1,2175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="jax">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="jax">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content>
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>JS前端加密绕过 · jax&#39;s Studio</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >jax&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">JS前端加密绕过</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>jax's Studio.</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            JS前端加密绕过
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "渗透测试">渗透测试</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">1.2k</span>阅读时长: <span class="post-count reading-time">5 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2021/02/24</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h1 id="JS前端加密绕过"><a href="#JS前端加密绕过" class="headerlink" title="JS前端加密绕过"></a>JS前端加密绕过</h1><h1 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h1><p>​        弱口令是入侵网站最常使用到的一种方式，一般通过burpsuite暴力破解可达到目的。但有些网站使用了前端加密，加大了爆破的难度，很多时候遇到这种情况就放弃了，比较可惜。但是发现越来越多的网站都开始做前端加密了，所以有必要学习一下前端加密的绕过了。</p>
+<h1 id="0x01-前期准备"><a href="#0x01-前期准备" class="headerlink" title="0x01 前期准备"></a>0x01 前期准备</h1><p>burpsuite</p>
+<p><a href="https://github.com/c0ny1/jsEncrypter" target="_blank" rel="noopener">jsEncrypter插件</a></p>
+<p><a href="https://phantomjs.org/download.html" target="_blank" rel="noopener">phantomJS(无头浏览器)</a></p>
+<p>下载好这几样工具后，</p>
+<p>1、burpsuite加载插件jsEncrypter。</p>
+<p>2、将phantomJS下的<code>\phantomjs-2.1.1-windows\bin</code>加入环境变量。</p>
+<h1 id="0x02-模拟测试"><a href="#0x02-模拟测试" class="headerlink" title="0x02 模拟测试"></a>0x02 模拟测试</h1><p>借助phpstudy开启web服务，将/test/webapp放到phpstudy里测试demo，然后模拟下真实情况下使用该插件。</p>
+<p><img src="/2021/02/24/JS前端加密绕过/E:%5CDesktop%5C%E8%B5%84%E6%96%99%5Cblog%5CJS%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E7%BB%95%E8%BF%87%5Cimage-20210128203112904.png" alt="image-20210128203112904"></p>
+<p>以base64的前端加密绕过为例，如图 抓包可以看到密码被加密成了base64格式：</p>
+<p><img src="/2021/02/24/JS前端加密绕过/E:%5CDesktop%5C%E8%B5%84%E6%96%99%5Cblog%5CJS%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E7%BB%95%E8%BF%87%5Cimage-20210128203232112.png" alt="image-20210128203232112"></p>
+<p><strong>第一步：</strong>F12打开调试器查看源代码，找到加密的函数和js。<br><strong>第二步：</strong>将xxx.js下载下来，放到script目录。将实现加密算法的 js 文件引入模板脚本，编写 phantomJS 运行脚本，并在模板脚本的 js_encrypt 函数体中完成对加密函数的调用。phantomjs_server.js修改如下（这里以crypto-js.js为例）：</p>
+<p><img src="/2021/02/24/JS前端加密绕过/E:%5CDesktop%5C%E8%B5%84%E6%96%99%5Cblog%5CJS%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E7%BB%95%E8%BF%87%5Cimage-20210128211335914.png" alt="image-20210128211335914"></p>
+<p>​        导入js文件后，编写加密算法再调用其中的依赖。</p>
+<p><strong>第三步：</strong>切到插件存放的scripts目录，打开命令行运行<code>phantomjs phantomjs_server.js</code>，接下来在burpsuite进行操作。</p>
+<p>​        这其中有个问题就是怎么找到关键的js文件，我们可以通过 <code>ctrl+shift+f</code> 全局搜索 <code>encrypt、aes、des、md5、key、iv、rsa</code> 等关键字，然后导入对应的js。</p>
+<p>​        接下来要找的就是实现对应数据加密的加密函数：</p>
+<p><strong>方法一：</strong>浏览器的事件监听</p>
+<p><img src="/2021/02/24/JS前端加密绕过/E:%5CDesktop%5C%E8%B5%84%E6%96%99%5Cblog%5CJS%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E7%BB%95%E8%BF%87%5Cimage-20210128212819822.png" alt="image-20210128212819822"></p>
+<p><strong>方法二：</strong>搜索关键词 encrypt crypt aes rsa des key iv 等等跟加密相关的。</p>
+<p><strong>方法三：</strong>结合各种参数、提示字符定位加密函数。如抓到的数据包中出行过的参数    ：source、key</p>
+<p><strong>方法四：</strong>根据 url 来定位。 网站登陆常常是向某一个 api 接口发送账号密码信息，因此点击提交时，用 js 发起请求就需要提供 api 地址。</p>
+<p>然后ctrl+shift+F搜索api中的关键词。</p>
+<h1 id="0x03-常见几种加密方法"><a href="#0x03-常见几种加密方法" class="headerlink" title="0x03 常见几种加密方法"></a>0x03 常见几种加密方法</h1><p><strong>RSA</strong></p>
+<p>需要用到public_key，一般藏在隐藏的表单输入项中。</p>
+<p><strong>AES</strong></p>
+<p>需要用到key和iv。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * author: c0ny1</span><br><span class="line"> * date: 2017-12-16</span><br><span class="line"> * last update: 2020-03-03</span><br><span class="line"> **/</span><br><span class="line">var fs = require(&apos;fs&apos;);</span><br><span class="line">var webserver = require(&apos;webserver&apos;);</span><br><span class="line">server = webserver.create();</span><br><span class="line">var logfile = &apos;jsEncrypter.log&apos;;</span><br><span class="line">var host = &apos;127.0.0.1&apos;;</span><br><span class="line">var port = &apos;1664&apos;;</span><br><span class="line">/* 1.在这引入实现加密所有js文件,注意引入顺序和网页一致 */</span><br><span class="line">loadScript(&quot;aes.js&quot;);</span><br><span class="line">loadScript(&quot;zero.js&quot;);</span><br><span class="line">loadScript(&quot;rsa.js&quot;);</span><br><span class="line">// loadScript(&quot;script-n.js&quot;);</span><br><span class="line">/**********************************************/</span><br><span class="line">function loadScript(scriptName) &#123;</span><br><span class="line">    var isSuccess = phantom.injectJs(scriptName);</span><br><span class="line">    if(isSuccess)&#123;</span><br><span class="line">        console.log(&quot;[*] load &quot; + scriptName + &quot; successful&quot;)</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        console.log(&quot;[!] load &quot; + scriptName + &quot; fail&quot;)</span><br><span class="line">        console.log(&quot;[*] phantomjs server exit&quot;);</span><br><span class="line">        phantom.exit();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 定义 des 加密函数</span><br><span class="line">function encryptByDES(message, key)&#123;</span><br><span class="line">    var keyHex = CryptoJS.enc.Utf8.parse(key);</span><br><span class="line">    var encrypted = CryptoJS.DES.encrypt(message, keyHex, &#123;</span><br><span class="line">        mode: CryptoJS.mode.ECB,</span><br><span class="line">        padding: CryptoJS.pad.Pkcs7</span><br><span class="line">    &#125;);</span><br><span class="line">    return encrypted.ciphertext.toString();</span><br><span class="line">&#125;</span><br><span class="line">//定义 aes 加密函数</span><br><span class="line">function encryptByAES(data, key, iv)&#123;</span><br><span class="line">    var key  = CryptoJS.enc.Latin1.parse(key);</span><br><span class="line">    var iv   = CryptoJS.enc.Latin1.parse(iv);</span><br><span class="line">    var encrypted = CryptoJS.AES.encrypt(data,key,&#123;iv:iv,mode:CryptoJS.mode.CBC,padding:CryptoJS.pad.ZeroPadding&#125;);</span><br><span class="line">    return encrypted.ciphertext.toString();</span><br><span class="line">&#125;</span><br><span class="line">// 定义 rsa 加密函数</span><br><span class="line">function encryptByRSA(data, pub_key)&#123;</span><br><span class="line">    var encrypt = new JSEncrypt();</span><br><span class="line">    encrypt.setPublicKey(&apos;-----BEGIN PUBLIC KEY-----&apos; + pub_key + &apos;-----END PUBLIC KEY-----&apos;);</span><br><span class="line">    var encrypted = encrypt.encrypt(data);</span><br><span class="line">    return encrypted;</span><br><span class="line">&#125;</span><br><span class="line">// 定义 aeskey 生成函数</span><br><span class="line">function createAesKey() &#123;</span><br><span class="line">    var expect = 16;</span><br><span class="line">    var key = Math.random().toString(36).substr(2);</span><br><span class="line">    while (key.length &lt; expect) &#123;</span><br><span class="line">      key += Math.random().toString(36).substr(2);</span><br><span class="line">    &#125;</span><br><span class="line">    key = key.substr(0, 16);</span><br><span class="line">    this.aesKey = key;</span><br><span class="line">    return key;</span><br><span class="line">  &#125;;</span><br><span class="line">var PUBLIC_KEY = &quot;-----BEGIN PUBLIC KEY-----nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIivtXleN3uU5AnqidOAsD/96snADl1RU8g8eeRfBvovhpFvTxqdjP4/aicrSLE/tP4+nctocHclxK2tCqS6758g2bknDrlyxcfVdFV8l9wLxciNf2eBrraKoNf85RBh8bcOT96TTpYF0dSgmJVPwMR5u8amn+trZ5y3jtTGQ/Ht4lQIDAQABn-----END PUBLIC KEY-----&quot;;</span><br><span class="line">function jsEncrypt(burp_payload)&#123;</span><br><span class="line">	/* 2.在这里编写调用加密函数进行加密的代码,并把结果赋值给new_payload */</span><br><span class="line">	var aeskey = createAesKey();</span><br><span class="line">	var key = CryptoJS.enc.Utf8.parse(aesKey)</span><br><span class="line">	//console.log(this.aesKey);</span><br><span class="line">	/*********************************************************/</span><br><span class="line">	result = &#123;</span><br><span class="line">	source: encryptByAES(burp_payload,aeskey,key),</span><br><span class="line">	key: encryptByRSA(aeskey,PUBLIC_KEY)</span><br><span class="line">	&#125;;</span><br><span class="line">	return [result.source,aeskey,key];</span><br><span class="line">	// return burp_payload;</span><br><span class="line">&#125;</span><br><span class="line">console.log(&quot;[*] Phantomjs server for jsEncrypter started successfully!&quot;);</span><br><span class="line">console.log(&quot;[*] address: http://&quot;+host+&quot;:&quot;+port);</span><br><span class="line">console.log(&quot;[!] ^_^&quot;);</span><br><span class="line">var service = server.listen(host+&apos;:&apos;+port,function(request, response)&#123;</span><br><span class="line"> 	try&#123;</span><br><span class="line">		if(request.method == &apos;POST&apos;)&#123;</span><br><span class="line">			var payload = request.post[&apos;payload&apos;];</span><br><span class="line">			var encrypt_payload = jsEncrypt(payload);</span><br><span class="line">			var log = payload + &apos;:&apos; + encrypt_payload;</span><br><span class="line">			console.log(&apos;[+] &apos; + log);</span><br><span class="line">            fs.write(logfile,log + &apos;n&apos;, &apos;w+&apos;);</span><br><span class="line">			response.statusCode = 200;</span><br><span class="line">            response.setEncoding(&apos;UTF-8&apos;);</span><br><span class="line">			response.write(encrypt_payload.toString());</span><br><span class="line">			response.close();</span><br><span class="line">		&#125;else&#123;</span><br><span class="line">			  response.statusCode = 200;</span><br><span class="line">			  response.setEncoding(&apos;UTF-8&apos;);</span><br><span class="line">			  response.write(&quot;^_^nrhello jsEncrypter!&quot;);</span><br><span class="line">			  response.close();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;catch(e)&#123;</span><br><span class="line">		//console.log(&apos;[Error]&apos;+e.message+&apos; happen &apos;+e.line+&apos;line&apos;);</span><br><span class="line">		console.log(&apos;n-----------------Error Info--------------------&apos;);</span><br><span class="line">		var fullMessage = &quot;Message: &quot;+e.toString() + &apos;:&apos;+ e.line;</span><br><span class="line">		for (var p in e) &#123;</span><br><span class="line">			fullMessage += &quot;n&quot; + p.toUpperCase() + &quot;: &quot; + e[p];</span><br><span class="line">		&#125; </span><br><span class="line">		console.log(fullMessage);</span><br><span class="line">		console.log(&apos;---------------------------------------------&apos;);</span><br><span class="line">        response.statusCode = 200;</span><br><span class="line">        response.setEncoding(&apos;UTF-8&apos;);</span><br><span class="line">        response.write(fullMessage);</span><br><span class="line">        response.close();</span><br><span class="line">		console.log(&apos;[*] phantomJS exit!&apos;);</span><br><span class="line">		phantom.exit();</span><br><span class="line">    &#125;	</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>参考文章：</strong></p>
+<p><a href="https://www.wangt.cc/2020/10/%E5%86%8D%E8%A7%A3%E5%86%B3%E4%B8%8D%E4%BA%86%E5%89%8D%E7%AB%AF%E5%8A%A0%E5%AF%86%E6%88%91%E5%B0%B1%E5%90%83shi/" target="_blank" rel="noopener">再解决不了前端加密我就吃shi</a></p>
+<p><a href="https://forum.90sec.com/t/topic/1451" target="_blank" rel="noopener">登录页面JS前端加密绕过</a></p>
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://the-wind-hunter.github.io">jax</a>
+            <p>原文链接：<a href="https://the-wind-hunter.github.io/2021/02/24/JS前端加密绕过/">https://the-wind-hunter.github.io/2021/02/24/JS前端加密绕过/</a>
+            <p>发表日期：<a href="https://the-wind-hunter.github.io/2021/02/24/JS前端加密绕过/">二月 24日 2021, 5:08:30 下午</a>
+            <p>更新日期：<a href="https://the-wind-hunter.github.io/2021/02/24/JS前端加密绕过/">February 24th 2021, 5:09:02 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+       
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2021/02/24/红蓝对抗文章导航/" title= "红蓝对抗文章导航">
+                    <div class="prevTitle">红蓝对抗文章导航</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:2509594439@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/the-wind-hunter" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JS前端加密绕过"><span class="toc-number">1.</span> <span class="toc-text">JS前端加密绕过</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x00-前言"><span class="toc-number">2.</span> <span class="toc-text">0x00 前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x01-前期准备"><span class="toc-number">3.</span> <span class="toc-text">0x01 前期准备</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x02-模拟测试"><span class="toc-number">4.</span> <span class="toc-text">0x02 模拟测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x03-常见几种加密方法"><span class="toc-number">5.</span> <span class="toc-text">0x03 常见几种加密方法</span></a></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 70
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2021 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/24</span><a class="archive-post-title" href= "/2021/02/24/红蓝对抗文章导航/" >红蓝对抗文章导航</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2020 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/21</span><a class="archive-post-title" href= "/2020/06/21/开源代码监控--码小六/" >开源代码监控--码小六（安装使用教程）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/11</span><a class="archive-post-title" href= "/2020/05/11/CentOS 7 搭建 TinyProxy 代理/" >CentOS 7 搭建 TinyProxy 代理</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/07</span><a class="archive-post-title" href= "/2020/05/07/2020-05-07-安卓客户端测试备忘/" >安卓客户端测试备忘</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/24</span><a class="archive-post-title" href= "/2020/04/24/Eclipse中离线安装ADT插件详细教程/" >Eclipse中离线安装ADT插件详细教程</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/29/MySQL用户管理：添加用户、授权、删除用户/" >MySQL用户管理：添加用户、授权、删除用户</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2021 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/24</span><a class="archive-post-title" href= "/2021/02/24/JS前端加密绕过/" >JS前端加密绕过</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2020 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/01</span><a class="archive-post-title" href= "/2020/12/01/rad+xray自动化扫描/" >rad+xray自动化扫描</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/04</span><a class="archive-post-title" href= "/2020/11/04/渗透技术收集/渗透技术收集/" >渗透技术收集</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2020/09/23/学习文章导航/" >学习文章导航</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2020/09/15/文件上传技巧思路/" >文件上传技巧思路</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2020/09/15/解析漏洞总结/" >解析漏洞总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/14</span><a class="archive-post-title" href= "/2020/09/14/在url中传参写文件/" >在url中传参写文件</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/20</span><a class="archive-post-title" href= "/2020/05/20/XXE漏洞/" >XXE漏洞利用技巧：从XML到远程代码执行</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/20</span><a class="archive-post-title" href= "/2020/05/20/代码审计思路讨论/" >代码审计思路讨论</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/05</span><a class="archive-post-title" href= "/2020/05/05/华为机试题目/" >华为机试题目</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/25</span><a class="archive-post-title" href= "/2020/04/25/解决Android killer或apktool回编译报错问题/" >解决Android killer或apktool回编译报错问题</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/24</span><a class="archive-post-title" href= "/2020/04/24/夜神模拟器链接eclipse并导出模拟器中app的db文件，查看sqlite数据库过程/" >夜神模拟器链接eclipse并导出模拟器中app的db文件，查看sqlite数据库过程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/24</span><a class="archive-post-title" href= "/2020/04/24/Android SDK下载安装及配置教程/" >Android SDK下载安装及配置教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞/" >redis未授权访问漏洞</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/21</span><a class="archive-post-title" href= "/2020/04/21/redis未授权访问漏洞/redis未授权访问漏洞2/" >redis未授权访问漏洞</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2020/04/20/粘滞键后门详解/" >粘滞键后门详解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/20</span><a class="archive-post-title" href= "/2020/04/20/端口渗透总结/" >端口渗透总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/16</span><a class="archive-post-title" href= "/2020/04/16/反弹shell原理和实现/" >反弹shell原理和实现</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2020/04/15/任意文件下载/" >Web安全之任意文件下载</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/28</span><a class="archive-post-title" href= "/2020/03/28/一篇文章带你深入理解XXE漏洞/" >一篇文章带你深入理解XXE漏洞</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/17</span><a class="archive-post-title" href= "/2020/03/17/JWT安全隐患之绕过访问控制/JWT安全隐患之绕过访问控制/" >JWT安全隐患之绕过访问控制</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/06</span><a class="archive-post-title" href= "/2020/03/06/渗透测试常见开放端口及利用/" >渗透测试常见开放端口及利用</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/24</span><a class="archive-post-title" href= "/2020/02/24/配置reGeorg+Proxifier渗透内网/" >配置reGeorg+Proxifier渗透内网</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/15</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/" >Web安全之上传漏洞</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/07</span><a class="archive-post-title" href= "/2020/01/07/为什么要进行URL编码（转载）/" >为什么要进行URL编码</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/25</span><a class="archive-post-title" href= "/2019/12/25/数据库系统复习/" >数据库系统复习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/23</span><a class="archive-post-title" href= "/2019/12/23/操作系统复习/" >操作系统复习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/22</span><a class="archive-post-title" href= "/2019/12/22/软件工程复习2/" >软件工程复习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/12</span><a class="archive-post-title" href= "/2019/12/12/ubuntu搭建ftp服务器/" >ubuntu搭建ftp服务器</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （一）使用docker toolbox安装docker/" >Windows10下的docker安装与入门 （一）使用docker toolbox安装docker</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它/" >Windows10下的docker安装与入门 （三） 创建自己的docker镜像并且在容器中运行它</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/09</span><a class="archive-post-title" href= "/2019/12/09/Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像/" >Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像 toolbox安装docker</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/20</span><a class="archive-post-title" href= "/2019/11/20/XSS演练平台/" >XSS演练平台</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/18</span><a class="archive-post-title" href= "/2019/11/18/注册-登录-跳转网页源码（原xss注入用）/" >注册-登陆-跳转网页源码（原xss注入用）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/18</span><a class="archive-post-title" href= "/2019/11/18/第十四周-web安全之XSS漏洞学习实战/" >第十四周-web安全之XSS漏洞学习实战</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/16</span><a class="archive-post-title" href= "/2019/11/16/Web日志安全分析浅谈/" >Web日志安全分析浅谈</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web 安全之 SSRF 漏洞学习实战/" >Web安全之SSRF漏洞学习实战</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/Web安全之命令执行漏洞学习实战/" >各种拿shell方法总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/数据库备份拿shell(练习)/" >各种拿shell方法总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/2019/11/08/SQLServer数据库及注入方法/" >SQLServer数据库及注入方法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之CSRF练习/" >pikachu之CSRF</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/07</span><a class="archive-post-title" href= "/2019/11/07/pikachu之SQL注入/" >pikachu之SQL注入</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/CSRF(跨站请求伪造)/" >跨站请求伪造CSRF</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/第十三周-web安全之手工测试之前编写的注入环境/" >第十三周web安全之手工测试之前编写的注入环境</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/20</span><a class="archive-post-title" href= "/2019/10/20/第十周-各种注入类型的环境搭建和代码编写/" >第十周：各种注入类型的环境搭建和代码编写</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/oneinstack-建站/" >oneinstack 建站</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/Web配置本地yum源-Linux安全/" >We配置本地yum源-Linux安全</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/10</span><a class="archive-post-title" href= "/2019/10/10/php正则表达式中preg_match函数的详解/" >php正则表达式中preg_match函数的详解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/29</span><a class="archive-post-title" href= "/2019/09/29/第九周：web-页面解析的流程学习/" >第九周：web 页面解析的流程学习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/19</span><a class="archive-post-title" href= "/2019/09/19/第六周：数据库相关注入语句的收集和学习/" >第六周：数据库相关注入语句的收集和学习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/18</span><a class="archive-post-title" href= "/2019/09/18/通过DVWA学习XSS/通过DVWA学习XSS/" >通过DVWA学习XSS</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/05</span><a class="archive-post-title" href= "/2019/09/05/第四周-数据库系统功能相关学习/" >第四周-数据库系统功能相关学习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/Windows 上安装 MySQL/" >Windows 上安装 MySQL</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/29</span><a class="archive-post-title" href= "/2019/08/29/hexo-github博客搭建/" >hexo+github博客搭建</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/20</span><a class="archive-post-title" href= "/2019/08/20/Web安全学习之——基于dvwa的XSS Reflect学习教程/Web安全学习之——基于dvwa的XSS Reflect学习教程/" >Web安全学习之——基于dvwa的XSS (Reflect)学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/17</span><a class="archive-post-title" href= "/2019/08/17/sqlmap使用的简单介绍（基于dvwa讲解）/" >sqlmap使用的简单介绍（基于dvwa讲解）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2019/08/16/第二周：认识sql并学习数据库的基础操作/" >第二周：认识SQL并学习数据库的基础操作</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2019/08/15/Web安全学习之——基于dvwa的XSS (DOM）学习教程/Web安全学习之——基于dvwa的XSS (DOM）学习教程/" >Web安全学习之——基于dvwa的XSS (DOM）学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/11</span><a class="archive-post-title" href= "/2019/08/11/Web安全学习之——基于dvwa的XSS (Stored)学习教程/Web安全学习之——基于dvwa的XSS (Stored)学习教程/" >Web安全学习之——基于dvwa的XSS (Stored)学习教程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/2019/08/10/web安全学习之——基于dvwa的SQL注入演练(low)/" >SQL注入练习：基于DVWA的SQL注入演练(low)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/06</span><a class="archive-post-title" href= "/2019/08/06/web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇/" >web安全学习之基于dvwa的SQL Injection (Blind)盲注--思路篇</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/16/第一周：环境准备/" >第一周：环境准备</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2019/08/22/第三周：数据库系统表相关学习/" >第三周：数据库系统表相关学习</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/01/15/WEB 安全之上传漏洞/78599650/" >[Untitled Post]</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="渗透测试"><span class="iconfont-archer">&#xe606;</span>渗透测试</span>
+    
+        <span class="sidebar-tag-name" data-tags="安卓客户端测试"><span class="iconfont-archer">&#xe606;</span>安卓客户端测试</span>
+    
+        <span class="sidebar-tag-name" data-tags="云服务器"><span class="iconfont-archer">&#xe606;</span>云服务器</span>
+    
+        <span class="sidebar-tag-name" data-tags="工具或环境"><span class="iconfont-archer">&#xe606;</span>工具或环境</span>
+    
+        <span class="sidebar-tag-name" data-tags="XSS学习"><span class="iconfont-archer">&#xe606;</span>XSS学习</span>
+    
+        <span class="sidebar-tag-name" data-tags="CSRF"><span class="iconfont-archer">&#xe606;</span>CSRF</span>
+    
+        <span class="sidebar-tag-name" data-tags="SQL注入"><span class="iconfont-archer">&#xe606;</span>SQL注入</span>
+    
+        <span class="sidebar-tag-name" data-tags="文件上传漏洞"><span class="iconfont-archer">&#xe606;</span>文件上传漏洞</span>
+    
+        <span class="sidebar-tag-name" data-tags="面试"><span class="iconfont-archer">&#xe606;</span>面试</span>
+    
+        <span class="sidebar-tag-name" data-tags="编程练习"><span class="iconfont-archer">&#xe606;</span>编程练习</span>
+    
+        <span class="sidebar-tag-name" data-tags="get shell"><span class="iconfont-archer">&#xe606;</span>get shell</span>
+    
+        <span class="sidebar-tag-name" data-tags="SSRF学习"><span class="iconfont-archer">&#xe606;</span>SSRF学习</span>
+    
+        <span class="sidebar-tag-name" data-tags="XXE"><span class="iconfont-archer">&#xe606;</span>XXE</span>
+    
+        <span class="sidebar-tag-name" data-tags="服务器"><span class="iconfont-archer">&#xe606;</span>服务器</span>
+    
+        <span class="sidebar-tag-name" data-tags="端口渗透"><span class="iconfont-archer">&#xe606;</span>端口渗透</span>
+    
+        <span class="sidebar-tag-name" data-tags="漏洞复现"><span class="iconfont-archer">&#xe606;</span>漏洞复现</span>
+    
+        <span class="sidebar-tag-name" data-tags="代码审计"><span class="iconfont-archer">&#xe606;</span>代码审计</span>
+    
+        <span class="sidebar-tag-name" data-tags="日志分析"><span class="iconfont-archer">&#xe606;</span>日志分析</span>
+    
+        <span class="sidebar-tag-name" data-tags="红蓝对抗"><span class="iconfont-archer">&#xe606;</span>红蓝对抗</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="Android客户端安全学习"><span class="iconfont-archer">&#xe60a;</span>Android客户端安全学习</span>
+    
+        <span class="sidebar-category-name" data-categories="工具或环境"><span class="iconfont-archer">&#xe60a;</span>工具或环境</span>
+    
+        <span class="sidebar-category-name" data-categories="转载"><span class="iconfont-archer">&#xe60a;</span>转载</span>
+    
+        <span class="sidebar-category-name" data-categories="Web安全"><span class="iconfont-archer">&#xe60a;</span>Web安全</span>
+    
+        <span class="sidebar-category-name" data-categories="小白成长学习计划"><span class="iconfont-archer">&#xe60a;</span>小白成长学习计划</span>
+    
+        <span class="sidebar-category-name" data-categories="面试"><span class="iconfont-archer">&#xe60a;</span>面试</span>
+    
+        <span class="sidebar-category-name" data-categories="php学习"><span class="iconfont-archer">&#xe60a;</span>php学习</span>
+    
+        <span class="sidebar-category-name" data-categories="linux系统安全"><span class="iconfont-archer">&#xe60a;</span>linux系统安全</span>
+    
+        <span class="sidebar-category-name" data-categories="期末复习"><span class="iconfont-archer">&#xe60a;</span>期末复习</span>
+    
+        <span class="sidebar-category-name" data-categories="文章集合"><span class="iconfont-archer">&#xe60a;</span>文章集合</span>
+    
+        <span class="sidebar-category-name" data-categories="攻击技术"><span class="iconfont-archer">&#xe60a;</span>攻击技术</span>
+    
+        <span class="sidebar-category-name" data-categories="常规漏洞技巧"><span class="iconfont-archer">&#xe60a;</span>常规漏洞技巧</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "jax"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+

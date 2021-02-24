@@ -359,6 +359,73 @@ height:50vh;
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2020/03/28/一篇文章带你深入理解XXE漏洞/" >
+            
+                <span>一篇文章带你深入理解XXE漏洞</span>
+        </a>
+        <div class="abstract-content">
+            转载自：https://xz.aliyun.com/t/3357
+一、XXE 是什么介绍 XXE 之前，我先来说一下普通的 XML 注入，这个的利用面比较狭窄，如果有的话应该也是逻辑漏洞
+如图所示：
+
+既然能插入 XML 代码，那我们肯定不能善罢甘休，我们需要更多，于是出现了 XXE
+XXE(XML External Entity Injection) 全称为 XML 外部实体注入，从名字就能看出来，这是一个注入漏洞，注入的是什么？XML外部实体。(看到这里肯定有人要说：你这不是在废话)，固然，其实我这里废话只是想强调我们的利用点是 外部实体 ，也是提醒读者将注意力集中于外部实体中，而不...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/03/28</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "XXE">XXE</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/03/17/JWT安全隐患之绕过访问控制/JWT安全隐患之绕过访问控制/" >
+            
+                <span>JWT安全隐患之绕过访问控制</span>
+        </a>
+        <div class="abstract-content">
+            转载自：https://my.oschina.net/u/3076320/blog/4372604
+0x00 JWT含义JSON Web Tokens（缩写JWTs，读作 [/dʒɒts/]），是一种基于JSON格式,用于在网络上声明某种标准（广泛使用于商业应用程序中）的访问令牌，其包含令牌签名以确保令牌的完整性，令牌使用私钥或公钥/私钥进行签名验证。
+JWT通常由三部分组成: 头信息（header）, 消息体（payload）和签名（signature）。
+我们今天讨论攻击者如何利用它们绕过访问控制，即伪造令牌并以其他人身份登录。
+0x01 JWT的工作原理JWT的头信息部分标识用于生...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/03/17</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "渗透测试">渗透测试</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2020/03/06/渗透测试常见开放端口及利用/" >
             
                 <span>渗透测试常见开放端口及利用</span>
@@ -404,6 +471,46 @@ LDAP目录访问协议
                 <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/03/06</span>
             </div>
             <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/02/24/配置reGeorg+Proxifier渗透内网/" >
+            
+                <span>配置reGeorg+Proxifier渗透内网</span>
+        </a>
+        <div class="abstract-content">
+            0x00 前言​        当我们在渗透测试中拿下了一台机器A，A有两块网卡，一块通外网，另一块通内网。此时我们可以利用这台机器A进行内网的渗透，这就要用到reGeorg+Proxifier了。
+适用条件：reGeory适用于公网服务器只开放了80端口的情况，reGeorg是用 python 写的利用Web进行代理的工具，流量只通过 http 传输，也就是http隧道。
+0x01 环境攻击机：
+192.168.253.30
+机器A：
+192.168.253.10
+10.10.10.29
+机器B：
+10.10.10.40
+​        其中192.168.253.0/24用于模拟外...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/02/24</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "渗透测试">渗透测试</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "红蓝对抗">红蓝对抗</a>
+    
+</div>
             
         </div>
     </article>
@@ -663,118 +770,6 @@ wait(s)    //用于申请资源，整形信号量值&lt;=0时循环执行空操�
             <div class= abstract-tags >
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "工具或环境">工具或环境</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/12/09/Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像/" >
-            
-                <span>Windows10下的docker安装与入门 （二）使用docker引擎在容器中运行镜像 toolbox安装docker</span>
-        </a>
-        <div class="abstract-content">
-            Docker 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口。
-本教程主要分以下几点内容：
-一. 使用docker toolbox安装docker
-二. 使用docker引擎在容器中运行镜像
-三. 创建自己的docker镜像并且在容器中运行它
--—————————————————————————————
-二. 使用docker引擎在容器中运行镜像1. 什么是镜像与容器？
-Docker引擎提供核心的Docker技术能够启动镜像和容器。在上一个教程中...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/09</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "工具或环境">工具或环境</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/12/09/Windows10下的docker安装与入门 （一）使用docker toolbox安装docker/" >
-            
-                <span>Windows10下的docker安装与入门 （一）使用docker toolbox安装docker</span>
-        </a>
-        <div class="abstract-content">
-            Docker 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口。
-本教程主要分以下几点内容：
-一. 使用docker toolbox安装docker
-二. 使用docker引擎在容器中运行镜像
-三. 创建自己的docker镜像并且在容器中运行它
--—————————————————————————————
-一. 使用docker toolbox安装docker对于Windows用户来说，使用docker toolbox来安装docker是最简单的方...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/12/09</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "工具或环境">工具或环境</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/11/20/XSS演练平台/" >
-            
-                <span>XSS演练平台</span>
-        </a>
-        <div class="abstract-content">
-            ————————-
-XSS 挑战之旅
-————————-
-最近在学习xss，找到了一个xss练习平台，在线地址：http://test.xss.tv/
-实验环境也可以本地搭建，不过需要php+mysql的环境：
-xss通关小游戏：https://pan.baidu.com/s/1zS2GwTNbMBXEF2yNEBeLgA   密码：85g8
-由于编辑出现了一些问题，现在直接转载一下别人的一篇文章
-
-转载自
- 作　　者：bmjoker
- 出　　处：https://www.cnblogs.com/bmjoker/p/9446472.html
-
-
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/20</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "XSS学习">XSS学习</a>
     
 </div>
             
@@ -1930,9 +1925,60 @@ xss通关小游戏：https://pan.baidu.com/s/1zS2GwTNbMBXEF2yNEBeLgA   密码：
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 67
+        Total : 70
         </div>
         <!-- search  -->
         
@@ -2000,8 +2046,27 @@ xss通关小游戏：https://pan.baidu.com/s/1zS2GwTNbMBXEF2yNEBeLgA   密码：
     
         </ul>
     
+    <div class="archive-year"> 2021 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/24</span><a class="archive-post-title" href= "/2021/02/24/JS前端加密绕过/" >JS前端加密绕过</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
     <div class="archive-year"> 2020 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/01</span><a class="archive-post-title" href= "/2020/12/01/rad+xray自动化扫描/" >rad+xray自动化扫描</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -2101,6 +2166,11 @@ xss通关小游戏：https://pan.baidu.com/s/1zS2GwTNbMBXEF2yNEBeLgA   密码：
     
         <li class="archive-post-item">
             <span class="archive-post-date">03/06</span><a class="archive-post-title" href= "/2020/03/06/渗透测试常见开放端口及利用/" >渗透测试常见开放端口及利用</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/24</span><a class="archive-post-title" href= "/2020/02/24/配置reGeorg+Proxifier渗透内网/" >配置reGeorg+Proxifier渗透内网</a>
         </li>
     
     
